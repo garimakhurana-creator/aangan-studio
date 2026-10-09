@@ -1,0 +1,99 @@
+{
+  "key": "e4bbdea4-2cf185b8",
+  "call_date": "2026-09-22",
+  "latency_ms": 15267,
+  "usage": {
+    "model": "gemini-3.1-pro-preview",
+    "input_tokens": 1008,
+    "output_tokens": 1812
+  },
+  "extraction": {
+    "call_type": "new_enquiry",
+    "caller_name": "Ritu Kapoor",
+    "language": "English",
+    "summary": "Ritu Kapoor is inquiring about interior design for her 3BHK in Pimple Saudagar. She wants to redesign the kitchen, wardrobes, and living room by March.",
+    "referral": {
+      "how_found": null,
+      "referrer_name": null,
+      "knows_founder": false
+    },
+    "project": {
+      "segment": "residential",
+      "property_type": "3BHK",
+      "locality": "Pimple Saudagar",
+      "city": null,
+      "carpet_area_sqft": 1050,
+      "scope_type": "partial",
+      "rooms": [
+        "kitchen",
+        "living room",
+        "wardrobes"
+      ],
+      "room_count": 3,
+      "current_state": "We moved in with builder furniture and it’s very basic.",
+      "occupancy": "owner",
+      "structural_changes": false
+    },
+    "engagement": {
+      "wants_design_and_execution": "unknown",
+      "signal": null
+    },
+    "timeline": {
+      "needed_by_text": "Ideally done by March.",
+      "weeks_until_needed": 24,
+      "site_available_text": "We’ve been here two years",
+      "weeks_until_site_available": 0,
+      "preferred_start_text": "We want to start now.",
+      "flexible": true
+    },
+    "budget": {
+      "volunteered": false,
+      "max_inr": null,
+      "text": null
+    },
+    "decision_maker": {
+      "status": "self",
+      "detail": "We've been here two years"
+    },
+    "pricing": {
+      "asked": false,
+      "times_pushed": 0
+    },
+    "complaint": {
+      "is_existing_client": false,
+      "detail": null,
+      "designer_named": null,
+      "requested_senior": false
+    },
+    "repeat": {
+      "claims_prior_contact": false,
+      "detail": null
+    },
+    "dropped_call": true,
+    "requests": {
+      "site_visit": false,
+      "consultation_wanted": false,
+      "preferred_slots": null,
+      "email": null
+    },
+    "evidence": [
+      {
+        "criterion": "c1",
+        "quote": "Kitchen, wardrobes, living room."
+      },
+      {
+        "criterion": "c2",
+        "quote": "I’m Ritu Kapoor from Pimple Saudagar."
+      },
+      {
+        "criterion": "c3",
+        "quote": "Ideally done by March. Plenty of time."
+      }
+    ],
+    "open_questions": [
+      "What is the budget for the project?",
+      "Are there any specific requirements for the bedrooms?",
+      "Does the scope include execution?"
+    ]
+  }
+}

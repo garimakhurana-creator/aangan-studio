@@ -1,0 +1,99 @@
+{
+  "key": "12b85d1f-2cf185b8",
+  "call_date": "2026-09-12",
+  "latency_ms": 12514,
+  "usage": {
+    "model": "gemini-3.1-pro-preview",
+    "input_tokens": 1018,
+    "output_tokens": 1470
+  },
+  "extraction": {
+    "call_type": "new_enquiry",
+    "caller_name": null,
+    "language": "English",
+    "summary": "The caller wants to design the living room, bedroom, and kitchen of their rented 2BHK apartment in Baner. They have secured landlord approval for the work as long as there are no structural changes.",
+    "referral": {
+      "how_found": null,
+      "referrer_name": null,
+      "knows_founder": false
+    },
+    "project": {
+      "segment": "residential",
+      "property_type": "2BHK apartment",
+      "locality": "Baner",
+      "city": null,
+      "carpet_area_sqft": null,
+      "scope_type": "partial",
+      "rooms": [
+        "living room",
+        "bedroom",
+        "kitchen"
+      ],
+      "room_count": 3,
+      "current_state": "quite bare",
+      "occupancy": "tenant",
+      "structural_changes": false
+    },
+    "engagement": {
+      "wants_design_and_execution": "yes",
+      "signal": "I want to properly design the living room, bedroom, and kitchen — no structural changes, just design and fittings."
+    },
+    "timeline": {
+      "needed_by_text": null,
+      "weeks_until_needed": null,
+      "site_available_text": "I’ve been here a year",
+      "weeks_until_site_available": 0,
+      "preferred_start_text": null,
+      "flexible": null
+    },
+    "budget": {
+      "volunteered": false,
+      "max_inr": null,
+      "text": null
+    },
+    "decision_maker": {
+      "status": "self",
+      "detail": "Caller is the tenant and has already checked with the landlord who approved the work."
+    },
+    "pricing": {
+      "asked": false,
+      "times_pushed": 0
+    },
+    "complaint": {
+      "is_existing_client": false,
+      "detail": null,
+      "designer_named": null,
+      "requested_senior": false
+    },
+    "repeat": {
+      "claims_prior_contact": false,
+      "detail": null
+    },
+    "dropped_call": false,
+    "requests": {
+      "site_visit": false,
+      "consultation_wanted": true,
+      "preferred_slots": null,
+      "email": null
+    },
+    "evidence": [
+      {
+        "criterion": "c1",
+        "quote": "I want to properly design the living room, bedroom, and kitchen — no structural changes, just design and fittings."
+      },
+      {
+        "criterion": "c2",
+        "quote": "It’s a 2BHK in Baner."
+      },
+      {
+        "criterion": "c5",
+        "quote": "Yes — they’re fine with it as long as we don’t break walls."
+      }
+    ],
+    "open_questions": [
+      "What is the budget for the project?",
+      "What is the preferred timeline for completion?",
+      "What is the caller's name and contact information?"
+    ]
+  }
+}

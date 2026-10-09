@@ -1,0 +1,98 @@
+{
+  "key": "6ffac384-2cf185b8",
+  "call_date": "2026-09-11",
+  "latency_ms": 6960,
+  "usage": {
+    "model": "gemini-3.1-pro-preview",
+    "input_tokens": 982,
+    "output_tokens": 716
+  },
+  "extraction": {
+    "call_type": "new_enquiry",
+    "caller_name": null,
+    "language": "English",
+    "summary": "The caller enquired about redesigning a kitchen and one bedroom in a 1BHK in Kharadi. The studio declined the project as the caller's budget of 1 to 1.5 lakh was too low.",
+    "referral": {
+      "how_found": null,
+      "referrer_name": null,
+      "knows_founder": false
+    },
+    "project": {
+      "segment": "residential",
+      "property_type": "1BHK",
+      "locality": "Kharadi",
+      "city": null,
+      "carpet_area_sqft": 550,
+      "scope_type": "partial",
+      "rooms": [
+        "kitchen",
+        "bedroom"
+      ],
+      "room_count": 2,
+      "current_state": null,
+      "occupancy": "unknown",
+      "structural_changes": false
+    },
+    "engagement": {
+      "wants_design_and_execution": "unknown",
+      "signal": null
+    },
+    "timeline": {
+      "needed_by_text": null,
+      "weeks_until_needed": null,
+      "site_available_text": null,
+      "weeks_until_site_available": null,
+      "preferred_start_text": null,
+      "flexible": null
+    },
+    "budget": {
+      "volunteered": true,
+      "max_inr": 150000,
+      "text": "1 to 1.5 lakh maximum for everything"
+    },
+    "decision_maker": {
+      "status": "unknown",
+      "detail": null
+    },
+    "pricing": {
+      "asked": true,
+      "times_pushed": 1
+    },
+    "complaint": {
+      "is_existing_client": false,
+      "detail": null,
+      "designer_named": null,
+      "requested_senior": false
+    },
+    "repeat": {
+      "claims_prior_contact": false,
+      "detail": null
+    },
+    "dropped_call": false,
+    "requests": {
+      "site_visit": false,
+      "consultation_wanted": false,
+      "preferred_slots": null,
+      "email": null
+    },
+    "evidence": [
+      {
+        "criterion": "c1",
+        "quote": "I want to do the kitchen and one bedroom."
+      },
+      {
+        "criterion": "c2",
+        "quote": "I have a 1BHK in Kharadi"
+      },
+      {
+        "criterion": "c4",
+        "quote": "My budget is 1 to 1.5 lakh maximum for everything."
+      }
+    ],
+    "open_questions": [
+      "Timeline for the project",
+      "Decision maker status",
+      "Occupancy status"
+    ]
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "key": "64ad27ed-2cf185b8",
+  "call_date": "2026-09-18",
+  "latency_ms": 7055,
+  "usage": {
+    "model": "gemini-3.1-pro-preview",
+    "input_tokens": 987,
+    "output_tokens": 771
+  },
+  "extraction": {
+    "call_type": "new_enquiry",
+    "caller_name": "Smita",
+    "language": "English",
+    "summary": "Smita is looking for end-to-end interior design for her 2BHK flat in Undri. She gets possession in six weeks and wants to start the design process immediately.",
+    "referral": {
+      "how_found": null,
+      "referrer_name": null,
+      "knows_founder": false
+    },
+    "project": {
+      "segment": "residential",
+      "property_type": "2BHK flat",
+      "locality": "Undri",
+      "city": "Pune",
+      "carpet_area_sqft": 875,
+      "scope_type": "full_home",
+      "rooms": [
+        "kitchen",
+        "wardrobes",
+        "living room"
+      ],
+      "room_count": null,
+      "current_state": "under construction/awaiting possession",
+      "occupancy": "owner",
+      "structural_changes": false
+    },
+    "engagement": {
+      "wants_design_and_execution": "yes",
+      "signal": "The full package."
+    },
+    "timeline": {
+      "needed_by_text": null,
+      "weeks_until_needed": null,
+      "site_available_text": "getting possession of my flat in Undri in about six weeks",
+      "weeks_until_site_available": 6,
+      "preferred_start_text": "I want to start the design right away.",
+      "flexible": null
+    },
+    "budget": {
+      "volunteered": false,
+      "max_inr": null,
+      "text": null
+    },
+    "decision_maker": {
+      "status": "authorised",
+      "detail": "my husband and I. He said to go ahead and book the consultation."
+    },
+    "pricing": {
+      "asked": false,
+      "times_pushed": 0
+    },
+    "complaint": {
+      "is_existing_client": false,
+      "detail": null,
+      "designer_named": null,
+      "requested_senior": false
+    },
+    "repeat": {
+      "claims_prior_contact": false,
+      "detail": null
+    },
+    "dropped_call": false,
+    "requests": {
+      "site_visit": false,
+      "consultation_wanted": true,
+      "preferred_slots": null,
+      "email": null
+    },
+    "evidence": [
+      {
+        "criterion": "c1",
+        "quote": "Full home — kitchen, wardrobes, living room. The full package."
+      },
+      {
+        "criterion": "c2",
+        "quote": "flat in Undri"
+      },
+      {
+        "criterion": "c3",
+        "quote": "getting possession of my flat in Undri in about six weeks"
+      },
+      {
+        "criterion": "c5",
+        "quote": "Yes — my husband and I. He said to go ahead and book the consultation."
+      }
+    ],
+    "open_questions": [
+      "What is the budget for the project?"
+    ]
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "key": "550b2b43-2cf185b8",
+  "call_date": "2026-09-17",
+  "latency_ms": 13275,
+  "usage": {
+    "model": "gemini-3.1-pro-preview",
+    "input_tokens": 999,
+    "output_tokens": 1610
+  },
+  "extraction": {
+    "call_type": "new_enquiry",
+    "caller_name": null,
+    "language": "English",
+    "summary": "The caller is inquiring about interior design for their parents' new 3BHK in Hadapsar. The parents will attend the consultation and make the final decisions.",
+    "referral": {
+      "how_found": null,
+      "referrer_name": null,
+      "knows_founder": false
+    },
+    "project": {
+      "segment": "residential",
+      "property_type": "3BHK",
+      "locality": "Hadapsar",
+      "city": null,
+      "carpet_area_sqft": null,
+      "scope_type": "unknown",
+      "rooms": [],
+      "room_count": null,
+      "current_state": "new possession",
+      "occupancy": "owner",
+      "structural_changes": false
+    },
+    "engagement": {
+      "wants_design_and_execution": "unknown",
+      "signal": "They want a proper design."
+    },
+    "timeline": {
+      "needed_by_text": null,
+      "weeks_until_needed": null,
+      "site_available_text": "new possession",
+      "weeks_until_site_available": 0,
+      "preferred_start_text": null,
+      "flexible": null
+    },
+    "budget": {
+      "volunteered": false,
+      "max_inr": null,
+      "text": null
+    },
+    "decision_maker": {
+      "status": "proxy_decider_will_attend",
+      "detail": "Caller is doing initial checking; parents will attend consultation and decide."
+    },
+    "pricing": {
+      "asked": false,
+      "times_pushed": 0
+    },
+    "complaint": {
+      "is_existing_client": false,
+      "detail": null,
+      "designer_named": null,
+      "requested_senior": false
+    },
+    "repeat": {
+      "claims_prior_contact": false,
+      "detail": null
+    },
+    "dropped_call": false,
+    "requests": {
+      "site_visit": false,
+      "consultation_wanted": true,
+      "preferred_slots": null,
+      "email": null
+    },
+    "evidence": [
+      {
+        "criterion": "c1",
+        "quote": "They want a proper design."
+      },
+      {
+        "criterion": "c2",
+        "quote": "3BHK in Hadapsar"
+      },
+      {
+        "criterion": "c5",
+        "quote": "I’ll tell them about the consultation and they’ll decide."
+      }
+    ],
+    "open_questions": [
+      "Does the project include execution?",
+      "What is the budget?",
+      "What is the expected timeline?"
+    ]
+  }
+}

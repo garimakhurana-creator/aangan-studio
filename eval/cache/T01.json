@@ -1,0 +1,102 @@
+{
+  "key": "ebec28f5-2cf185b8",
+  "call_date": "2026-09-02",
+  "latency_ms": 15087,
+  "usage": {
+    "model": "gemini-3.1-pro-preview",
+    "input_tokens": 1033,
+    "output_tokens": 1807
+  },
+  "extraction": {
+    "call_type": "new_enquiry",
+    "caller_name": "Priya",
+    "language": "English",
+    "summary": "Priya is looking to completely redesign her 1,400 sq ft 3BHK in Kothrud. She and her husband own the flat and have a flexible timeline aiming for March completion.",
+    "referral": {
+      "how_found": "friend referral",
+      "referrer_name": "Shruti Joshi",
+      "knows_founder": false
+    },
+    "project": {
+      "segment": "residential",
+      "property_type": "3BHK flat",
+      "locality": "Kothrud, Dahanukar Colony",
+      "city": "Pune",
+      "carpet_area_sqft": 1400,
+      "scope_type": "full_home",
+      "rooms": [
+        "kitchen",
+        "living room",
+        "bedroom 1",
+        "bedroom 2"
+      ],
+      "room_count": 4,
+      "current_state": "builder flat",
+      "occupancy": "owner",
+      "structural_changes": false
+    },
+    "engagement": {
+      "wants_design_and_execution": "yes",
+      "signal": "redo the whole thing"
+    },
+    "timeline": {
+      "needed_by_text": "done by March",
+      "weeks_until_needed": 26,
+      "site_available_text": "bought it two years ago",
+      "weeks_until_site_available": 0,
+      "preferred_start_text": null,
+      "flexible": true
+    },
+    "budget": {
+      "volunteered": false,
+      "max_inr": null,
+      "text": null
+    },
+    "decision_maker": {
+      "status": "self",
+      "detail": "myself and my husband. He knows we're calling and is happy to go ahead."
+    },
+    "pricing": {
+      "asked": false,
+      "times_pushed": 0
+    },
+    "complaint": {
+      "is_existing_client": false,
+      "detail": null,
+      "designer_named": null,
+      "requested_senior": false
+    },
+    "repeat": {
+      "claims_prior_contact": false,
+      "detail": null
+    },
+    "dropped_call": false,
+    "requests": {
+      "site_visit": false,
+      "consultation_wanted": true,
+      "preferred_slots": null,
+      "email": null
+    },
+    "evidence": [
+      {
+        "criterion": "c1",
+        "quote": "redo the whole thing — kitchen, living room, both bedrooms."
+      },
+      {
+        "criterion": "c2",
+        "quote": "Kothrud — Dahanukar Colony"
+      },
+      {
+        "criterion": "c3",
+        "quote": "We’d like to be done by March. We’re in no rush."
+      },
+      {
+        "criterion": "c5",
+        "quote": "Yes — myself and my husband. He knows we’re calling and is happy to go ahead."
+      }
+    ],
+    "open_questions": [
+      "What is the budget for the project?"
+    ]
+  }
+}

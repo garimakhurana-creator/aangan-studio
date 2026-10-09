@@ -1,0 +1,95 @@
+{
+  "key": "a081c513-2cf185b8",
+  "call_date": "2026-09-15",
+  "latency_ms": 13612,
+  "usage": {
+    "model": "gemini-3.1-pro-preview",
+    "input_tokens": 968,
+    "output_tokens": 1665
+  },
+  "extraction": {
+    "call_type": "new_enquiry",
+    "caller_name": "Anand Sharma",
+    "language": "English",
+    "summary": "Anand Sharma is inquiring about a full end-to-end design for a new 5,500 sq ft villa in Kalyani Nagar. He already has possession and is looking to move in by March next year.",
+    "referral": {
+      "how_found": null,
+      "referrer_name": null,
+      "knows_founder": false
+    },
+    "project": {
+      "segment": "residential",
+      "property_type": "villa",
+      "locality": "Kalyani Nagar",
+      "city": null,
+      "carpet_area_sqft": 5500,
+      "scope_type": "full_home",
+      "rooms": [],
+      "room_count": null,
+      "current_state": "New construction. Completely empty.",
+      "occupancy": "owner",
+      "structural_changes": false
+    },
+    "engagement": {
+      "wants_design_and_execution": "yes",
+      "signal": "Full end-to-end design."
+    },
+    "timeline": {
+      "needed_by_text": "March next year to move in.",
+      "weeks_until_needed": 26,
+      "site_available_text": "Possession was last month.",
+      "weeks_until_site_available": 0,
+      "preferred_start_text": null,
+      "flexible": true
+    },
+    "budget": {
+      "volunteered": false,
+      "max_inr": null,
+      "text": null
+    },
+    "decision_maker": {
+      "status": "self",
+      "detail": "Caller is inquiring for his own property to move into."
+    },
+    "pricing": {
+      "asked": false,
+      "times_pushed": 0
+    },
+    "complaint": {
+      "is_existing_client": false,
+      "detail": null,
+      "designer_named": null,
+      "requested_senior": false
+    },
+    "repeat": {
+      "claims_prior_contact": false,
+      "detail": null
+    },
+    "dropped_call": false,
+    "requests": {
+      "site_visit": true,
+      "consultation_wanted": true,
+      "preferred_slots": "this week or next if possible",
+      "email": null
+    },
+    "evidence": [
+      {
+        "criterion": "c1",
+        "quote": "Full end-to-end design."
+      },
+      {
+        "criterion": "c2",
+        "quote": "villa project in Kalyani Nagar"
+      },
+      {
+        "criterion": "c3",
+        "quote": "March next year to move in. No rush."
+      }
+    ],
+    "open_questions": [
+      "What is the budget for the project?",
+      "Are there any specific design styles or requirements?",
+      "What is the email address for correspondence?"
+    ]
+  }
+}

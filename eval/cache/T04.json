@@ -1,0 +1,87 @@
+{
+  "key": "0ba4dcf6-2cf185b8",
+  "call_date": "2026-09-04",
+  "latency_ms": 14015,
+  "usage": {
+    "model": "gemini-3.1-pro-preview",
+    "input_tokens": 954,
+    "output_tokens": 1698
+  },
+  "extraction": {
+    "call_type": "new_enquiry",
+    "caller_name": null,
+    "language": "English",
+    "summary": "The caller wanted a site visit for design ideas and suggestions for their living room. They declined to proceed after learning the studio only handles full design and execution projects.",
+    "referral": {
+      "how_found": null,
+      "referrer_name": null,
+      "knows_founder": false
+    },
+    "project": {
+      "segment": "residential",
+      "property_type": null,
+      "locality": null,
+      "city": null,
+      "carpet_area_sqft": null,
+      "scope_type": "single_room",
+      "rooms": [
+        "living room"
+      ],
+      "room_count": 1,
+      "current_state": null,
+      "occupancy": "unknown",
+      "structural_changes": false
+    },
+    "engagement": {
+      "wants_design_and_execution": "no",
+      "signal": "Just want suggestions on colours, furniture arrangement, what to change."
+    },
+    "timeline": {
+      "needed_by_text": null,
+      "weeks_until_needed": null,
+      "site_available_text": null,
+      "weeks_until_site_available": null,
+      "preferred_start_text": null,
+      "flexible": null
+    },
+    "budget": {
+      "volunteered": false,
+      "max_inr": null,
+      "text": null
+    },
+    "decision_maker": {
+      "status": "self",
+      "detail": "Caller used 'we' indicating they are part of the decision making."
+    },
+    "pricing": {
+      "asked": false,
+      "times_pushed": 0
+    },
+    "complaint": {
+      "is_existing_client": false,
+      "detail": null,
+      "designer_named": null,
+      "requested_senior": false
+    },
+    "repeat": {
+      "claims_prior_contact": false,
+      "detail": null
+    },
+    "dropped_call": false,
+    "requests": {
+      "site_visit": true,
+      "consultation_wanted": true,
+      "preferred_slots": null,
+      "email": null
+    },
+    "evidence": [
+      {
+        "criterion": "c1",
+        "quote": "Just want suggestions on colours, furniture arrangement, what to change."
+      }
+    ],
+    "open_questions": [
+      "What is the location of the property?"
+    ]
+  }
+}

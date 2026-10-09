@@ -1,0 +1,91 @@
+{
+  "key": "af795a07-2cf185b8",
+  "call_date": "2026-09-24",
+  "latency_ms": 13668,
+  "usage": {
+    "model": "gemini-3.1-pro-preview",
+    "input_tokens": 954,
+    "output_tokens": 1591
+  },
+  "extraction": {
+    "call_type": "new_enquiry",
+    "caller_name": null,
+    "language": "English",
+    "summary": "The caller inquired about interior design services for a new restaurant in Koregaon Park. The studio declined the project as hospitality spaces are out of scope.",
+    "referral": {
+      "how_found": "seen your work",
+      "referrer_name": null,
+      "knows_founder": false
+    },
+    "project": {
+      "segment": "hospitality",
+      "property_type": "restaurant",
+      "locality": "Koregaon Park",
+      "city": null,
+      "carpet_area_sqft": null,
+      "scope_type": "unknown",
+      "rooms": [],
+      "room_count": null,
+      "current_state": null,
+      "occupancy": "unknown",
+      "structural_changes": false
+    },
+    "engagement": {
+      "wants_design_and_execution": "unknown",
+      "signal": "Would you be able to design the interiors?"
+    },
+    "timeline": {
+      "needed_by_text": null,
+      "weeks_until_needed": null,
+      "site_available_text": null,
+      "weeks_until_site_available": null,
+      "preferred_start_text": null,
+      "flexible": null
+    },
+    "budget": {
+      "volunteered": false,
+      "max_inr": null,
+      "text": null
+    },
+    "decision_maker": {
+      "status": "unknown",
+      "detail": null
+    },
+    "pricing": {
+      "asked": false,
+      "times_pushed": 0
+    },
+    "complaint": {
+      "is_existing_client": false,
+      "detail": null,
+      "designer_named": null,
+      "requested_senior": false
+    },
+    "repeat": {
+      "claims_prior_contact": false,
+      "detail": null
+    },
+    "dropped_call": false,
+    "requests": {
+      "site_visit": false,
+      "consultation_wanted": false,
+      "preferred_slots": null,
+      "email": null
+    },
+    "evidence": [
+      {
+        "criterion": "c1",
+        "quote": "Would you be able to design the interiors?"
+      },
+      {
+        "criterion": "c2",
+        "quote": "restaurant in Koregaon Park"
+      }
+    ],
+    "open_questions": [
+      "What is the timeline?",
+      "What is the budget?",
+      "Who is the decision maker?"
+    ]
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "key": "2c0f5650-2cf185b8",
+  "call_date": "2026-09-16",
+  "latency_ms": 6731,
+  "usage": {
+    "model": "gemini-3.1-pro-preview",
+    "input_tokens": 1002,
+    "output_tokens": 693
+  },
+  "extraction": {
+    "call_type": "new_enquiry",
+    "caller_name": null,
+    "language": "English",
+    "summary": "The caller wants to redo their 3BHK flat in Aundh, covering the kitchen, wardrobes in two bedrooms, and the living room. They pushed for a rough price range but agreed to book a consultation when told pricing depends on scope.",
+    "referral": {
+      "how_found": null,
+      "referrer_name": null,
+      "knows_founder": false
+    },
+    "project": {
+      "segment": "residential",
+      "property_type": "3BHK flat",
+      "locality": "Aundh",
+      "city": null,
+      "carpet_area_sqft": 1100,
+      "scope_type": "partial",
+      "rooms": [
+        "kitchen",
+        "bedroom wardrobes",
+        "living room"
+      ],
+      "room_count": 4,
+      "current_state": null,
+      "occupancy": "unknown",
+      "structural_changes": false
+    },
+    "engagement": {
+      "wants_design_and_execution": "unknown",
+      "signal": null
+    },
+    "timeline": {
+      "needed_by_text": null,
+      "weeks_until_needed": null,
+      "site_available_text": null,
+      "weeks_until_site_available": null,
+      "preferred_start_text": null,
+      "flexible": null
+    },
+    "budget": {
+      "volunteered": false,
+      "max_inr": null,
+      "text": null
+    },
+    "decision_maker": {
+      "status": "unknown",
+      "detail": null
+    },
+    "pricing": {
+      "asked": true,
+      "times_pushed": 2
+    },
+    "complaint": {
+      "is_existing_client": false,
+      "detail": null,
+      "designer_named": null,
+      "requested_senior": false
+    },
+    "repeat": {
+      "claims_prior_contact": false,
+      "detail": null
+    },
+    "dropped_call": false,
+    "requests": {
+      "site_visit": false,
+      "consultation_wanted": true,
+      "preferred_slots": null,
+      "email": null
+    },
+    "evidence": [
+      {
+        "criterion": "c1",
+        "quote": "Kitchen, wardrobes in both bedrooms, living room."
+      },
+      {
+        "criterion": "c2",
+        "quote": "I want to redo my flat in Aundh."
+      }
+    ],
+    "open_questions": [
+      "Does the caller want design and execution?",
+      "What is the timeline for the project?",
+      "Who is the decision maker?",
+      "What is the budget?"
+    ]
+  }
+}

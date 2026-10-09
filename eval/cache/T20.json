@@ -1,0 +1,102 @@
+{
+  "key": "390853f9-2cf185b8",
+  "call_date": "2026-09-25",
+  "latency_ms": 14221,
+  "usage": {
+    "model": "gemini-3.1-pro-preview",
+    "input_tokens": 950,
+    "output_tokens": 1818
+  },
+  "extraction": {
+    "call_type": "new_enquiry",
+    "caller_name": "Pooja",
+    "language": "English",
+    "summary": "Pooja is inquiring about end-to-end interior design and execution for her 900 sq ft 2BHK in Magarpatta. She and her husband are the owners and are looking for a flexible January start.",
+    "referral": {
+      "how_found": null,
+      "referrer_name": null,
+      "knows_founder": false
+    },
+    "project": {
+      "segment": "residential",
+      "property_type": "2BHK",
+      "locality": "Magarpatta — Cybercity area",
+      "city": null,
+      "carpet_area_sqft": 900,
+      "scope_type": "full_home",
+      "rooms": [
+        "kitchen",
+        "bedroom",
+        "bedroom",
+        "living room"
+      ],
+      "room_count": 4,
+      "current_state": null,
+      "occupancy": "owner",
+      "structural_changes": false
+    },
+    "engagement": {
+      "wants_design_and_execution": "yes",
+      "signal": "a January start for execution would be ideal"
+    },
+    "timeline": {
+      "needed_by_text": null,
+      "weeks_until_needed": null,
+      "site_available_text": null,
+      "weeks_until_site_available": 0,
+      "preferred_start_text": "a January start for execution would be ideal",
+      "flexible": true
+    },
+    "budget": {
+      "volunteered": false,
+      "max_inr": null,
+      "text": null
+    },
+    "decision_maker": {
+      "status": "self",
+      "detail": "my husband and I. We both want to be at the consultation."
+    },
+    "pricing": {
+      "asked": false,
+      "times_pushed": 0
+    },
+    "complaint": {
+      "is_existing_client": false,
+      "detail": null,
+      "designer_named": null,
+      "requested_senior": false
+    },
+    "repeat": {
+      "claims_prior_contact": false,
+      "detail": null
+    },
+    "dropped_call": false,
+    "requests": {
+      "site_visit": false,
+      "consultation_wanted": true,
+      "preferred_slots": null,
+      "email": null
+    },
+    "evidence": [
+      {
+        "criterion": "c1",
+        "quote": "properly design the interiors for a while... a January start for execution would be ideal."
+      },
+      {
+        "criterion": "c2",
+        "quote": "I have a 2BHK in Magarpatta — Cybercity area."
+      },
+      {
+        "criterion": "c3",
+        "quote": "We’re flexible — a January start for execution would be ideal."
+      },
+      {
+        "criterion": "c5",
+        "quote": "Yes — my husband and I. We both want to be at the consultation."
+      }
+    ],
+    "open_questions": [
+      "What is the budget for the project?"
+    ]
+  }
+}

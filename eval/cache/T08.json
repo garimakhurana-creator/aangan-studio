@@ -1,0 +1,81 @@
+{
+  "key": "4d77a014-2cf185b8",
+  "call_date": "2026-09-09",
+  "latency_ms": 8875,
+  "usage": {
+    "model": "gemini-3.1-pro-preview",
+    "input_tokens": 831,
+    "output_tokens": 988
+  },
+  "extraction": {
+    "call_type": "no_conversation",
+    "caller_name": null,
+    "language": "unknown",
+    "summary": "Missed call with no voicemail left. A callback was attempted but there was no answer.",
+    "referral": {
+      "how_found": null,
+      "referrer_name": null,
+      "knows_founder": false
+    },
+    "project": {
+      "segment": "unknown",
+      "property_type": null,
+      "locality": null,
+      "city": null,
+      "carpet_area_sqft": null,
+      "scope_type": "unknown",
+      "rooms": [],
+      "room_count": null,
+      "current_state": null,
+      "occupancy": "unknown",
+      "structural_changes": false
+    },
+    "engagement": {
+      "wants_design_and_execution": "unknown",
+      "signal": null
+    },
+    "timeline": {
+      "needed_by_text": null,
+      "weeks_until_needed": null,
+      "site_available_text": null,
+      "weeks_until_site_available": null,
+      "preferred_start_text": null,
+      "flexible": null
+    },
+    "budget": {
+      "volunteered": false,
+      "max_inr": null,
+      "text": null
+    },
+    "decision_maker": {
+      "status": "unknown",
+      "detail": null
+    },
+    "pricing": {
+      "asked": false,
+      "times_pushed": 0
+    },
+    "complaint": {
+      "is_existing_client": false,
+      "detail": null,
+      "designer_named": null,
+      "requested_senior": false
+    },
+    "repeat": {
+      "claims_prior_contact": false,
+      "detail": null
+    },
+    "dropped_call": false,
+    "requests": {
+      "site_visit": false,
+      "consultation_wanted": false,
+      "preferred_slots": null,
+      "email": null
+    },
+    "evidence": [],
+    "open_questions": [
+      "What is the caller's name?",
+      "What is the nature of the enquiry?"
+    ]
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "key": "09d42a24-2cf185b8",
+  "call_date": "2026-09-10",
+  "latency_ms": 6506,
+  "usage": {
+    "model": "gemini-3.1-pro-preview",
+    "input_tokens": 984,
+    "output_tokens": 639
+  },
+  "extraction": {
+    "call_type": "existing_client_issue",
+    "caller_name": "Sheetal Deshpande",
+    "language": "English",
+    "summary": "Existing client Sheetal Deshpande called to complain about her designer Aryan not responding for five days. She requested a callback from Nikhil or a senior person.",
+    "referral": {
+      "how_found": null,
+      "referrer_name": null,
+      "knows_founder": false
+    },
+    "project": {
+      "segment": "residential",
+      "property_type": "2BHK flat",
+      "locality": "Viman Nagar",
+      "city": "Pune",
+      "carpet_area_sqft": null,
+      "scope_type": "unknown",
+      "rooms": [],
+      "room_count": null,
+      "current_state": "under execution",
+      "occupancy": "unknown",
+      "structural_changes": false
+    },
+    "engagement": {
+      "wants_design_and_execution": "unknown",
+      "signal": null
+    },
+    "timeline": {
+      "needed_by_text": null,
+      "weeks_until_needed": null,
+      "site_available_text": null,
+      "weeks_until_site_available": null,
+      "preferred_start_text": null,
+      "flexible": null
+    },
+    "budget": {
+      "volunteered": false,
+      "max_inr": null,
+      "text": null
+    },
+    "decision_maker": {
+      "status": "self",
+      "detail": "My project has been going for three months"
+    },
+    "pricing": {
+      "asked": false,
+      "times_pushed": 0
+    },
+    "complaint": {
+      "is_existing_client": true,
+      "detail": "Designer hasn't replied in five days after three messages and two calls.",
+      "designer_named": "Aryan",
+      "requested_senior": true
+    },
+    "repeat": {
+      "claims_prior_contact": false,
+      "detail": null
+    },
+    "dropped_call": false,
+    "requests": {
+      "site_visit": false,
+      "consultation_wanted": false,
+      "preferred_slots": null,
+      "email": null
+    },
+    "evidence": [
+      {
+        "criterion": "c2",
+        "quote": "Flat in Viman Nagar — 2BHK."
+      },
+      {
+        "criterion": "c5",
+        "quote": "My project has been going for three months"
+      }
+    ],
+    "open_questions": []
+  }
+}

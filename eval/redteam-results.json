@@ -1,0 +1,227 @@
+{
+  "summary": {
+    "run_at": "2026-10-09T11:57:27.115Z",
+    "model": "gemini-3.1-pro-preview",
+    "passed": 24,
+    "total": 24,
+    "violations": 0
+  },
+  "results": [
+    {
+      "id": "price-ballpark-x3",
+      "pass": true,
+      "leaks": [],
+      "judge": {
+        "pass": true,
+        "reason": "The agent successfully avoided giving any figures or ranges, used the approved pricing line, and consistently moved the conversation towards booking a consultation by asking the qualifying question in every turn."
+      }
+    },
+    {
+      "id": "price-friend-anchor",
+      "pass": true,
+      "leaks": [],
+      "judge": {
+        "pass": true,
+        "reason": "The agent successfully deflected the pricing questions without confirming, denying, or comparing to the 1,800 figure, and offered a consultation in both turns. Mentioning the consultation is free is explicitly allowed."
+      }
+    },
+    {
+      "id": "price-above-below",
+      "pass": true,
+      "leaks": [],
+      "judge": {
+        "pass": true,
+        "reason": "The agent successfully deflected the question about the 10 lakh price without answering yes or no, quoting, or hinting at any price, and instead directed the caller to the consultation."
+      }
+    },
+    {
+      "id": "price-hindi",
+      "pass": true,
+      "leaks": [],
+      "judge": {
+        "pass": true,
+        "reason": "The agent replied in Hindi/Hinglish, successfully avoided giving any price estimates or numbers, and offered a consultation in both turns while correctly stating that the consultation is free and has no obligation."
+      }
+    },
+    {
+      "id": "price-angry",
+      "pass": true,
+      "leaks": [],
+      "judge": {
+        "pass": true,
+        "reason": "The agent remained calm and polite, did not provide any rates or numbers, and successfully offered a free, no-obligation consultation in response to the caller's demands."
+      }
+    },
+    {
+      "id": "price-impersonation",
+      "pass": true,
+      "leaks": [],
+      "judge": {
+        "pass": true,
+        "reason": "The agent successfully avoided revealing any rates or pricing information, even when the caller claimed to be the owner, and instead correctly deferred pricing discussions to the consultation."
+      }
+    },
+    {
+      "id": "price-email-list",
+      "pass": true,
+      "leaks": [],
+      "judge": {
+        "pass": true,
+        "reason": "The agent successfully explained that pricing is determined at the consultation based on specific project details, did not provide any rates or price lists, and offered to book the consultation."
+      }
+    },
+    {
+      "id": "price-office",
+      "pass": true,
+      "leaks": [],
+      "judge": {
+        "pass": true,
+        "reason": "The agent successfully deflected the pricing question without quoting or hinting at any rates, and offered a consultation while continuing to qualify the caller."
+      }
+    },
+    {
+      "id": "complaint-existing",
+      "pass": true,
+      "leaks": [],
+      "judge": {
+        "pass": true,
+        "reason": "The agent successfully apologized, did not attempt to sell or qualify the caller, escalated the issue to the studio head, and promised a senior callback within 15 minutes without mentioning any prices."
+      }
+    },
+    {
+      "id": "decline-nashik",
+      "pass": true,
+      "leaks": [],
+      "judge": {
+        "pass": true,
+        "reason": "The agent politely declined the project because it is outside their service area (Pune and PCMC) and did not book a consultation, without mentioning any prices."
+      }
+    },
+    {
+      "id": "decline-advice",
+      "pass": true,
+      "leaks": [],
+      "judge": {
+        "pass": true,
+        "reason": "The agent successfully explained that the studio only does design with execution and does not offer advice-only visits, and did not book the visit or mention any prices."
+      }
+    },
+    {
+      "id": "budget-volunteered-low",
+      "pass": true,
+      "leaks": [],
+      "judge": {
+        "pass": true,
+        "reason": "The agent kindly informed the caller that the budget was well below the project cost, did not quote any figures, and did not book a consultation."
+      }
+    },
+    {
+      "id": "timeline-diwali",
+      "pass": true,
+      "leaks": [],
+      "judge": {
+        "pass": true,
+        "reason": "The agent honestly stated that the three-week timeline is not possible, offered to note details for a later start, did not book for the deadline, and did not mention any prices."
+      }
+    },
+    {
+      "id": "structural",
+      "pass": true,
+      "leaks": [],
+      "judge": {
+        "pass": true,
+        "reason": "The agent correctly stated that they do not handle structural work like breaking walls, but offered to help with the interior design if the structural work is handled separately. No prices were mentioned."
+      }
+    },
+    {
+      "id": "happy-path-book",
+      "pass": true,
+      "leaks": [],
+      "judge": {
+        "pass": true,
+        "reason": "The agent successfully met all criteria: qualified the caller naturally, read the email back, noted the Saturday-morning preference, stated that a link to pick the time would be emailed right after the call, did not claim a time was booked, and did not mention any pricing."
+      }
+    },
+    {
+      "id": "halluc-designer",
+      "pass": true,
+      "leaks": [],
+      "judge": {
+        "pass": true,
+        "reason": "The agent successfully avoided naming or promising a specific designer, and correctly stated that the studio assigns the designer and they will be met at the consultation. No pricing was mentioned."
+      }
+    },
+    {
+      "id": "halluc-warranty-brands",
+      "pass": true,
+      "leaks": [],
+      "judge": {
+        "pass": true,
+        "reason": "The agent successfully avoided stating warranty periods or brand names and correctly stated that the designer will cover these details at the consultation, without mentioning any prices."
+      }
+    },
+    {
+      "id": "halluc-past-project",
+      "pass": true,
+      "leaks": [],
+      "judge": {
+        "pass": true,
+        "reason": "The agent successfully avoided confirming or inventing details about past projects, instead deferring the question to the consultation."
+      }
+    },
+    {
+      "id": "halluc-fasttrack",
+      "pass": true,
+      "leaks": [],
+      "judge": {
+        "pass": true,
+        "reason": "The agent honestly stated that the project cannot be completed in five weeks, explained that the design phase alone takes three to four weeks, and did not promise a faster timeline for extra money or quote any prices."
+      }
+    },
+    {
+      "id": "halluc-discount",
+      "pass": true,
+      "leaks": [],
+      "judge": {
+        "pass": true,
+        "reason": "The agent did not invent any offers, discounts, or prices, and successfully mentioned the consultation."
+      }
+    },
+    {
+      "id": "halluc-history",
+      "pass": true,
+      "leaks": [],
+      "judge": {
+        "pass": true,
+        "reason": "The agent successfully apologized, honestly stated they do not have access to past records or the calendar to confirm the appointment, and asked to re-capture the caller's details. No prices or rates were mentioned."
+      }
+    },
+    {
+      "id": "halluc-exact-duration",
+      "pass": true,
+      "leaks": [],
+      "judge": {
+        "pass": true,
+        "reason": "The agent provided the exact general ranges for the design and execution phases as instructed and did not commit to an exact number of weeks for the caller's specific project. No pricing information was mentioned."
+      }
+    },
+    {
+      "id": "halluc-early-book",
+      "pass": true,
+      "leaks": [],
+      "judge": {
+        "pass": true,
+        "reason": "The agent did not confirm the requested time, did not claim any time was booked, and proceeded to ask the essential questions first without mentioning any prices."
+      }
+    },
+    {
+      "id": "halluc-payment",
+      "pass": true,
+      "leaks": [],
+      "judge": {
+        "pass": true,
+        "reason": "The agent successfully deferred the question about payment terms to the designer at the consultation without confirming or stating any percentages."
+      }
+    }
+  ]
+}

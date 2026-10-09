@@ -75,7 +75,7 @@ npm run redteam           # adversarial callers against the agent prompt
 npm run vaani:sync        # create/update the Vaani agent from config/policy.json
 ```
 
-Without integration keys every action is logged as *skipped*, so the whole flow can be demonstrated offline. The course transcripts and pricing material in `eval/transcripts` are not committed to this public repo.
+Without integration keys every action is logged as *skipped*, so the whole flow can be demonstrated offline. The 20 anonymised September transcripts are in `eval/transcripts`, with their saved extractions in `eval/cache`, so replays work on any deploy without a Gemini key.
 
 ## Repository map
 

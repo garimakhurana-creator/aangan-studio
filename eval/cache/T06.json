@@ -1,0 +1,103 @@
+{
+  "key": "de8353e7-2cf185b8",
+  "call_date": "2026-09-05",
+  "latency_ms": 7420,
+  "usage": {
+    "model": "gemini-3.1-pro-preview",
+    "input_tokens": 992,
+    "output_tokens": 803
+  },
+  "extraction": {
+    "call_type": "new_enquiry",
+    "caller_name": null,
+    "language": "English",
+    "summary": "The caller is a startup founder looking for a full fitout of an 800 sq ft bare shell office in Baner. They need workstations for 20 people, a cabin, a meeting room, and a break area, aiming to be operational by December.",
+    "referral": {
+      "how_found": null,
+      "referrer_name": null,
+      "knows_founder": false
+    },
+    "project": {
+      "segment": "commercial",
+      "property_type": "office",
+      "locality": "Baner",
+      "city": "Pune",
+      "carpet_area_sqft": 800,
+      "scope_type": "office_fitout",
+      "rooms": [
+        "workstations",
+        "cabin",
+        "meeting room",
+        "break area"
+      ],
+      "room_count": 4,
+      "current_state": "Bare shell — just columns and floor",
+      "occupancy": "unknown",
+      "structural_changes": false
+    },
+    "engagement": {
+      "wants_design_and_execution": "yes",
+      "signal": "We need workstations for 20 people, a small cabin, a meeting room, and a break area."
+    },
+    "timeline": {
+      "needed_by_text": "We want to be operational by December.",
+      "weeks_until_needed": 12,
+      "site_available_text": "just got our first proper office space",
+      "weeks_until_site_available": 0,
+      "preferred_start_text": null,
+      "flexible": null
+    },
+    "budget": {
+      "volunteered": false,
+      "max_inr": null,
+      "text": null
+    },
+    "decision_maker": {
+      "status": "self",
+      "detail": "I’m the founder."
+    },
+    "pricing": {
+      "asked": false,
+      "times_pushed": 0
+    },
+    "complaint": {
+      "is_existing_client": false,
+      "detail": null,
+      "designer_named": null,
+      "requested_senior": false
+    },
+    "repeat": {
+      "claims_prior_contact": false,
+      "detail": null
+    },
+    "dropped_call": false,
+    "requests": {
+      "site_visit": false,
+      "consultation_wanted": true,
+      "preferred_slots": null,
+      "email": null
+    },
+    "evidence": [
+      {
+        "criterion": "c1",
+        "quote": "We need workstations for 20 people, a small cabin, a meeting room, and a break area."
+      },
+      {
+        "criterion": "c2",
+        "quote": "office space in Baner"
+      },
+      {
+        "criterion": "c3",
+        "quote": "We want to be operational by December."
+      },
+      {
+        "criterion": "c5",
+        "quote": "Yes, I’m the founder."
+      }
+    ],
+    "open_questions": [
+      "What is the budget for the fitout?",
+      "Is the space owned or leased?"
+    ]
+  }
+}

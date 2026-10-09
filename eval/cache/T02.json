@@ -1,0 +1,100 @@
+{
+  "key": "2eb256dd-2cf185b8",
+  "call_date": "2026-09-03",
+  "latency_ms": 15983,
+  "usage": {
+    "model": "gemini-3.1-pro-preview",
+    "input_tokens": 1050,
+    "output_tokens": 1922
+  },
+  "extraction": {
+    "call_type": "new_enquiry",
+    "caller_name": null,
+    "language": "English",
+    "summary": "The caller is inquiring about a full redesign for a 950 sq ft 2BHK in Wakad after seeing the studio's work on Instagram. They plan to move in November and agreed to book a consultation after asking for a rough price estimate.",
+    "referral": {
+      "how_found": "Instagram",
+      "referrer_name": null,
+      "knows_founder": false
+    },
+    "project": {
+      "segment": "residential",
+      "property_type": "2BHK flat",
+      "locality": "Wakad",
+      "city": "Pune",
+      "carpet_area_sqft": 950,
+      "scope_type": "full_home",
+      "rooms": [
+        "kitchen",
+        "living room",
+        "bedroom 1",
+        "bedroom 2"
+      ],
+      "room_count": 4,
+      "current_state": null,
+      "occupancy": "unknown",
+      "structural_changes": false
+    },
+    "engagement": {
+      "wants_design_and_execution": "yes",
+      "signal": "Full redesign — modular kitchen, wardrobes, living room, both bedrooms."
+    },
+    "timeline": {
+      "needed_by_text": "We move in November",
+      "weeks_until_needed": 8,
+      "site_available_text": null,
+      "weeks_until_site_available": null,
+      "preferred_start_text": "starting design from October",
+      "flexible": null
+    },
+    "budget": {
+      "volunteered": false,
+      "max_inr": null,
+      "text": null
+    },
+    "decision_maker": {
+      "status": "self",
+      "detail": "Caller says 'We move in November', implying they are the owner/decision maker."
+    },
+    "pricing": {
+      "asked": true,
+      "times_pushed": 2
+    },
+    "complaint": {
+      "is_existing_client": false,
+      "detail": null,
+      "designer_named": null,
+      "requested_senior": false
+    },
+    "repeat": {
+      "claims_prior_contact": false,
+      "detail": null
+    },
+    "dropped_call": false,
+    "requests": {
+      "site_visit": false,
+      "consultation_wanted": true,
+      "preferred_slots": null,
+      "email": null
+    },
+    "evidence": [
+      {
+        "criterion": "c1",
+        "quote": "Full redesign — modular kitchen, wardrobes, living room, both bedrooms."
+      },
+      {
+        "criterion": "c2",
+        "quote": "I have a 2BHK in Wakad"
+      },
+      {
+        "criterion": "c3",
+        "quote": "We move in November — so maybe starting design from October?"
+      }
+    ],
+    "open_questions": [
+      "What is the budget for the project?",
+      "Is the property already handed over or when is possession?",
+      "Are there any other decision makers involved?"
+    ]
+  }
+}

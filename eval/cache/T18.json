@@ -1,0 +1,93 @@
+{
+  "key": "d58a911e-2cf185b8",
+  "call_date": "2026-09-23",
+  "latency_ms": 14791,
+  "usage": {
+    "model": "gemini-3.1-pro-preview",
+    "input_tokens": 977,
+    "output_tokens": 1723
+  },
+  "extraction": {
+    "call_type": "new_enquiry",
+    "caller_name": null,
+    "language": "English",
+    "summary": "The caller enquired about designing a 180 sq ft pod in their coworking space. The studio declined the project as it falls below their minimum commercial scope.",
+    "referral": {
+      "how_found": null,
+      "referrer_name": null,
+      "knows_founder": false
+    },
+    "project": {
+      "segment": "commercial",
+      "property_type": "coworking pod",
+      "locality": null,
+      "city": null,
+      "carpet_area_sqft": 180,
+      "scope_type": "office_fitout",
+      "rooms": [
+        "pod"
+      ],
+      "room_count": 1,
+      "current_state": null,
+      "occupancy": "unknown",
+      "structural_changes": false
+    },
+    "engagement": {
+      "wants_design_and_execution": "unknown",
+      "signal": "I want to make look really nice. Good lighting, a nice desk, some storage."
+    },
+    "timeline": {
+      "needed_by_text": null,
+      "weeks_until_needed": null,
+      "site_available_text": null,
+      "weeks_until_site_available": null,
+      "preferred_start_text": null,
+      "flexible": null
+    },
+    "budget": {
+      "volunteered": false,
+      "max_inr": null,
+      "text": null
+    },
+    "decision_maker": {
+      "status": "self",
+      "detail": "Caller runs the coworking space."
+    },
+    "pricing": {
+      "asked": true,
+      "times_pushed": 1
+    },
+    "complaint": {
+      "is_existing_client": false,
+      "detail": null,
+      "designer_named": null,
+      "requested_senior": false
+    },
+    "repeat": {
+      "claims_prior_contact": false,
+      "detail": null
+    },
+    "dropped_call": false,
+    "requests": {
+      "site_visit": false,
+      "consultation_wanted": false,
+      "preferred_slots": null,
+      "email": null
+    },
+    "evidence": [
+      {
+        "criterion": "c1",
+        "quote": "I have a 180 sq ft pod I want to make look really nice."
+      },
+      {
+        "criterion": "c5",
+        "quote": "I run a small coworking space."
+      }
+    ],
+    "open_questions": [
+      "Location of the coworking space",
+      "Timeline for the project",
+      "Budget for the pod"
+    ]
+  }
+}

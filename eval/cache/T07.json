@@ -1,0 +1,95 @@
+{
+  "key": "5e7ff158-2cf185b8",
+  "call_date": "2026-09-08",
+  "latency_ms": 6406,
+  "usage": {
+    "model": "gemini-3.1-pro-preview",
+    "input_tokens": 957,
+    "output_tokens": 661
+  },
+  "extraction": {
+    "call_type": "new_enquiry",
+    "caller_name": null,
+    "language": "English",
+    "summary": "The caller wants to redesign their living room and kitchen before Diwali. After being informed that the timeline is too short, they asked about starting after Diwali but decided to think about it and call back.",
+    "referral": {
+      "how_found": null,
+      "referrer_name": null,
+      "knows_founder": false
+    },
+    "project": {
+      "segment": "residential",
+      "property_type": null,
+      "locality": null,
+      "city": null,
+      "carpet_area_sqft": null,
+      "scope_type": "partial",
+      "rooms": [
+        "living room",
+        "kitchen"
+      ],
+      "room_count": 2,
+      "current_state": null,
+      "occupancy": "unknown",
+      "structural_changes": false
+    },
+    "engagement": {
+      "wants_design_and_execution": "unknown",
+      "signal": null
+    },
+    "timeline": {
+      "needed_by_text": "before Diwali",
+      "weeks_until_needed": 3,
+      "site_available_text": null,
+      "weeks_until_site_available": null,
+      "preferred_start_text": "after Diwali",
+      "flexible": false
+    },
+    "budget": {
+      "volunteered": false,
+      "max_inr": null,
+      "text": null
+    },
+    "decision_maker": {
+      "status": "unknown",
+      "detail": null
+    },
+    "pricing": {
+      "asked": false,
+      "times_pushed": 0
+    },
+    "complaint": {
+      "is_existing_client": false,
+      "detail": null,
+      "designer_named": null,
+      "requested_senior": false
+    },
+    "repeat": {
+      "claims_prior_contact": false,
+      "detail": null
+    },
+    "dropped_call": false,
+    "requests": {
+      "site_visit": false,
+      "consultation_wanted": false,
+      "preferred_slots": null,
+      "email": null
+    },
+    "evidence": [
+      {
+        "criterion": "c1",
+        "quote": "I want to redo my living room and kitchen"
+      },
+      {
+        "criterion": "c3",
+        "quote": "before Diwali"
+      }
+    ],
+    "open_questions": [
+      "What is the property type and location?",
+      "Do they want design and execution?",
+      "What is the budget?",
+      "Who is the decision maker?"
+    ]
+  }
+}

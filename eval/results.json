@@ -1,0 +1,3185 @@
+{
+  "summary": {
+    "run_at": "2026-10-09T11:25:08.724Z",
+    "policy_version": "2026-10-09.1",
+    "model": "gemini-3.1-pro-preview",
+    "passed": 20,
+    "total": 20,
+    "grounding_warnings": 0,
+    "tokens": {
+      "in": 19546,
+      "out": 25728
+    }
+  },
+  "results": [
+    {
+      "id": "T01",
+      "pass": true,
+      "problems": [],
+      "grounding_warnings": [],
+      "expected": {
+        "route": "qualified",
+        "flags": [
+          "referral"
+        ],
+        "why": "3BHK Kothrud, full redesign, by March, owner with husband's go-ahead."
+      },
+      "decision": {
+        "policy_version": "2026-10-09.1",
+        "route": "qualified",
+        "criteria": {
+          "c1": {
+            "name": "Real project (design + execution, in our scope)",
+            "status": "pass",
+            "reason": "Wants design and execution for an in-scope space.",
+            "evidence": [
+              "redo the whole thing — kitchen, living room, both bedrooms."
+            ]
+          },
+          "c2": {
+            "name": "In our service area (Pune / PCMC)",
+            "status": "pass",
+            "reason": "Kothrud, Dahanukar Colony, Pune is in the service area.",
+            "locality_match": "kothrud",
+            "evidence": [
+              "Kothrud — Dahanukar Colony"
+            ]
+          },
+          "c3": {
+            "name": "Realistic timeline",
+            "status": "pass",
+            "reason": "done by March",
+            "evidence": [
+              "We’d like to be done by March. We’re in no rush."
+            ]
+          },
+          "c4": {
+            "name": "Budget broadly aligned",
+            "status": "pass",
+            "reason": "Budget not mentioned. Not probed, by policy.",
+            "not_discussed": true,
+            "evidence": []
+          },
+          "c5": {
+            "name": "Decision-maker on the call or represented",
+            "status": "pass",
+            "reason": "myself and my husband. He knows we're calling and is happy to go ahead.",
+            "evidence": [
+              "Yes — myself and my husband. He knows we’re calling and is happy to go ahead."
+            ]
+          }
+        },
+        "reason_codes": [],
+        "flags": [
+          "referral"
+        ],
+        "priority": "normal",
+        "next_action": "book_consultation",
+        "caller_line": null,
+        "confirm_at_consultation": [
+          "What is the budget for the project?"
+        ],
+        "review_reasons": []
+      },
+      "extraction": {
+        "call_type": "new_enquiry",
+        "caller_name": "Priya",
+        "language": "English",
+        "summary": "Priya is looking to completely redesign her 1,400 sq ft 3BHK in Kothrud. She and her husband own the flat and have a flexible timeline aiming for March completion.",
+        "referral": {
+          "how_found": "friend referral",
+          "referrer_name": "Shruti Joshi",
+          "knows_founder": false
+        },
+        "project": {
+          "segment": "residential",
+          "property_type": "3BHK flat",
+          "locality": "Kothrud, Dahanukar Colony",
+          "city": "Pune",
+          "carpet_area_sqft": 1400,
+          "scope_type": "full_home",
+          "rooms": [
+            "kitchen",
+            "living room",
+            "bedroom 1",
+            "bedroom 2"
+          ],
+          "room_count": 4,
+          "current_state": "builder flat",
+          "occupancy": "owner",
+          "structural_changes": false
+        },
+        "engagement": {
+          "wants_design_and_execution": "yes",
+          "signal": "redo the whole thing"
+        },
+        "timeline": {
+          "needed_by_text": "done by March",
+          "weeks_until_needed": 26,
+          "site_available_text": "bought it two years ago",
+          "weeks_until_site_available": 0,
+          "preferred_start_text": null,
+          "flexible": true
+        },
+        "budget": {
+          "volunteered": false,
+          "max_inr": null,
+          "text": null
+        },
+        "decision_maker": {
+          "status": "self",
+          "detail": "myself and my husband. He knows we're calling and is happy to go ahead."
+        },
+        "pricing": {
+          "asked": false,
+          "times_pushed": 0
+        },
+        "complaint": {
+          "is_existing_client": false,
+          "detail": null,
+          "designer_named": null,
+          "requested_senior": false
+        },
+        "repeat": {
+          "claims_prior_contact": false,
+          "detail": null
+        },
+        "dropped_call": false,
+        "requests": {
+          "site_visit": false,
+          "consultation_wanted": true,
+          "preferred_slots": null,
+          "email": null
+        },
+        "evidence": [
+          {
+            "criterion": "c1",
+            "quote": "redo the whole thing — kitchen, living room, both bedrooms."
+          },
+          {
+            "criterion": "c2",
+            "quote": "Kothrud — Dahanukar Colony"
+          },
+          {
+            "criterion": "c3",
+            "quote": "We’d like to be done by March. We’re in no rush."
+          },
+          {
+            "criterion": "c5",
+            "quote": "Yes — myself and my husband. He knows we’re calling and is happy to go ahead."
+          }
+        ],
+        "open_questions": [
+          "What is the budget for the project?"
+        ]
+      },
+      "usage": {
+        "model": "gemini-3.1-pro-preview",
+        "input_tokens": 1033,
+        "output_tokens": 1807
+      },
+      "latency_ms": 15087,
+      "from_cache": false
+    },
+    {
+      "id": "T02",
+      "pass": true,
+      "problems": [],
+      "grounding_warnings": [],
+      "expected": {
+        "route": "qualified",
+        "flags": [
+          "pricing_asked"
+        ],
+        "why": "Pushed twice for a price; deflected; booked. Pricing never disqualifies."
+      },
+      "decision": {
+        "policy_version": "2026-10-09.1",
+        "route": "qualified",
+        "criteria": {
+          "c1": {
+            "name": "Real project (design + execution, in our scope)",
+            "status": "pass",
+            "reason": "Wants design and execution for an in-scope space.",
+            "evidence": [
+              "Full redesign — modular kitchen, wardrobes, living room, both bedrooms."
+            ]
+          },
+          "c2": {
+            "name": "In our service area (Pune / PCMC)",
+            "status": "pass",
+            "reason": "Wakad, Pune is in the service area.",
+            "locality_match": "wakad",
+            "evidence": [
+              "I have a 2BHK in Wakad"
+            ]
+          },
+          "c3": {
+            "name": "Realistic timeline",
+            "status": "pass",
+            "reason": "About 8 weeks: possible but tight.",
+            "tight": true,
+            "evidence": [
+              "We move in November — so maybe starting design from October?"
+            ]
+          },
+          "c4": {
+            "name": "Budget broadly aligned",
+            "status": "pass",
+            "reason": "Budget not mentioned. Not probed, by policy.",
+            "not_discussed": true,
+            "evidence": []
+          },
+          "c5": {
+            "name": "Decision-maker on the call or represented",
+            "status": "pass",
+            "reason": "Caller says 'We move in November', implying they are the owner/decision maker.",
+            "evidence": []
+          }
+        },
+        "reason_codes": [],
+        "flags": [
+          "pricing_asked",
+          "tight_timeline"
+        ],
+        "priority": "normal",
+        "next_action": "book_consultation",
+        "caller_line": null,
+        "confirm_at_consultation": [
+          "What is the budget for the project?",
+          "Is the property already handed over or when is possession?",
+          "Are there any other decision makers involved?",
+          "Timeline is tight. Confirm the completion date is firm before committing."
+        ],
+        "review_reasons": []
+      },
+      "extraction": {
+        "call_type": "new_enquiry",
+        "caller_name": null,
+        "language": "English",
+        "summary": "The caller is inquiring about a full redesign for a 950 sq ft 2BHK in Wakad after seeing the studio's work on Instagram. They plan to move in November and agreed to book a consultation after asking for a rough price estimate.",
+        "referral": {
+          "how_found": "Instagram",
+          "referrer_name": null,
+          "knows_founder": false
+        },
+        "project": {
+          "segment": "residential",
+          "property_type": "2BHK flat",
+          "locality": "Wakad",
+          "city": "Pune",
+          "carpet_area_sqft": 950,
+          "scope_type": "full_home",
+          "rooms": [
+            "kitchen",
+            "living room",
+            "bedroom 1",
+            "bedroom 2"
+          ],
+          "room_count": 4,
+          "current_state": null,
+          "occupancy": "unknown",
+          "structural_changes": false
+        },
+        "engagement": {
+          "wants_design_and_execution": "yes",
+          "signal": "Full redesign — modular kitchen, wardrobes, living room, both bedrooms."
+        },
+        "timeline": {
+          "needed_by_text": "We move in November",
+          "weeks_until_needed": 8,
+          "site_available_text": null,
+          "weeks_until_site_available": null,
+          "preferred_start_text": "starting design from October",
+          "flexible": null
+        },
+        "budget": {
+          "volunteered": false,
+          "max_inr": null,
+          "text": null
+        },
+        "decision_maker": {
+          "status": "self",
+          "detail": "Caller says 'We move in November', implying they are the owner/decision maker."
+        },
+        "pricing": {
+          "asked": true,
+          "times_pushed": 2
+        },
+        "complaint": {
+          "is_existing_client": false,
+          "detail": null,
+          "designer_named": null,
+          "requested_senior": false
+        },
+        "repeat": {
+          "claims_prior_contact": false,
+          "detail": null
+        },
+        "dropped_call": false,
+        "requests": {
+          "site_visit": false,
+          "consultation_wanted": true,
+          "preferred_slots": null,
+          "email": null
+        },
+        "evidence": [
+          {
+            "criterion": "c1",
+            "quote": "Full redesign — modular kitchen, wardrobes, living room, both bedrooms."
+          },
+          {
+            "criterion": "c2",
+            "quote": "I have a 2BHK in Wakad"
+          },
+          {
+            "criterion": "c3",
+            "quote": "We move in November — so maybe starting design from October?"
+          }
+        ],
+        "open_questions": [
+          "What is the budget for the project?",
+          "Is the property already handed over or when is possession?",
+          "Are there any other decision makers involved?"
+        ]
+      },
+      "usage": {
+        "model": "gemini-3.1-pro-preview",
+        "input_tokens": 1050,
+        "output_tokens": 1922
+      },
+      "latency_ms": 15983,
+      "from_cache": false
+    },
+    {
+      "id": "T03",
+      "pass": true,
+      "problems": [],
+      "grounding_warnings": [],
+      "expected": {
+        "route": "declined",
+        "reason": "OUT_OF_AREA",
+        "why": "Nashik."
+      },
+      "decision": {
+        "policy_version": "2026-10-09.1",
+        "route": "declined",
+        "criteria": {
+          "c1": {
+            "name": "Real project (design + execution, in our scope)",
+            "status": "unclear",
+            "reason": "Did not confirm a full design-and-execution project.",
+            "evidence": [
+              "I want to redo my home office and study."
+            ]
+          },
+          "c2": {
+            "name": "In our service area (Pune / PCMC)",
+            "status": "fail",
+            "code": "OUT_OF_AREA",
+            "reason": "Nashik is outside Pune and PCMC.",
+            "locality_match": "nashik",
+            "evidence": [
+              "I’m in Nashik"
+            ]
+          },
+          "c3": {
+            "name": "Realistic timeline",
+            "status": "unclear",
+            "reason": "No timeline was discussed.",
+            "evidence": []
+          },
+          "c4": {
+            "name": "Budget broadly aligned",
+            "status": "pass",
+            "reason": "Budget not mentioned. Not probed, by policy.",
+            "not_discussed": true,
+            "evidence": []
+          },
+          "c5": {
+            "name": "Decision-maker on the call or represented",
+            "status": "pass",
+            "reason": "I want to redo my home office and study.",
+            "evidence": [
+              "I want to redo my home office and study."
+            ]
+          }
+        },
+        "reason_codes": [
+          "OUT_OF_AREA"
+        ],
+        "flags": [],
+        "priority": "normal",
+        "next_action": "log_decline",
+        "caller_line": "Thank you for thinking of us. We only work in Pune city and PCMC at the moment, because our execution depends on our own contractors being on site. I'm sorry we can't help with this one.",
+        "confirm_at_consultation": [
+          "Does the caller want design and execution?",
+          "What is the timeline for the project?",
+          "What is the budget for the project?",
+          "Confirm they want full design and execution, not advice.",
+          "When does the project need to be complete, and when is the site available?"
+        ],
+        "review_reasons": []
+      },
+      "extraction": {
+        "call_type": "new_enquiry",
+        "caller_name": "Suresh Patil",
+        "language": "English",
+        "summary": "Suresh Patil called from Nashik to enquire about redoing his home office and study. The studio declined the project as it is outside their service area.",
+        "referral": {
+          "how_found": "LinkedIn",
+          "referrer_name": null,
+          "knows_founder": false
+        },
+        "project": {
+          "segment": "residential",
+          "property_type": "home office and study",
+          "locality": null,
+          "city": "Nashik",
+          "carpet_area_sqft": null,
+          "scope_type": "partial",
+          "rooms": [
+            "home office",
+            "study"
+          ],
+          "room_count": 2,
+          "current_state": null,
+          "occupancy": "unknown",
+          "structural_changes": false
+        },
+        "engagement": {
+          "wants_design_and_execution": "unknown",
+          "signal": null
+        },
+        "timeline": {
+          "needed_by_text": null,
+          "weeks_until_needed": null,
+          "site_available_text": null,
+          "weeks_until_site_available": null,
+          "preferred_start_text": null,
+          "flexible": null
+        },
+        "budget": {
+          "volunteered": false,
+          "max_inr": null,
+          "text": null
+        },
+        "decision_maker": {
+          "status": "self",
+          "detail": "I want to redo my home office and study."
+        },
+        "pricing": {
+          "asked": false,
+          "times_pushed": 0
+        },
+        "complaint": {
+          "is_existing_client": false,
+          "detail": null,
+          "designer_named": null,
+          "requested_senior": false
+        },
+        "repeat": {
+          "claims_prior_contact": false,
+          "detail": null
+        },
+        "dropped_call": false,
+        "requests": {
+          "site_visit": false,
+          "consultation_wanted": false,
+          "preferred_slots": null,
+          "email": null
+        },
+        "evidence": [
+          {
+            "criterion": "c1",
+            "quote": "I want to redo my home office and study."
+          },
+          {
+            "criterion": "c2",
+            "quote": "I’m in Nashik"
+          },
+          {
+            "criterion": "c5",
+            "quote": "I want to redo my home office and study."
+          }
+        ],
+        "open_questions": [
+          "Does the caller want design and execution?",
+          "What is the timeline for the project?",
+          "What is the budget for the project?"
+        ]
+      },
+      "usage": {
+        "model": "gemini-3.1-pro-preview",
+        "input_tokens": 944,
+        "output_tokens": 698
+      },
+      "latency_ms": 6546,
+      "from_cache": false
+    },
+    {
+      "id": "T04",
+      "pass": true,
+      "problems": [],
+      "grounding_warnings": [],
+      "expected": {
+        "route": "declined",
+        "reason": "ADVICE_ONLY",
+        "why": "Wants colour and furniture suggestions only."
+      },
+      "decision": {
+        "policy_version": "2026-10-09.1",
+        "route": "declined",
+        "criteria": {
+          "c1": {
+            "name": "Real project (design + execution, in our scope)",
+            "status": "fail",
+            "code": "ADVICE_ONLY",
+            "reason": "Caller wants advice or ideas, not design with execution.",
+            "evidence": [
+              "Just want suggestions on colours, furniture arrangement, what to change."
+            ]
+          },
+          "c2": {
+            "name": "In our service area (Pune / PCMC)",
+            "status": "unclear",
+            "reason": "Location of the site was not captured.",
+            "evidence": []
+          },
+          "c3": {
+            "name": "Realistic timeline",
+            "status": "unclear",
+            "reason": "No timeline was discussed.",
+            "evidence": []
+          },
+          "c4": {
+            "name": "Budget broadly aligned",
+            "status": "pass",
+            "reason": "Budget not mentioned. Not probed, by policy.",
+            "not_discussed": true,
+            "evidence": []
+          },
+          "c5": {
+            "name": "Decision-maker on the call or represented",
+            "status": "pass",
+            "reason": "Caller used 'we' indicating they are part of the decision making.",
+            "evidence": []
+          }
+        },
+        "reason_codes": [
+          "ADVICE_ONLY"
+        ],
+        "flags": [
+          "site_visit_requested"
+        ],
+        "priority": "normal",
+        "next_action": "log_decline",
+        "caller_line": "We're a full-service studio, so our projects always include design and execution together. We don't do advice-only visits. If you decide to go ahead with a full redesign, we'd love to hear from you.",
+        "confirm_at_consultation": [
+          "What is the location of the property?",
+          "When does the project need to be complete, and when is the site available?"
+        ],
+        "review_reasons": []
+      },
+      "extraction": {
+        "call_type": "new_enquiry",
+        "caller_name": null,
+        "language": "English",
+        "summary": "The caller wanted a site visit for design ideas and suggestions for their living room. They declined to proceed after learning the studio only handles full design and execution projects.",
+        "referral": {
+          "how_found": null,
+          "referrer_name": null,
+          "knows_founder": false
+        },
+        "project": {
+          "segment": "residential",
+          "property_type": null,
+          "locality": null,
+          "city": null,
+          "carpet_area_sqft": null,
+          "scope_type": "single_room",
+          "rooms": [
+            "living room"
+          ],
+          "room_count": 1,
+          "current_state": null,
+          "occupancy": "unknown",
+          "structural_changes": false
+        },
+        "engagement": {
+          "wants_design_and_execution": "no",
+          "signal": "Just want suggestions on colours, furniture arrangement, what to change."
+        },
+        "timeline": {
+          "needed_by_text": null,
+          "weeks_until_needed": null,
+          "site_available_text": null,
+          "weeks_until_site_available": null,
+          "preferred_start_text": null,
+          "flexible": null
+        },
+        "budget": {
+          "volunteered": false,
+          "max_inr": null,
+          "text": null
+        },
+        "decision_maker": {
+          "status": "self",
+          "detail": "Caller used 'we' indicating they are part of the decision making."
+        },
+        "pricing": {
+          "asked": false,
+          "times_pushed": 0
+        },
+        "complaint": {
+          "is_existing_client": false,
+          "detail": null,
+          "designer_named": null,
+          "requested_senior": false
+        },
+        "repeat": {
+          "claims_prior_contact": false,
+          "detail": null
+        },
+        "dropped_call": false,
+        "requests": {
+          "site_visit": true,
+          "consultation_wanted": true,
+          "preferred_slots": null,
+          "email": null
+        },
+        "evidence": [
+          {
+            "criterion": "c1",
+            "quote": "Just want suggestions on colours, furniture arrangement, what to change."
+          }
+        ],
+        "open_questions": [
+          "What is the location of the property?"
+        ]
+      },
+      "usage": {
+        "model": "gemini-3.1-pro-preview",
+        "input_tokens": 954,
+        "output_tokens": 1698
+      },
+      "latency_ms": 14015,
+      "from_cache": false
+    },
+    {
+      "id": "T05",
+      "pass": true,
+      "problems": [],
+      "grounding_warnings": [],
+      "expected": {
+        "route": "qualified",
+        "flags": [
+          "vip_referral",
+          "site_visit_requested"
+        ],
+        "why": "Referred by a close friend of Nikhil; 4BHK Koregaon Park."
+      },
+      "decision": {
+        "policy_version": "2026-10-09.1",
+        "route": "qualified",
+        "criteria": {
+          "c1": {
+            "name": "Real project (design + execution, in our scope)",
+            "status": "pass",
+            "reason": "Wants design and execution for an in-scope space.",
+            "evidence": [
+              "Complete redesign. New flooring, kitchen, all four bedrooms."
+            ]
+          },
+          "c2": {
+            "name": "In our service area (Pune / PCMC)",
+            "status": "pass",
+            "reason": "Koregaon Park, Pune is in the service area.",
+            "locality_match": "koregaon park",
+            "evidence": [
+              "Koregaon Park"
+            ]
+          },
+          "c3": {
+            "name": "Realistic timeline",
+            "status": "pass",
+            "reason": "move back in by February",
+            "evidence": [
+              "We want to move back in by February."
+            ]
+          },
+          "c4": {
+            "name": "Budget broadly aligned",
+            "status": "pass",
+            "reason": "Budget not mentioned. Not probed, by policy.",
+            "not_discussed": true,
+            "evidence": []
+          },
+          "c5": {
+            "name": "Decision-maker on the call or represented",
+            "status": "pass",
+            "reason": "We have a 4BHK",
+            "evidence": [
+              "We have a 4BHK"
+            ]
+          }
+        },
+        "reason_codes": [],
+        "flags": [
+          "vip_referral",
+          "site_visit_requested"
+        ],
+        "priority": "high",
+        "next_action": "book_consultation",
+        "caller_line": null,
+        "confirm_at_consultation": [
+          "What is the budget for the project?",
+          "What is the preferred style or aesthetic?",
+          "Are there any specific requirements for the bedrooms or kitchen?"
+        ],
+        "review_reasons": []
+      },
+      "extraction": {
+        "call_type": "new_enquiry",
+        "caller_name": "Aarti Mehta",
+        "language": "English",
+        "summary": "Aarti Mehta is looking for a complete redesign of a 2,400 sq ft 4BHK in Koregaon Park. She was referred by Vikram Agarwal, a close friend of the founder, and wants to move back in by February.",
+        "referral": {
+          "how_found": "friend referral",
+          "referrer_name": "Vikram Agarwal",
+          "knows_founder": true
+        },
+        "project": {
+          "segment": "residential",
+          "property_type": "4BHK",
+          "locality": "Koregaon Park",
+          "city": "Pune",
+          "carpet_area_sqft": 2400,
+          "scope_type": "full_home",
+          "rooms": [
+            "kitchen",
+            "bedrooms"
+          ],
+          "room_count": 5,
+          "current_state": "moved out temporarily",
+          "occupancy": "owner",
+          "structural_changes": false
+        },
+        "engagement": {
+          "wants_design_and_execution": "yes",
+          "signal": "Complete redesign. New flooring, kitchen, all four bedrooms."
+        },
+        "timeline": {
+          "needed_by_text": "move back in by February",
+          "weeks_until_needed": 21,
+          "site_available_text": "already moved out temporarily",
+          "weeks_until_site_available": 0,
+          "preferred_start_text": null,
+          "flexible": false
+        },
+        "budget": {
+          "volunteered": false,
+          "max_inr": null,
+          "text": null
+        },
+        "decision_maker": {
+          "status": "self",
+          "detail": "We have a 4BHK"
+        },
+        "pricing": {
+          "asked": false,
+          "times_pushed": 0
+        },
+        "complaint": {
+          "is_existing_client": false,
+          "detail": null,
+          "designer_named": null,
+          "requested_senior": false
+        },
+        "repeat": {
+          "claims_prior_contact": false,
+          "detail": null
+        },
+        "dropped_call": false,
+        "requests": {
+          "site_visit": true,
+          "consultation_wanted": true,
+          "preferred_slots": null,
+          "email": null
+        },
+        "evidence": [
+          {
+            "criterion": "c1",
+            "quote": "Complete redesign. New flooring, kitchen, all four bedrooms."
+          },
+          {
+            "criterion": "c2",
+            "quote": "Koregaon Park"
+          },
+          {
+            "criterion": "c3",
+            "quote": "We want to move back in by February."
+          },
+          {
+            "criterion": "c5",
+            "quote": "We have a 4BHK"
+          }
+        ],
+        "open_questions": [
+          "What is the budget for the project?",
+          "What is the preferred style or aesthetic?",
+          "Are there any specific requirements for the bedrooms or kitchen?"
+        ]
+      },
+      "usage": {
+        "model": "gemini-3.1-pro-preview",
+        "input_tokens": 984,
+        "output_tokens": 785
+      },
+      "latency_ms": 7231,
+      "from_cache": false
+    },
+    {
+      "id": "T06",
+      "pass": true,
+      "problems": [],
+      "grounding_warnings": [],
+      "expected": {
+        "route": "qualified",
+        "why": "800 sq ft startup office in Baner, bare shell, December, founder on the call."
+      },
+      "decision": {
+        "policy_version": "2026-10-09.1",
+        "route": "qualified",
+        "criteria": {
+          "c1": {
+            "name": "Real project (design + execution, in our scope)",
+            "status": "pass",
+            "reason": "Wants design and execution for an in-scope space.",
+            "evidence": [
+              "We need workstations for 20 people, a small cabin, a meeting room, and a break area."
+            ]
+          },
+          "c2": {
+            "name": "In our service area (Pune / PCMC)",
+            "status": "pass",
+            "reason": "Baner, Pune is in the service area.",
+            "locality_match": "baner",
+            "evidence": [
+              "office space in Baner"
+            ]
+          },
+          "c3": {
+            "name": "Realistic timeline",
+            "status": "pass",
+            "reason": "We want to be operational by December.",
+            "evidence": [
+              "We want to be operational by December."
+            ]
+          },
+          "c4": {
+            "name": "Budget broadly aligned",
+            "status": "pass",
+            "reason": "Budget not mentioned. Not probed, by policy.",
+            "not_discussed": true,
+            "evidence": []
+          },
+          "c5": {
+            "name": "Decision-maker on the call or represented",
+            "status": "pass",
+            "reason": "I’m the founder.",
+            "evidence": [
+              "Yes, I’m the founder."
+            ]
+          }
+        },
+        "reason_codes": [],
+        "flags": [],
+        "priority": "normal",
+        "next_action": "book_consultation",
+        "caller_line": null,
+        "confirm_at_consultation": [
+          "What is the budget for the fitout?",
+          "Is the space owned or leased?"
+        ],
+        "review_reasons": []
+      },
+      "extraction": {
+        "call_type": "new_enquiry",
+        "caller_name": null,
+        "language": "English",
+        "summary": "The caller is a startup founder looking for a full fitout of an 800 sq ft bare shell office in Baner. They need workstations for 20 people, a cabin, a meeting room, and a break area, aiming to be operational by December.",
+        "referral": {
+          "how_found": null,
+          "referrer_name": null,
+          "knows_founder": false
+        },
+        "project": {
+          "segment": "commercial",
+          "property_type": "office",
+          "locality": "Baner",
+          "city": "Pune",
+          "carpet_area_sqft": 800,
+          "scope_type": "office_fitout",
+          "rooms": [
+            "workstations",
+            "cabin",
+            "meeting room",
+            "break area"
+          ],
+          "room_count": 4,
+          "current_state": "Bare shell — just columns and floor",
+          "occupancy": "unknown",
+          "structural_changes": false
+        },
+        "engagement": {
+          "wants_design_and_execution": "yes",
+          "signal": "We need workstations for 20 people, a small cabin, a meeting room, and a break area."
+        },
+        "timeline": {
+          "needed_by_text": "We want to be operational by December.",
+          "weeks_until_needed": 12,
+          "site_available_text": "just got our first proper office space",
+          "weeks_until_site_available": 0,
+          "preferred_start_text": null,
+          "flexible": null
+        },
+        "budget": {
+          "volunteered": false,
+          "max_inr": null,
+          "text": null
+        },
+        "decision_maker": {
+          "status": "self",
+          "detail": "I’m the founder."
+        },
+        "pricing": {
+          "asked": false,
+          "times_pushed": 0
+        },
+        "complaint": {
+          "is_existing_client": false,
+          "detail": null,
+          "designer_named": null,
+          "requested_senior": false
+        },
+        "repeat": {
+          "claims_prior_contact": false,
+          "detail": null
+        },
+        "dropped_call": false,
+        "requests": {
+          "site_visit": false,
+          "consultation_wanted": true,
+          "preferred_slots": null,
+          "email": null
+        },
+        "evidence": [
+          {
+            "criterion": "c1",
+            "quote": "We need workstations for 20 people, a small cabin, a meeting room, and a break area."
+          },
+          {
+            "criterion": "c2",
+            "quote": "office space in Baner"
+          },
+          {
+            "criterion": "c3",
+            "quote": "We want to be operational by December."
+          },
+          {
+            "criterion": "c5",
+            "quote": "Yes, I’m the founder."
+          }
+        ],
+        "open_questions": [
+          "What is the budget for the fitout?",
+          "Is the space owned or leased?"
+        ]
+      },
+      "usage": {
+        "model": "gemini-3.1-pro-preview",
+        "input_tokens": 992,
+        "output_tokens": 803
+      },
+      "latency_ms": 7420,
+      "from_cache": false
+    },
+    {
+      "id": "T07",
+      "pass": true,
+      "problems": [],
+      "grounding_warnings": [],
+      "expected": {
+        "route": "nurture",
+        "reason": "TIMELINE_TOO_SHORT",
+        "why": "Wants it done before Diwali (~3 weeks). Only the timeline fails, so follow up for a November start."
+      },
+      "decision": {
+        "policy_version": "2026-10-09.1",
+        "route": "nurture",
+        "criteria": {
+          "c1": {
+            "name": "Real project (design + execution, in our scope)",
+            "status": "unclear",
+            "reason": "Did not confirm a full design-and-execution project.",
+            "evidence": [
+              "I want to redo my living room and kitchen"
+            ]
+          },
+          "c2": {
+            "name": "In our service area (Pune / PCMC)",
+            "status": "unclear",
+            "reason": "Location of the site was not captured.",
+            "evidence": []
+          },
+          "c3": {
+            "name": "Realistic timeline",
+            "status": "fail",
+            "code": "TIMELINE_TOO_SHORT",
+            "reason": "Needs it done in about 3 weeks; the minimum is 6.",
+            "evidence": [
+              "before Diwali"
+            ]
+          },
+          "c4": {
+            "name": "Budget broadly aligned",
+            "status": "pass",
+            "reason": "Budget not mentioned. Not probed, by policy.",
+            "not_discussed": true,
+            "evidence": []
+          },
+          "c5": {
+            "name": "Decision-maker on the call or represented",
+            "status": "unclear",
+            "reason": "Did not establish who decides.",
+            "evidence": []
+          }
+        },
+        "reason_codes": [
+          "TIMELINE_TOO_SHORT"
+        ],
+        "flags": [],
+        "priority": "normal",
+        "next_action": "create_followup_task",
+        "caller_line": "We wouldn't be able to do justice to the project in that time — the design phase alone takes three to four weeks before execution starts. If a later start works for you, I'd be glad to note your details and have us follow up.",
+        "confirm_at_consultation": [
+          "What is the property type and location?",
+          "Do they want design and execution?",
+          "What is the budget?",
+          "Who is the decision maker?",
+          "Confirm they want full design and execution, not advice.",
+          "Confirm who makes the final decision and that they will attend."
+        ],
+        "review_reasons": []
+      },
+      "extraction": {
+        "call_type": "new_enquiry",
+        "caller_name": null,
+        "language": "English",
+        "summary": "The caller wants to redesign their living room and kitchen before Diwali. After being informed that the timeline is too short, they asked about starting after Diwali but decided to think about it and call back.",
+        "referral": {
+          "how_found": null,
+          "referrer_name": null,
+          "knows_founder": false
+        },
+        "project": {
+          "segment": "residential",
+          "property_type": null,
+          "locality": null,
+          "city": null,
+          "carpet_area_sqft": null,
+          "scope_type": "partial",
+          "rooms": [
+            "living room",
+            "kitchen"
+          ],
+          "room_count": 2,
+          "current_state": null,
+          "occupancy": "unknown",
+          "structural_changes": false
+        },
+        "engagement": {
+          "wants_design_and_execution": "unknown",
+          "signal": null
+        },
+        "timeline": {
+          "needed_by_text": "before Diwali",
+          "weeks_until_needed": 3,
+          "site_available_text": null,
+          "weeks_until_site_available": null,
+          "preferred_start_text": "after Diwali",
+          "flexible": false
+        },
+        "budget": {
+          "volunteered": false,
+          "max_inr": null,
+          "text": null
+        },
+        "decision_maker": {
+          "status": "unknown",
+          "detail": null
+        },
+        "pricing": {
+          "asked": false,
+          "times_pushed": 0
+        },
+        "complaint": {
+          "is_existing_client": false,
+          "detail": null,
+          "designer_named": null,
+          "requested_senior": false
+        },
+        "repeat": {
+          "claims_prior_contact": false,
+          "detail": null
+        },
+        "dropped_call": false,
+        "requests": {
+          "site_visit": false,
+          "consultation_wanted": false,
+          "preferred_slots": null,
+          "email": null
+        },
+        "evidence": [
+          {
+            "criterion": "c1",
+            "quote": "I want to redo my living room and kitchen"
+          },
+          {
+            "criterion": "c3",
+            "quote": "before Diwali"
+          }
+        ],
+        "open_questions": [
+          "What is the property type and location?",
+          "Do they want design and execution?",
+          "What is the budget?",
+          "Who is the decision maker?"
+        ]
+      },
+      "usage": {
+        "model": "gemini-3.1-pro-preview",
+        "input_tokens": 957,
+        "output_tokens": 661
+      },
+      "latency_ms": 6406,
+      "from_cache": false
+    },
+    {
+      "id": "T08",
+      "pass": true,
+      "problems": [],
+      "grounding_warnings": [],
+      "expected": {
+        "route": "no_conversation",
+        "why": "Missed call at 10:47pm. With the AI agent this call would have been answered."
+      },
+      "decision": {
+        "policy_version": "2026-10-09.1",
+        "route": "no_conversation",
+        "criteria": {},
+        "reason_codes": [
+          "NO_CONVERSATION"
+        ],
+        "flags": [],
+        "priority": "normal",
+        "next_action": "callback",
+        "caller_line": null,
+        "confirm_at_consultation": [
+          "What is the caller's name?",
+          "What is the nature of the enquiry?"
+        ],
+        "review_reasons": []
+      },
+      "extraction": {
+        "call_type": "no_conversation",
+        "caller_name": null,
+        "language": "unknown",
+        "summary": "Missed call with no voicemail left. A callback was attempted but there was no answer.",
+        "referral": {
+          "how_found": null,
+          "referrer_name": null,
+          "knows_founder": false
+        },
+        "project": {
+          "segment": "unknown",
+          "property_type": null,
+          "locality": null,
+          "city": null,
+          "carpet_area_sqft": null,
+          "scope_type": "unknown",
+          "rooms": [],
+          "room_count": null,
+          "current_state": null,
+          "occupancy": "unknown",
+          "structural_changes": false
+        },
+        "engagement": {
+          "wants_design_and_execution": "unknown",
+          "signal": null
+        },
+        "timeline": {
+          "needed_by_text": null,
+          "weeks_until_needed": null,
+          "site_available_text": null,
+          "weeks_until_site_available": null,
+          "preferred_start_text": null,
+          "flexible": null
+        },
+        "budget": {
+          "volunteered": false,
+          "max_inr": null,
+          "text": null
+        },
+        "decision_maker": {
+          "status": "unknown",
+          "detail": null
+        },
+        "pricing": {
+          "asked": false,
+          "times_pushed": 0
+        },
+        "complaint": {
+          "is_existing_client": false,
+          "detail": null,
+          "designer_named": null,
+          "requested_senior": false
+        },
+        "repeat": {
+          "claims_prior_contact": false,
+          "detail": null
+        },
+        "dropped_call": false,
+        "requests": {
+          "site_visit": false,
+          "consultation_wanted": false,
+          "preferred_slots": null,
+          "email": null
+        },
+        "evidence": [],
+        "open_questions": [
+          "What is the caller's name?",
+          "What is the nature of the enquiry?"
+        ]
+      },
+      "usage": {
+        "model": "gemini-3.1-pro-preview",
+        "input_tokens": 831,
+        "output_tokens": 988
+      },
+      "latency_ms": 8875,
+      "from_cache": false
+    },
+    {
+      "id": "T09",
+      "pass": true,
+      "problems": [],
+      "grounding_warnings": [],
+      "expected": {
+        "route": "escalate",
+        "reason": "EXISTING_CLIENT_ISSUE",
+        "why": "Existing client, designer unresponsive for five days. Not a lead."
+      },
+      "decision": {
+        "policy_version": "2026-10-09.1",
+        "route": "escalate",
+        "criteria": {},
+        "reason_codes": [
+          "EXISTING_CLIENT_ISSUE"
+        ],
+        "flags": [],
+        "priority": "urgent",
+        "next_action": "alert_nikhil",
+        "caller_line": "I'm very sorry. I'm flagging this to the studio head right now, and someone senior will call you back within 15 minutes.",
+        "confirm_at_consultation": [],
+        "review_reasons": []
+      },
+      "extraction": {
+        "call_type": "existing_client_issue",
+        "caller_name": "Sheetal Deshpande",
+        "language": "English",
+        "summary": "Existing client Sheetal Deshpande called to complain about her designer Aryan not responding for five days. She requested a callback from Nikhil or a senior person.",
+        "referral": {
+          "how_found": null,
+          "referrer_name": null,
+          "knows_founder": false
+        },
+        "project": {
+          "segment": "residential",
+          "property_type": "2BHK flat",
+          "locality": "Viman Nagar",
+          "city": "Pune",
+          "carpet_area_sqft": null,
+          "scope_type": "unknown",
+          "rooms": [],
+          "room_count": null,
+          "current_state": "under execution",
+          "occupancy": "unknown",
+          "structural_changes": false
+        },
+        "engagement": {
+          "wants_design_and_execution": "unknown",
+          "signal": null
+        },
+        "timeline": {
+          "needed_by_text": null,
+          "weeks_until_needed": null,
+          "site_available_text": null,
+          "weeks_until_site_available": null,
+          "preferred_start_text": null,
+          "flexible": null
+        },
+        "budget": {
+          "volunteered": false,
+          "max_inr": null,
+          "text": null
+        },
+        "decision_maker": {
+          "status": "self",
+          "detail": "My project has been going for three months"
+        },
+        "pricing": {
+          "asked": false,
+          "times_pushed": 0
+        },
+        "complaint": {
+          "is_existing_client": true,
+          "detail": "Designer hasn't replied in five days after three messages and two calls.",
+          "designer_named": "Aryan",
+          "requested_senior": true
+        },
+        "repeat": {
+          "claims_prior_contact": false,
+          "detail": null
+        },
+        "dropped_call": false,
+        "requests": {
+          "site_visit": false,
+          "consultation_wanted": false,
+          "preferred_slots": null,
+          "email": null
+        },
+        "evidence": [
+          {
+            "criterion": "c2",
+            "quote": "Flat in Viman Nagar — 2BHK."
+          },
+          {
+            "criterion": "c5",
+            "quote": "My project has been going for three months"
+          }
+        ],
+        "open_questions": []
+      },
+      "usage": {
+        "model": "gemini-3.1-pro-preview",
+        "input_tokens": 984,
+        "output_tokens": 639
+      },
+      "latency_ms": 6506,
+      "from_cache": false
+    },
+    {
+      "id": "T10",
+      "pass": true,
+      "problems": [],
+      "grounding_warnings": [],
+      "expected": {
+        "route": "declined",
+        "reason": "BUDGET_MISALIGNED",
+        "flags": [
+          "budget_volunteered"
+        ],
+        "why": "Volunteered 1-1.5 lakh for kitchen + bedroom with execution."
+      },
+      "decision": {
+        "policy_version": "2026-10-09.1",
+        "route": "declined",
+        "criteria": {
+          "c1": {
+            "name": "Real project (design + execution, in our scope)",
+            "status": "unclear",
+            "reason": "Did not confirm a full design-and-execution project.",
+            "evidence": [
+              "I want to do the kitchen and one bedroom."
+            ]
+          },
+          "c2": {
+            "name": "In our service area (Pune / PCMC)",
+            "status": "pass",
+            "reason": "Kharadi is treated as inside Pune/PCMC (not on the named list; confirm).",
+            "locality_match": "kharadi",
+            "confirm": true,
+            "evidence": [
+              "I have a 1BHK in Kharadi"
+            ]
+          },
+          "c3": {
+            "name": "Realistic timeline",
+            "status": "unclear",
+            "reason": "No timeline was discussed.",
+            "evidence": []
+          },
+          "c4": {
+            "name": "Budget broadly aligned",
+            "status": "fail",
+            "code": "BUDGET_MISALIGNED",
+            "reason": "Volunteered budget (1 to 1.5 lakh maximum for everything) is clearly below any project of this scope.",
+            "evidence": [
+              "My budget is 1 to 1.5 lakh maximum for everything."
+            ]
+          },
+          "c5": {
+            "name": "Decision-maker on the call or represented",
+            "status": "unclear",
+            "reason": "Did not establish who decides.",
+            "evidence": []
+          }
+        },
+        "reason_codes": [
+          "BUDGET_MISALIGNED"
+        ],
+        "flags": [
+          "pricing_asked",
+          "budget_volunteered"
+        ],
+        "priority": "normal",
+        "next_action": "log_decline",
+        "caller_line": "Thank you for being upfront about the budget. For the scope you've described, with full execution, that would be well below what a project with us would cost. I wouldn't want to bring you to a consultation if the numbers don't line up.",
+        "confirm_at_consultation": [
+          "Timeline for the project",
+          "Decision maker status",
+          "Occupancy status",
+          "Confirm Kharadi is within our area.",
+          "Confirm they want full design and execution, not advice.",
+          "When does the project need to be complete, and when is the site available?",
+          "Confirm who makes the final decision and that they will attend."
+        ],
+        "review_reasons": []
+      },
+      "extraction": {
+        "call_type": "new_enquiry",
+        "caller_name": null,
+        "language": "English",
+        "summary": "The caller enquired about redesigning a kitchen and one bedroom in a 1BHK in Kharadi. The studio declined the project as the caller's budget of 1 to 1.5 lakh was too low.",
+        "referral": {
+          "how_found": null,
+          "referrer_name": null,
+          "knows_founder": false
+        },
+        "project": {
+          "segment": "residential",
+          "property_type": "1BHK",
+          "locality": "Kharadi",
+          "city": null,
+          "carpet_area_sqft": 550,
+          "scope_type": "partial",
+          "rooms": [
+            "kitchen",
+            "bedroom"
+          ],
+          "room_count": 2,
+          "current_state": null,
+          "occupancy": "unknown",
+          "structural_changes": false
+        },
+        "engagement": {
+          "wants_design_and_execution": "unknown",
+          "signal": null
+        },
+        "timeline": {
+          "needed_by_text": null,
+          "weeks_until_needed": null,
+          "site_available_text": null,
+          "weeks_until_site_available": null,
+          "preferred_start_text": null,
+          "flexible": null
+        },
+        "budget": {
+          "volunteered": true,
+          "max_inr": 150000,
+          "text": "1 to 1.5 lakh maximum for everything"
+        },
+        "decision_maker": {
+          "status": "unknown",
+          "detail": null
+        },
+        "pricing": {
+          "asked": true,
+          "times_pushed": 1
+        },
+        "complaint": {
+          "is_existing_client": false,
+          "detail": null,
+          "designer_named": null,
+          "requested_senior": false
+        },
+        "repeat": {
+          "claims_prior_contact": false,
+          "detail": null
+        },
+        "dropped_call": false,
+        "requests": {
+          "site_visit": false,
+          "consultation_wanted": false,
+          "preferred_slots": null,
+          "email": null
+        },
+        "evidence": [
+          {
+            "criterion": "c1",
+            "quote": "I want to do the kitchen and one bedroom."
+          },
+          {
+            "criterion": "c2",
+            "quote": "I have a 1BHK in Kharadi"
+          },
+          {
+            "criterion": "c4",
+            "quote": "My budget is 1 to 1.5 lakh maximum for everything."
+          }
+        ],
+        "open_questions": [
+          "Timeline for the project",
+          "Decision maker status",
+          "Occupancy status"
+        ]
+      },
+      "usage": {
+        "model": "gemini-3.1-pro-preview",
+        "input_tokens": 982,
+        "output_tokens": 716
+      },
+      "latency_ms": 6960,
+      "from_cache": false
+    },
+    {
+      "id": "T11",
+      "pass": true,
+      "problems": [],
+      "grounding_warnings": [],
+      "expected": {
+        "route": "qualified",
+        "flags": [
+          "rented"
+        ],
+        "why": "Rented 2BHK, 3-year lease, no structural changes, landlord agreed."
+      },
+      "decision": {
+        "policy_version": "2026-10-09.1",
+        "route": "qualified",
+        "criteria": {
+          "c1": {
+            "name": "Real project (design + execution, in our scope)",
+            "status": "pass",
+            "reason": "Wants design and execution for an in-scope space.",
+            "evidence": [
+              "I want to properly design the living room, bedroom, and kitchen — no structural changes, just design and fittings."
+            ]
+          },
+          "c2": {
+            "name": "In our service area (Pune / PCMC)",
+            "status": "pass",
+            "reason": "Baner is in the service area.",
+            "locality_match": "baner",
+            "evidence": [
+              "It’s a 2BHK in Baner."
+            ]
+          },
+          "c3": {
+            "name": "Realistic timeline",
+            "status": "pass",
+            "reason": "I’ve been here a year",
+            "evidence": []
+          },
+          "c4": {
+            "name": "Budget broadly aligned",
+            "status": "pass",
+            "reason": "Budget not mentioned. Not probed, by policy.",
+            "not_discussed": true,
+            "evidence": []
+          },
+          "c5": {
+            "name": "Decision-maker on the call or represented",
+            "status": "pass",
+            "reason": "Caller is the tenant and has already checked with the landlord who approved the work.",
+            "evidence": [
+              "Yes — they’re fine with it as long as we don’t break walls."
+            ]
+          }
+        },
+        "reason_codes": [],
+        "flags": [
+          "rented"
+        ],
+        "priority": "normal",
+        "next_action": "book_consultation",
+        "caller_line": null,
+        "confirm_at_consultation": [
+          "What is the budget for the project?",
+          "What is the preferred timeline for completion?",
+          "What is the caller's name and contact information?"
+        ],
+        "review_reasons": []
+      },
+      "extraction": {
+        "call_type": "new_enquiry",
+        "caller_name": null,
+        "language": "English",
+        "summary": "The caller wants to design the living room, bedroom, and kitchen of their rented 2BHK apartment in Baner. They have secured landlord approval for the work as long as there are no structural changes.",
+        "referral": {
+          "how_found": null,
+          "referrer_name": null,
+          "knows_founder": false
+        },
+        "project": {
+          "segment": "residential",
+          "property_type": "2BHK apartment",
+          "locality": "Baner",
+          "city": null,
+          "carpet_area_sqft": null,
+          "scope_type": "partial",
+          "rooms": [
+            "living room",
+            "bedroom",
+            "kitchen"
+          ],
+          "room_count": 3,
+          "current_state": "quite bare",
+          "occupancy": "tenant",
+          "structural_changes": false
+        },
+        "engagement": {
+          "wants_design_and_execution": "yes",
+          "signal": "I want to properly design the living room, bedroom, and kitchen — no structural changes, just design and fittings."
+        },
+        "timeline": {
+          "needed_by_text": null,
+          "weeks_until_needed": null,
+          "site_available_text": "I’ve been here a year",
+          "weeks_until_site_available": 0,
+          "preferred_start_text": null,
+          "flexible": null
+        },
+        "budget": {
+          "volunteered": false,
+          "max_inr": null,
+          "text": null
+        },
+        "decision_maker": {
+          "status": "self",
+          "detail": "Caller is the tenant and has already checked with the landlord who approved the work."
+        },
+        "pricing": {
+          "asked": false,
+          "times_pushed": 0
+        },
+        "complaint": {
+          "is_existing_client": false,
+          "detail": null,
+          "designer_named": null,
+          "requested_senior": false
+        },
+        "repeat": {
+          "claims_prior_contact": false,
+          "detail": null
+        },
+        "dropped_call": false,
+        "requests": {
+          "site_visit": false,
+          "consultation_wanted": true,
+          "preferred_slots": null,
+          "email": null
+        },
+        "evidence": [
+          {
+            "criterion": "c1",
+            "quote": "I want to properly design the living room, bedroom, and kitchen — no structural changes, just design and fittings."
+          },
+          {
+            "criterion": "c2",
+            "quote": "It’s a 2BHK in Baner."
+          },
+          {
+            "criterion": "c5",
+            "quote": "Yes — they’re fine with it as long as we don’t break walls."
+          }
+        ],
+        "open_questions": [
+          "What is the budget for the project?",
+          "What is the preferred timeline for completion?",
+          "What is the caller's name and contact information?"
+        ]
+      },
+      "usage": {
+        "model": "gemini-3.1-pro-preview",
+        "input_tokens": 1018,
+        "output_tokens": 1470
+      },
+      "latency_ms": 12514,
+      "from_cache": false
+    },
+    {
+      "id": "T12",
+      "pass": true,
+      "problems": [],
+      "grounding_warnings": [],
+      "expected": {
+        "route": "qualified",
+        "flags": [
+          "large_project"
+        ],
+        "why": "5,500 sq ft villa in Kalyani Nagar. Principal designer site visit."
+      },
+      "decision": {
+        "policy_version": "2026-10-09.1",
+        "route": "qualified",
+        "criteria": {
+          "c1": {
+            "name": "Real project (design + execution, in our scope)",
+            "status": "pass",
+            "reason": "Wants design and execution for an in-scope space.",
+            "evidence": [
+              "Full end-to-end design."
+            ]
+          },
+          "c2": {
+            "name": "In our service area (Pune / PCMC)",
+            "status": "pass",
+            "reason": "Kalyani Nagar is in the service area.",
+            "locality_match": "kalyani nagar",
+            "evidence": [
+              "villa project in Kalyani Nagar"
+            ]
+          },
+          "c3": {
+            "name": "Realistic timeline",
+            "status": "pass",
+            "reason": "March next year to move in.",
+            "evidence": [
+              "March next year to move in. No rush."
+            ]
+          },
+          "c4": {
+            "name": "Budget broadly aligned",
+            "status": "pass",
+            "reason": "Budget not mentioned. Not probed, by policy.",
+            "not_discussed": true,
+            "evidence": []
+          },
+          "c5": {
+            "name": "Decision-maker on the call or represented",
+            "status": "pass",
+            "reason": "Caller is inquiring for his own property to move into.",
+            "evidence": []
+          }
+        },
+        "reason_codes": [],
+        "flags": [
+          "site_visit_requested",
+          "large_project"
+        ],
+        "priority": "normal",
+        "next_action": "book_consultation",
+        "caller_line": null,
+        "confirm_at_consultation": [
+          "What is the budget for the project?",
+          "Are there any specific design styles or requirements?",
+          "What is the email address for correspondence?"
+        ],
+        "review_reasons": []
+      },
+      "extraction": {
+        "call_type": "new_enquiry",
+        "caller_name": "Anand Sharma",
+        "language": "English",
+        "summary": "Anand Sharma is inquiring about a full end-to-end design for a new 5,500 sq ft villa in Kalyani Nagar. He already has possession and is looking to move in by March next year.",
+        "referral": {
+          "how_found": null,
+          "referrer_name": null,
+          "knows_founder": false
+        },
+        "project": {
+          "segment": "residential",
+          "property_type": "villa",
+          "locality": "Kalyani Nagar",
+          "city": null,
+          "carpet_area_sqft": 5500,
+          "scope_type": "full_home",
+          "rooms": [],
+          "room_count": null,
+          "current_state": "New construction. Completely empty.",
+          "occupancy": "owner",
+          "structural_changes": false
+        },
+        "engagement": {
+          "wants_design_and_execution": "yes",
+          "signal": "Full end-to-end design."
+        },
+        "timeline": {
+          "needed_by_text": "March next year to move in.",
+          "weeks_until_needed": 26,
+          "site_available_text": "Possession was last month.",
+          "weeks_until_site_available": 0,
+          "preferred_start_text": null,
+          "flexible": true
+        },
+        "budget": {
+          "volunteered": false,
+          "max_inr": null,
+          "text": null
+        },
+        "decision_maker": {
+          "status": "self",
+          "detail": "Caller is inquiring for his own property to move into."
+        },
+        "pricing": {
+          "asked": false,
+          "times_pushed": 0
+        },
+        "complaint": {
+          "is_existing_client": false,
+          "detail": null,
+          "designer_named": null,
+          "requested_senior": false
+        },
+        "repeat": {
+          "claims_prior_contact": false,
+          "detail": null
+        },
+        "dropped_call": false,
+        "requests": {
+          "site_visit": true,
+          "consultation_wanted": true,
+          "preferred_slots": "this week or next if possible",
+          "email": null
+        },
+        "evidence": [
+          {
+            "criterion": "c1",
+            "quote": "Full end-to-end design."
+          },
+          {
+            "criterion": "c2",
+            "quote": "villa project in Kalyani Nagar"
+          },
+          {
+            "criterion": "c3",
+            "quote": "March next year to move in. No rush."
+          }
+        ],
+        "open_questions": [
+          "What is the budget for the project?",
+          "Are there any specific design styles or requirements?",
+          "What is the email address for correspondence?"
+        ]
+      },
+      "usage": {
+        "model": "gemini-3.1-pro-preview",
+        "input_tokens": 968,
+        "output_tokens": 1665
+      },
+      "latency_ms": 13612,
+      "from_cache": false
+    },
+    {
+      "id": "T13",
+      "pass": true,
+      "problems": [],
+      "grounding_warnings": [],
+      "expected": {
+        "route": "qualified",
+        "flags": [
+          "pricing_asked"
+        ],
+        "why": "Pushed for a range; deflected; booked."
+      },
+      "decision": {
+        "policy_version": "2026-10-09.1",
+        "route": "qualified",
+        "criteria": {
+          "c1": {
+            "name": "Real project (design + execution, in our scope)",
+            "status": "unclear",
+            "reason": "Did not confirm a full design-and-execution project.",
+            "evidence": [
+              "Kitchen, wardrobes in both bedrooms, living room."
+            ]
+          },
+          "c2": {
+            "name": "In our service area (Pune / PCMC)",
+            "status": "pass",
+            "reason": "Aundh is in the service area.",
+            "locality_match": "aundh",
+            "evidence": [
+              "I want to redo my flat in Aundh."
+            ]
+          },
+          "c3": {
+            "name": "Realistic timeline",
+            "status": "unclear",
+            "reason": "No timeline was discussed.",
+            "evidence": []
+          },
+          "c4": {
+            "name": "Budget broadly aligned",
+            "status": "pass",
+            "reason": "Budget not mentioned. Not probed, by policy.",
+            "not_discussed": true,
+            "evidence": []
+          },
+          "c5": {
+            "name": "Decision-maker on the call or represented",
+            "status": "unclear",
+            "reason": "Did not establish who decides.",
+            "evidence": []
+          }
+        },
+        "reason_codes": [],
+        "flags": [
+          "pricing_asked"
+        ],
+        "priority": "normal",
+        "next_action": "book_consultation",
+        "caller_line": null,
+        "confirm_at_consultation": [
+          "Does the caller want design and execution?",
+          "What is the timeline for the project?",
+          "Who is the decision maker?",
+          "What is the budget?",
+          "Confirm they want full design and execution, not advice.",
+          "When does the project need to be complete, and when is the site available?",
+          "Confirm who makes the final decision and that they will attend."
+        ],
+        "review_reasons": []
+      },
+      "extraction": {
+        "call_type": "new_enquiry",
+        "caller_name": null,
+        "language": "English",
+        "summary": "The caller wants to redo their 3BHK flat in Aundh, covering the kitchen, wardrobes in two bedrooms, and the living room. They pushed for a rough price range but agreed to book a consultation when told pricing depends on scope.",
+        "referral": {
+          "how_found": null,
+          "referrer_name": null,
+          "knows_founder": false
+        },
+        "project": {
+          "segment": "residential",
+          "property_type": "3BHK flat",
+          "locality": "Aundh",
+          "city": null,
+          "carpet_area_sqft": 1100,
+          "scope_type": "partial",
+          "rooms": [
+            "kitchen",
+            "bedroom wardrobes",
+            "living room"
+          ],
+          "room_count": 4,
+          "current_state": null,
+          "occupancy": "unknown",
+          "structural_changes": false
+        },
+        "engagement": {
+          "wants_design_and_execution": "unknown",
+          "signal": null
+        },
+        "timeline": {
+          "needed_by_text": null,
+          "weeks_until_needed": null,
+          "site_available_text": null,
+          "weeks_until_site_available": null,
+          "preferred_start_text": null,
+          "flexible": null
+        },
+        "budget": {
+          "volunteered": false,
+          "max_inr": null,
+          "text": null
+        },
+        "decision_maker": {
+          "status": "unknown",
+          "detail": null
+        },
+        "pricing": {
+          "asked": true,
+          "times_pushed": 2
+        },
+        "complaint": {
+          "is_existing_client": false,
+          "detail": null,
+          "designer_named": null,
+          "requested_senior": false
+        },
+        "repeat": {
+          "claims_prior_contact": false,
+          "detail": null
+        },
+        "dropped_call": false,
+        "requests": {
+          "site_visit": false,
+          "consultation_wanted": true,
+          "preferred_slots": null,
+          "email": null
+        },
+        "evidence": [
+          {
+            "criterion": "c1",
+            "quote": "Kitchen, wardrobes in both bedrooms, living room."
+          },
+          {
+            "criterion": "c2",
+            "quote": "I want to redo my flat in Aundh."
+          }
+        ],
+        "open_questions": [
+          "Does the caller want design and execution?",
+          "What is the timeline for the project?",
+          "Who is the decision maker?",
+          "What is the budget?"
+        ]
+      },
+      "usage": {
+        "model": "gemini-3.1-pro-preview",
+        "input_tokens": 1002,
+        "output_tokens": 693
+      },
+      "latency_ms": 6731,
+      "from_cache": false
+    },
+    {
+      "id": "T14",
+      "pass": true,
+      "problems": [],
+      "grounding_warnings": [],
+      "expected": {
+        "route": "qualified",
+        "flags": [
+          "proxy_caller"
+        ],
+        "why": "Son calling for parents, who will attend and decide."
+      },
+      "decision": {
+        "policy_version": "2026-10-09.1",
+        "route": "qualified",
+        "criteria": {
+          "c1": {
+            "name": "Real project (design + execution, in our scope)",
+            "status": "unclear",
+            "reason": "Did not confirm a full design-and-execution project.",
+            "evidence": [
+              "They want a proper design."
+            ]
+          },
+          "c2": {
+            "name": "In our service area (Pune / PCMC)",
+            "status": "pass",
+            "reason": "Hadapsar is in the service area.",
+            "locality_match": "hadapsar",
+            "evidence": [
+              "3BHK in Hadapsar"
+            ]
+          },
+          "c3": {
+            "name": "Realistic timeline",
+            "status": "pass",
+            "reason": "new possession",
+            "evidence": []
+          },
+          "c4": {
+            "name": "Budget broadly aligned",
+            "status": "pass",
+            "reason": "Budget not mentioned. Not probed, by policy.",
+            "not_discussed": true,
+            "evidence": []
+          },
+          "c5": {
+            "name": "Decision-maker on the call or represented",
+            "status": "pass",
+            "reason": "Caller is doing initial checking; parents will attend consultation and decide.",
+            "proxy": true,
+            "evidence": [
+              "I’ll tell them about the consultation and they’ll decide."
+            ]
+          }
+        },
+        "reason_codes": [],
+        "flags": [
+          "proxy_caller"
+        ],
+        "priority": "normal",
+        "next_action": "book_consultation",
+        "caller_line": null,
+        "confirm_at_consultation": [
+          "Does the project include execution?",
+          "What is the budget?",
+          "What is the expected timeline?",
+          "Confirm they want full design and execution, not advice."
+        ],
+        "review_reasons": []
+      },
+      "extraction": {
+        "call_type": "new_enquiry",
+        "caller_name": null,
+        "language": "English",
+        "summary": "The caller is inquiring about interior design for their parents' new 3BHK in Hadapsar. The parents will attend the consultation and make the final decisions.",
+        "referral": {
+          "how_found": null,
+          "referrer_name": null,
+          "knows_founder": false
+        },
+        "project": {
+          "segment": "residential",
+          "property_type": "3BHK",
+          "locality": "Hadapsar",
+          "city": null,
+          "carpet_area_sqft": null,
+          "scope_type": "unknown",
+          "rooms": [],
+          "room_count": null,
+          "current_state": "new possession",
+          "occupancy": "owner",
+          "structural_changes": false
+        },
+        "engagement": {
+          "wants_design_and_execution": "unknown",
+          "signal": "They want a proper design."
+        },
+        "timeline": {
+          "needed_by_text": null,
+          "weeks_until_needed": null,
+          "site_available_text": "new possession",
+          "weeks_until_site_available": 0,
+          "preferred_start_text": null,
+          "flexible": null
+        },
+        "budget": {
+          "volunteered": false,
+          "max_inr": null,
+          "text": null
+        },
+        "decision_maker": {
+          "status": "proxy_decider_will_attend",
+          "detail": "Caller is doing initial checking; parents will attend consultation and decide."
+        },
+        "pricing": {
+          "asked": false,
+          "times_pushed": 0
+        },
+        "complaint": {
+          "is_existing_client": false,
+          "detail": null,
+          "designer_named": null,
+          "requested_senior": false
+        },
+        "repeat": {
+          "claims_prior_contact": false,
+          "detail": null
+        },
+        "dropped_call": false,
+        "requests": {
+          "site_visit": false,
+          "consultation_wanted": true,
+          "preferred_slots": null,
+          "email": null
+        },
+        "evidence": [
+          {
+            "criterion": "c1",
+            "quote": "They want a proper design."
+          },
+          {
+            "criterion": "c2",
+            "quote": "3BHK in Hadapsar"
+          },
+          {
+            "criterion": "c5",
+            "quote": "I’ll tell them about the consultation and they’ll decide."
+          }
+        ],
+        "open_questions": [
+          "Does the project include execution?",
+          "What is the budget?",
+          "What is the expected timeline?"
+        ]
+      },
+      "usage": {
+        "model": "gemini-3.1-pro-preview",
+        "input_tokens": 999,
+        "output_tokens": 1610
+      },
+      "latency_ms": 13275,
+      "from_cache": false
+    },
+    {
+      "id": "T15",
+      "pass": true,
+      "problems": [],
+      "grounding_warnings": [],
+      "expected": {
+        "route": "qualified",
+        "why": "Possession in ~6 weeks, site accessible now, husband authorised."
+      },
+      "decision": {
+        "policy_version": "2026-10-09.1",
+        "route": "qualified",
+        "criteria": {
+          "c1": {
+            "name": "Real project (design + execution, in our scope)",
+            "status": "pass",
+            "reason": "Wants design and execution for an in-scope space.",
+            "evidence": [
+              "Full home — kitchen, wardrobes, living room. The full package."
+            ]
+          },
+          "c2": {
+            "name": "In our service area (Pune / PCMC)",
+            "status": "pass",
+            "reason": "Undri, Pune is in the service area.",
+            "locality_match": "undri",
+            "evidence": [
+              "flat in Undri"
+            ]
+          },
+          "c3": {
+            "name": "Realistic timeline",
+            "status": "pass",
+            "reason": "I want to start the design right away.",
+            "evidence": [
+              "getting possession of my flat in Undri in about six weeks"
+            ]
+          },
+          "c4": {
+            "name": "Budget broadly aligned",
+            "status": "pass",
+            "reason": "Budget not mentioned. Not probed, by policy.",
+            "not_discussed": true,
+            "evidence": []
+          },
+          "c5": {
+            "name": "Decision-maker on the call or represented",
+            "status": "pass",
+            "reason": "my husband and I. He said to go ahead and book the consultation.",
+            "evidence": [
+              "Yes — my husband and I. He said to go ahead and book the consultation."
+            ]
+          }
+        },
+        "reason_codes": [],
+        "flags": [],
+        "priority": "normal",
+        "next_action": "book_consultation",
+        "caller_line": null,
+        "confirm_at_consultation": [
+          "What is the budget for the project?"
+        ],
+        "review_reasons": []
+      },
+      "extraction": {
+        "call_type": "new_enquiry",
+        "caller_name": "Smita",
+        "language": "English",
+        "summary": "Smita is looking for end-to-end interior design for her 2BHK flat in Undri. She gets possession in six weeks and wants to start the design process immediately.",
+        "referral": {
+          "how_found": null,
+          "referrer_name": null,
+          "knows_founder": false
+        },
+        "project": {
+          "segment": "residential",
+          "property_type": "2BHK flat",
+          "locality": "Undri",
+          "city": "Pune",
+          "carpet_area_sqft": 875,
+          "scope_type": "full_home",
+          "rooms": [
+            "kitchen",
+            "wardrobes",
+            "living room"
+          ],
+          "room_count": null,
+          "current_state": "under construction/awaiting possession",
+          "occupancy": "owner",
+          "structural_changes": false
+        },
+        "engagement": {
+          "wants_design_and_execution": "yes",
+          "signal": "The full package."
+        },
+        "timeline": {
+          "needed_by_text": null,
+          "weeks_until_needed": null,
+          "site_available_text": "getting possession of my flat in Undri in about six weeks",
+          "weeks_until_site_available": 6,
+          "preferred_start_text": "I want to start the design right away.",
+          "flexible": null
+        },
+        "budget": {
+          "volunteered": false,
+          "max_inr": null,
+          "text": null
+        },
+        "decision_maker": {
+          "status": "authorised",
+          "detail": "my husband and I. He said to go ahead and book the consultation."
+        },
+        "pricing": {
+          "asked": false,
+          "times_pushed": 0
+        },
+        "complaint": {
+          "is_existing_client": false,
+          "detail": null,
+          "designer_named": null,
+          "requested_senior": false
+        },
+        "repeat": {
+          "claims_prior_contact": false,
+          "detail": null
+        },
+        "dropped_call": false,
+        "requests": {
+          "site_visit": false,
+          "consultation_wanted": true,
+          "preferred_slots": null,
+          "email": null
+        },
+        "evidence": [
+          {
+            "criterion": "c1",
+            "quote": "Full home — kitchen, wardrobes, living room. The full package."
+          },
+          {
+            "criterion": "c2",
+            "quote": "flat in Undri"
+          },
+          {
+            "criterion": "c3",
+            "quote": "getting possession of my flat in Undri in about six weeks"
+          },
+          {
+            "criterion": "c5",
+            "quote": "Yes — my husband and I. He said to go ahead and book the consultation."
+          }
+        ],
+        "open_questions": [
+          "What is the budget for the project?"
+        ]
+      },
+      "usage": {
+        "model": "gemini-3.1-pro-preview",
+        "input_tokens": 987,
+        "output_tokens": 771
+      },
+      "latency_ms": 7055,
+      "from_cache": false
+    },
+    {
+      "id": "T16",
+      "pass": true,
+      "problems": [],
+      "grounding_warnings": [],
+      "expected": {
+        "route": "qualified",
+        "flags": [
+          "repeat_caller"
+        ],
+        "why": "Earlier enquiry was never followed up. High priority, open with an apology."
+      },
+      "decision": {
+        "policy_version": "2026-10-09.1",
+        "route": "qualified",
+        "criteria": {
+          "c1": {
+            "name": "Real project (design + execution, in our scope)",
+            "status": "unclear",
+            "reason": "Did not confirm a full design-and-execution project.",
+            "evidence": []
+          },
+          "c2": {
+            "name": "In our service area (Pune / PCMC)",
+            "status": "pass",
+            "reason": "Viman Nagar is in the service area.",
+            "locality_match": "viman nagar",
+            "evidence": [
+              "my 3BHK in Viman Nagar"
+            ]
+          },
+          "c3": {
+            "name": "Realistic timeline",
+            "status": "unclear",
+            "reason": "No timeline was discussed.",
+            "evidence": []
+          },
+          "c4": {
+            "name": "Budget broadly aligned",
+            "status": "pass",
+            "reason": "Budget not mentioned. Not probed, by policy.",
+            "not_discussed": true,
+            "evidence": []
+          },
+          "c5": {
+            "name": "Decision-maker on the call or represented",
+            "status": "pass",
+            "reason": "Referred to it as 'my 3BHK'",
+            "evidence": [
+              "my 3BHK"
+            ]
+          }
+        },
+        "reason_codes": [],
+        "flags": [
+          "repeat_caller"
+        ],
+        "priority": "high",
+        "next_action": "book_consultation",
+        "caller_line": null,
+        "confirm_at_consultation": [
+          "Caller says an earlier enquiry was not followed up. Open with an apology.",
+          "What is the exact scope of work?",
+          "What is the timeline for the project?",
+          "What is the budget?",
+          "Confirm they want full design and execution, not advice.",
+          "When does the project need to be complete, and when is the site available?"
+        ],
+        "review_reasons": []
+      },
+      "extraction": {
+        "call_type": "new_enquiry",
+        "caller_name": "Girish Nair",
+        "language": "English",
+        "summary": "Caller is following up on an unreturned enquiry from Monday. He is looking to discuss a project for his 3BHK in Viman Nagar.",
+        "referral": {
+          "how_found": null,
+          "referrer_name": null,
+          "knows_founder": false
+        },
+        "project": {
+          "segment": "residential",
+          "property_type": "3BHK",
+          "locality": "Viman Nagar",
+          "city": null,
+          "carpet_area_sqft": null,
+          "scope_type": "unknown",
+          "rooms": [],
+          "room_count": null,
+          "current_state": null,
+          "occupancy": "owner",
+          "structural_changes": false
+        },
+        "engagement": {
+          "wants_design_and_execution": "unknown",
+          "signal": null
+        },
+        "timeline": {
+          "needed_by_text": null,
+          "weeks_until_needed": null,
+          "site_available_text": null,
+          "weeks_until_site_available": null,
+          "preferred_start_text": null,
+          "flexible": null
+        },
+        "budget": {
+          "volunteered": false,
+          "max_inr": null,
+          "text": null
+        },
+        "decision_maker": {
+          "status": "self",
+          "detail": "Referred to it as 'my 3BHK'"
+        },
+        "pricing": {
+          "asked": false,
+          "times_pushed": 0
+        },
+        "complaint": {
+          "is_existing_client": false,
+          "detail": null,
+          "designer_named": null,
+          "requested_senior": false
+        },
+        "repeat": {
+          "claims_prior_contact": true,
+          "detail": "Called on Monday about a project and gave his number, but no one got back to him."
+        },
+        "dropped_call": false,
+        "requests": {
+          "site_visit": false,
+          "consultation_wanted": true,
+          "preferred_slots": null,
+          "email": null
+        },
+        "evidence": [
+          {
+            "criterion": "c2",
+            "quote": "my 3BHK in Viman Nagar"
+          },
+          {
+            "criterion": "c5",
+            "quote": "my 3BHK"
+          }
+        ],
+        "open_questions": [
+          "What is the exact scope of work?",
+          "What is the timeline for the project?",
+          "What is the budget?"
+        ]
+      },
+      "usage": {
+        "model": "gemini-3.1-pro-preview",
+        "input_tokens": 972,
+        "output_tokens": 1858
+      },
+      "latency_ms": 15498,
+      "from_cache": false
+    },
+    {
+      "id": "T17",
+      "pass": true,
+      "problems": [],
+      "grounding_warnings": [],
+      "expected": {
+        "route": "qualified",
+        "flags": [
+          "dropped_call"
+        ],
+        "why": "First call dropped, rang back. One lead, not two."
+      },
+      "decision": {
+        "policy_version": "2026-10-09.1",
+        "route": "qualified",
+        "criteria": {
+          "c1": {
+            "name": "Real project (design + execution, in our scope)",
+            "status": "unclear",
+            "reason": "Did not confirm a full design-and-execution project.",
+            "evidence": [
+              "Kitchen, wardrobes, living room."
+            ]
+          },
+          "c2": {
+            "name": "In our service area (Pune / PCMC)",
+            "status": "pass",
+            "reason": "Pimple Saudagar is in the service area.",
+            "locality_match": "pimple saudagar",
+            "evidence": [
+              "I’m Ritu Kapoor from Pimple Saudagar."
+            ]
+          },
+          "c3": {
+            "name": "Realistic timeline",
+            "status": "pass",
+            "reason": "Ideally done by March.",
+            "evidence": [
+              "Ideally done by March. Plenty of time."
+            ]
+          },
+          "c4": {
+            "name": "Budget broadly aligned",
+            "status": "pass",
+            "reason": "Budget not mentioned. Not probed, by policy.",
+            "not_discussed": true,
+            "evidence": []
+          },
+          "c5": {
+            "name": "Decision-maker on the call or represented",
+            "status": "pass",
+            "reason": "We've been here two years",
+            "evidence": []
+          }
+        },
+        "reason_codes": [],
+        "flags": [
+          "dropped_call"
+        ],
+        "priority": "normal",
+        "next_action": "book_consultation",
+        "caller_line": null,
+        "confirm_at_consultation": [
+          "What is the budget for the project?",
+          "Are there any specific requirements for the bedrooms?",
+          "Does the scope include execution?",
+          "Confirm they want full design and execution, not advice."
+        ],
+        "review_reasons": []
+      },
+      "extraction": {
+        "call_type": "new_enquiry",
+        "caller_name": "Ritu Kapoor",
+        "language": "English",
+        "summary": "Ritu Kapoor is inquiring about interior design for her 3BHK in Pimple Saudagar. She wants to redesign the kitchen, wardrobes, and living room by March.",
+        "referral": {
+          "how_found": null,
+          "referrer_name": null,
+          "knows_founder": false
+        },
+        "project": {
+          "segment": "residential",
+          "property_type": "3BHK",
+          "locality": "Pimple Saudagar",
+          "city": null,
+          "carpet_area_sqft": 1050,
+          "scope_type": "partial",
+          "rooms": [
+            "kitchen",
+            "living room",
+            "wardrobes"
+          ],
+          "room_count": 3,
+          "current_state": "We moved in with builder furniture and it’s very basic.",
+          "occupancy": "owner",
+          "structural_changes": false
+        },
+        "engagement": {
+          "wants_design_and_execution": "unknown",
+          "signal": null
+        },
+        "timeline": {
+          "needed_by_text": "Ideally done by March.",
+          "weeks_until_needed": 24,
+          "site_available_text": "We’ve been here two years",
+          "weeks_until_site_available": 0,
+          "preferred_start_text": "We want to start now.",
+          "flexible": true
+        },
+        "budget": {
+          "volunteered": false,
+          "max_inr": null,
+          "text": null
+        },
+        "decision_maker": {
+          "status": "self",
+          "detail": "We've been here two years"
+        },
+        "pricing": {
+          "asked": false,
+          "times_pushed": 0
+        },
+        "complaint": {
+          "is_existing_client": false,
+          "detail": null,
+          "designer_named": null,
+          "requested_senior": false
+        },
+        "repeat": {
+          "claims_prior_contact": false,
+          "detail": null
+        },
+        "dropped_call": true,
+        "requests": {
+          "site_visit": false,
+          "consultation_wanted": false,
+          "preferred_slots": null,
+          "email": null
+        },
+        "evidence": [
+          {
+            "criterion": "c1",
+            "quote": "Kitchen, wardrobes, living room."
+          },
+          {
+            "criterion": "c2",
+            "quote": "I’m Ritu Kapoor from Pimple Saudagar."
+          },
+          {
+            "criterion": "c3",
+            "quote": "Ideally done by March. Plenty of time."
+          }
+        ],
+        "open_questions": [
+          "What is the budget for the project?",
+          "Are there any specific requirements for the bedrooms?",
+          "Does the scope include execution?"
+        ]
+      },
+      "usage": {
+        "model": "gemini-3.1-pro-preview",
+        "input_tokens": 1008,
+        "output_tokens": 1812
+      },
+      "latency_ms": 15267,
+      "from_cache": false
+    },
+    {
+      "id": "T18",
+      "pass": true,
+      "problems": [],
+      "grounding_warnings": [],
+      "expected": {
+        "route": "declined",
+        "reason": "BELOW_MIN_SIZE",
+        "why": "180 sq ft coworking pod."
+      },
+      "decision": {
+        "policy_version": "2026-10-09.1",
+        "route": "declined",
+        "criteria": {
+          "c1": {
+            "name": "Real project (design + execution, in our scope)",
+            "status": "fail",
+            "code": "BELOW_MIN_SIZE",
+            "reason": "180 sq ft is far below the 500 sq ft commercial minimum.",
+            "evidence": [
+              "I have a 180 sq ft pod I want to make look really nice."
+            ]
+          },
+          "c2": {
+            "name": "In our service area (Pune / PCMC)",
+            "status": "unclear",
+            "reason": "Location of the site was not captured.",
+            "evidence": []
+          },
+          "c3": {
+            "name": "Realistic timeline",
+            "status": "unclear",
+            "reason": "No timeline was discussed.",
+            "evidence": []
+          },
+          "c4": {
+            "name": "Budget broadly aligned",
+            "status": "pass",
+            "reason": "Budget not mentioned. Not probed, by policy.",
+            "not_discussed": true,
+            "evidence": []
+          },
+          "c5": {
+            "name": "Decision-maker on the call or represented",
+            "status": "pass",
+            "reason": "Caller runs the coworking space.",
+            "evidence": [
+              "I run a small coworking space."
+            ]
+          }
+        },
+        "reason_codes": [
+          "BELOW_MIN_SIZE"
+        ],
+        "flags": [
+          "pricing_asked"
+        ],
+        "priority": "normal",
+        "next_action": "log_decline",
+        "caller_line": "Our design and execution team is set up for spaces of a certain size, and we wouldn't be able to do this one at the quality we'd want to promise. A designer who specialises in smaller spaces would be a better fit.",
+        "confirm_at_consultation": [
+          "Location of the coworking space",
+          "Timeline for the project",
+          "Budget for the pod",
+          "When does the project need to be complete, and when is the site available?"
+        ],
+        "review_reasons": []
+      },
+      "extraction": {
+        "call_type": "new_enquiry",
+        "caller_name": null,
+        "language": "English",
+        "summary": "The caller enquired about designing a 180 sq ft pod in their coworking space. The studio declined the project as it falls below their minimum commercial scope.",
+        "referral": {
+          "how_found": null,
+          "referrer_name": null,
+          "knows_founder": false
+        },
+        "project": {
+          "segment": "commercial",
+          "property_type": "coworking pod",
+          "locality": null,
+          "city": null,
+          "carpet_area_sqft": 180,
+          "scope_type": "office_fitout",
+          "rooms": [
+            "pod"
+          ],
+          "room_count": 1,
+          "current_state": null,
+          "occupancy": "unknown",
+          "structural_changes": false
+        },
+        "engagement": {
+          "wants_design_and_execution": "unknown",
+          "signal": "I want to make look really nice. Good lighting, a nice desk, some storage."
+        },
+        "timeline": {
+          "needed_by_text": null,
+          "weeks_until_needed": null,
+          "site_available_text": null,
+          "weeks_until_site_available": null,
+          "preferred_start_text": null,
+          "flexible": null
+        },
+        "budget": {
+          "volunteered": false,
+          "max_inr": null,
+          "text": null
+        },
+        "decision_maker": {
+          "status": "self",
+          "detail": "Caller runs the coworking space."
+        },
+        "pricing": {
+          "asked": true,
+          "times_pushed": 1
+        },
+        "complaint": {
+          "is_existing_client": false,
+          "detail": null,
+          "designer_named": null,
+          "requested_senior": false
+        },
+        "repeat": {
+          "claims_prior_contact": false,
+          "detail": null
+        },
+        "dropped_call": false,
+        "requests": {
+          "site_visit": false,
+          "consultation_wanted": false,
+          "preferred_slots": null,
+          "email": null
+        },
+        "evidence": [
+          {
+            "criterion": "c1",
+            "quote": "I have a 180 sq ft pod I want to make look really nice."
+          },
+          {
+            "criterion": "c5",
+            "quote": "I run a small coworking space."
+          }
+        ],
+        "open_questions": [
+          "Location of the coworking space",
+          "Timeline for the project",
+          "Budget for the pod"
+        ]
+      },
+      "usage": {
+        "model": "gemini-3.1-pro-preview",
+        "input_tokens": 977,
+        "output_tokens": 1723
+      },
+      "latency_ms": 14791,
+      "from_cache": false
+    },
+    {
+      "id": "T19",
+      "pass": true,
+      "problems": [],
+      "grounding_warnings": [],
+      "expected": {
+        "route": "declined",
+        "reason": "SEGMENT_OUT_OF_SCOPE",
+        "why": "Restaurant."
+      },
+      "decision": {
+        "policy_version": "2026-10-09.1",
+        "route": "declined",
+        "criteria": {
+          "c1": {
+            "name": "Real project (design + execution, in our scope)",
+            "status": "fail",
+            "code": "SEGMENT_OUT_OF_SCOPE",
+            "reason": "restaurant projects are outside what the studio designs.",
+            "evidence": [
+              "Would you be able to design the interiors?"
+            ]
+          },
+          "c2": {
+            "name": "In our service area (Pune / PCMC)",
+            "status": "pass",
+            "reason": "Koregaon Park is in the service area.",
+            "locality_match": "koregaon park",
+            "evidence": [
+              "restaurant in Koregaon Park"
+            ]
+          },
+          "c3": {
+            "name": "Realistic timeline",
+            "status": "unclear",
+            "reason": "No timeline was discussed.",
+            "evidence": []
+          },
+          "c4": {
+            "name": "Budget broadly aligned",
+            "status": "pass",
+            "reason": "Budget not mentioned. Not probed, by policy.",
+            "not_discussed": true,
+            "evidence": []
+          },
+          "c5": {
+            "name": "Decision-maker on the call or represented",
+            "status": "unclear",
+            "reason": "Did not establish who decides.",
+            "evidence": []
+          }
+        },
+        "reason_codes": [
+          "SEGMENT_OUT_OF_SCOPE"
+        ],
+        "flags": [],
+        "priority": "normal",
+        "next_action": "log_decline",
+        "caller_line": "Thank you for reaching out. Restaurants, hotels, retail stores and gyms are outside what we design. You'd be better served by a studio that specialises in them.",
+        "confirm_at_consultation": [
+          "What is the timeline?",
+          "What is the budget?",
+          "Who is the decision maker?",
+          "When does the project need to be complete, and when is the site available?",
+          "Confirm who makes the final decision and that they will attend."
+        ],
+        "review_reasons": []
+      },
+      "extraction": {
+        "call_type": "new_enquiry",
+        "caller_name": null,
+        "language": "English",
+        "summary": "The caller inquired about interior design services for a new restaurant in Koregaon Park. The studio declined the project as hospitality spaces are out of scope.",
+        "referral": {
+          "how_found": "seen your work",
+          "referrer_name": null,
+          "knows_founder": false
+        },
+        "project": {
+          "segment": "hospitality",
+          "property_type": "restaurant",
+          "locality": "Koregaon Park",
+          "city": null,
+          "carpet_area_sqft": null,
+          "scope_type": "unknown",
+          "rooms": [],
+          "room_count": null,
+          "current_state": null,
+          "occupancy": "unknown",
+          "structural_changes": false
+        },
+        "engagement": {
+          "wants_design_and_execution": "unknown",
+          "signal": "Would you be able to design the interiors?"
+        },
+        "timeline": {
+          "needed_by_text": null,
+          "weeks_until_needed": null,
+          "site_available_text": null,
+          "weeks_until_site_available": null,
+          "preferred_start_text": null,
+          "flexible": null
+        },
+        "budget": {
+          "volunteered": false,
+          "max_inr": null,
+          "text": null
+        },
+        "decision_maker": {
+          "status": "unknown",
+          "detail": null
+        },
+        "pricing": {
+          "asked": false,
+          "times_pushed": 0
+        },
+        "complaint": {
+          "is_existing_client": false,
+          "detail": null,
+          "designer_named": null,
+          "requested_senior": false
+        },
+        "repeat": {
+          "claims_prior_contact": false,
+          "detail": null
+        },
+        "dropped_call": false,
+        "requests": {
+          "site_visit": false,
+          "consultation_wanted": false,
+          "preferred_slots": null,
+          "email": null
+        },
+        "evidence": [
+          {
+            "criterion": "c1",
+            "quote": "Would you be able to design the interiors?"
+          },
+          {
+            "criterion": "c2",
+            "quote": "restaurant in Koregaon Park"
+          }
+        ],
+        "open_questions": [
+          "What is the timeline?",
+          "What is the budget?",
+          "Who is the decision maker?"
+        ]
+      },
+      "usage": {
+        "model": "gemini-3.1-pro-preview",
+        "input_tokens": 954,
+        "output_tokens": 1591
+      },
+      "latency_ms": 13668,
+      "from_cache": false
+    },
+    {
+      "id": "T20",
+      "pass": true,
+      "problems": [],
+      "grounding_warnings": [],
+      "expected": {
+        "route": "qualified",
+        "why": "2BHK Magarpatta, January start, both owners attending."
+      },
+      "decision": {
+        "policy_version": "2026-10-09.1",
+        "route": "qualified",
+        "criteria": {
+          "c1": {
+            "name": "Real project (design + execution, in our scope)",
+            "status": "pass",
+            "reason": "Wants design and execution for an in-scope space.",
+            "evidence": [
+              "properly design the interiors for a while... a January start for execution would be ideal."
+            ]
+          },
+          "c2": {
+            "name": "In our service area (Pune / PCMC)",
+            "status": "pass",
+            "reason": "Magarpatta — Cybercity area is in the service area.",
+            "locality_match": "magarpatta",
+            "evidence": [
+              "I have a 2BHK in Magarpatta — Cybercity area."
+            ]
+          },
+          "c3": {
+            "name": "Realistic timeline",
+            "status": "pass",
+            "reason": "a January start for execution would be ideal",
+            "evidence": [
+              "We’re flexible — a January start for execution would be ideal."
+            ]
+          },
+          "c4": {
+            "name": "Budget broadly aligned",
+            "status": "pass",
+            "reason": "Budget not mentioned. Not probed, by policy.",
+            "not_discussed": true,
+            "evidence": []
+          },
+          "c5": {
+            "name": "Decision-maker on the call or represented",
+            "status": "pass",
+            "reason": "my husband and I. We both want to be at the consultation.",
+            "evidence": [
+              "Yes — my husband and I. We both want to be at the consultation."
+            ]
+          }
+        },
+        "reason_codes": [],
+        "flags": [],
+        "priority": "normal",
+        "next_action": "book_consultation",
+        "caller_line": null,
+        "confirm_at_consultation": [
+          "What is the budget for the project?"
+        ],
+        "review_reasons": []
+      },
+      "extraction": {
+        "call_type": "new_enquiry",
+        "caller_name": "Pooja",
+        "language": "English",
+        "summary": "Pooja is inquiring about end-to-end interior design and execution for her 900 sq ft 2BHK in Magarpatta. She and her husband are the owners and are looking for a flexible January start.",
+        "referral": {
+          "how_found": null,
+          "referrer_name": null,
+          "knows_founder": false
+        },
+        "project": {
+          "segment": "residential",
+          "property_type": "2BHK",
+          "locality": "Magarpatta — Cybercity area",
+          "city": null,
+          "carpet_area_sqft": 900,
+          "scope_type": "full_home",
+          "rooms": [
+            "kitchen",
+            "bedroom",
+            "bedroom",
+            "living room"
+          ],
+          "room_count": 4,
+          "current_state": null,
+          "occupancy": "owner",
+          "structural_changes": false
+        },
+        "engagement": {
+          "wants_design_and_execution": "yes",
+          "signal": "a January start for execution would be ideal"
+        },
+        "timeline": {
+          "needed_by_text": null,
+          "weeks_until_needed": null,
+          "site_available_text": null,
+          "weeks_until_site_available": 0,
+          "preferred_start_text": "a January start for execution would be ideal",
+          "flexible": true
+        },
+        "budget": {
+          "volunteered": false,
+          "max_inr": null,
+          "text": null
+        },
+        "decision_maker": {
+          "status": "self",
+          "detail": "my husband and I. We both want to be at the consultation."
+        },
+        "pricing": {
+          "asked": false,
+          "times_pushed": 0
+        },
+        "complaint": {
+          "is_existing_client": false,
+          "detail": null,
+          "designer_named": null,
+          "requested_senior": false
+        },
+        "repeat": {
+          "claims_prior_contact": false,
+          "detail": null
+        },
+        "dropped_call": false,
+        "requests": {
+          "site_visit": false,
+          "consultation_wanted": true,
+          "preferred_slots": null,
+          "email": null
+        },
+        "evidence": [
+          {
+            "criterion": "c1",
+            "quote": "properly design the interiors for a while... a January start for execution would be ideal."
+          },
+          {
+            "criterion": "c2",
+            "quote": "I have a 2BHK in Magarpatta — Cybercity area."
+          },
+          {
+            "criterion": "c3",
+            "quote": "We’re flexible — a January start for execution would be ideal."
+          },
+          {
+            "criterion": "c5",
+            "quote": "Yes — my husband and I. We both want to be at the consultation."
+          }
+        ],
+        "open_questions": [
+          "What is the budget for the project?"
+        ]
+      },
+      "usage": {
+        "model": "gemini-3.1-pro-preview",
+        "input_tokens": 950,
+        "output_tokens": 1818
+      },
+      "latency_ms": 14221,
+      "from_cache": false
+    }
+  ]
+}

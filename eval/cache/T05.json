@@ -1,0 +1,102 @@
+{
+  "key": "464896e3-2cf185b8",
+  "call_date": "2026-09-05",
+  "latency_ms": 7231,
+  "usage": {
+    "model": "gemini-3.1-pro-preview",
+    "input_tokens": 984,
+    "output_tokens": 785
+  },
+  "extraction": {
+    "call_type": "new_enquiry",
+    "caller_name": "Aarti Mehta",
+    "language": "English",
+    "summary": "Aarti Mehta is looking for a complete redesign of a 2,400 sq ft 4BHK in Koregaon Park. She was referred by Vikram Agarwal, a close friend of the founder, and wants to move back in by February.",
+    "referral": {
+      "how_found": "friend referral",
+      "referrer_name": "Vikram Agarwal",
+      "knows_founder": true
+    },
+    "project": {
+      "segment": "residential",
+      "property_type": "4BHK",
+      "locality": "Koregaon Park",
+      "city": "Pune",
+      "carpet_area_sqft": 2400,
+      "scope_type": "full_home",
+      "rooms": [
+        "kitchen",
+        "bedrooms"
+      ],
+      "room_count": 5,
+      "current_state": "moved out temporarily",
+      "occupancy": "owner",
+      "structural_changes": false
+    },
+    "engagement": {
+      "wants_design_and_execution": "yes",
+      "signal": "Complete redesign. New flooring, kitchen, all four bedrooms."
+    },
+    "timeline": {
+      "needed_by_text": "move back in by February",
+      "weeks_until_needed": 21,
+      "site_available_text": "already moved out temporarily",
+      "weeks_until_site_available": 0,
+      "preferred_start_text": null,
+      "flexible": false
+    },
+    "budget": {
+      "volunteered": false,
+      "max_inr": null,
+      "text": null
+    },
+    "decision_maker": {
+      "status": "self",
+      "detail": "We have a 4BHK"
+    },
+    "pricing": {
+      "asked": false,
+      "times_pushed": 0
+    },
+    "complaint": {
+      "is_existing_client": false,
+      "detail": null,
+      "designer_named": null,
+      "requested_senior": false
+    },
+    "repeat": {
+      "claims_prior_contact": false,
+      "detail": null
+    },
+    "dropped_call": false,
+    "requests": {
+      "site_visit": true,
+      "consultation_wanted": true,
+      "preferred_slots": null,
+      "email": null
+    },
+    "evidence": [
+      {
+        "criterion": "c1",
+        "quote": "Complete redesign. New flooring, kitchen, all four bedrooms."
+      },
+      {
+        "criterion": "c2",
+        "quote": "Koregaon Park"
+      },
+      {
+        "criterion": "c3",
+        "quote": "We want to move back in by February."
+      },
+      {
+        "criterion": "c5",
+        "quote": "We have a 4BHK"
+      }
+    ],
+    "open_questions": [
+      "What is the budget for the project?",
+      "What is the preferred style or aesthetic?",
+      "Are there any specific requirements for the bedrooms or kitchen?"
+    ]
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "key": "5ed39b44-2cf185b8",
+  "call_date": "2026-09-19",
+  "latency_ms": 15498,
+  "usage": {
+    "model": "gemini-3.1-pro-preview",
+    "input_tokens": 972,
+    "output_tokens": 1858
+  },
+  "extraction": {
+    "call_type": "new_enquiry",
+    "caller_name": "Girish Nair",
+    "language": "English",
+    "summary": "Caller is following up on an unreturned enquiry from Monday. He is looking to discuss a project for his 3BHK in Viman Nagar.",
+    "referral": {
+      "how_found": null,
+      "referrer_name": null,
+      "knows_founder": false
+    },
+    "project": {
+      "segment": "residential",
+      "property_type": "3BHK",
+      "locality": "Viman Nagar",
+      "city": null,
+      "carpet_area_sqft": null,
+      "scope_type": "unknown",
+      "rooms": [],
+      "room_count": null,
+      "current_state": null,
+      "occupancy": "owner",
+      "structural_changes": false
+    },
+    "engagement": {
+      "wants_design_and_execution": "unknown",
+      "signal": null
+    },
+    "timeline": {
+      "needed_by_text": null,
+      "weeks_until_needed": null,
+      "site_available_text": null,
+      "weeks_until_site_available": null,
+      "preferred_start_text": null,
+      "flexible": null
+    },
+    "budget": {
+      "volunteered": false,
+      "max_inr": null,
+      "text": null
+    },
+    "decision_maker": {
+      "status": "self",
+      "detail": "Referred to it as 'my 3BHK'"
+    },
+    "pricing": {
+      "asked": false,
+      "times_pushed": 0
+    },
+    "complaint": {
+      "is_existing_client": false,
+      "detail": null,
+      "designer_named": null,
+      "requested_senior": false
+    },
+    "repeat": {
+      "claims_prior_contact": true,
+      "detail": "Called on Monday about a project and gave his number, but no one got back to him."
+    },
+    "dropped_call": false,
+    "requests": {
+      "site_visit": false,
+      "consultation_wanted": true,
+      "preferred_slots": null,
+      "email": null
+    },
+    "evidence": [
+      {
+        "criterion": "c2",
+        "quote": "my 3BHK in Viman Nagar"
+      },
+      {
+        "criterion": "c5",
+        "quote": "my 3BHK"
+      }
+    ],
+    "open_questions": [
+      "What is the exact scope of work?",
+      "What is the timeline for the project?",
+      "What is the budget?"
+    ]
+  }
+}
