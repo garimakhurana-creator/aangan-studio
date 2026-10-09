@@ -34,6 +34,7 @@ global.fetch = async (url, opts = {}) => {
   if (host === 'calendly') return reply(201, { resource: { booking_url: 'https://calendly.com/d/abc-123' } });
   if (host === 'resend') return reply(200, { id: `email_${calls.length}` });
   if (host === 'telegram') return reply(200, { ok: true, result: { message_id: 1 } });
+  if (u.includes('vaanivoice')) return reply(200, { data: [{ call_id: 'other-1', agent_id: 'someone-elses-agent', direction: 'Inbound', from_number: '+919811111111', call_cost: 2 }, { call_id: 'ours-1', agent_id: 'a03b2f1d-72d5-4473-9657-01489185d525', direction: 'Inbound', from_number: '+919822222222', call_cost: 3 }] });
   return reply(404, {});
 };
 const count = host => calls.filter(c => c.host === host).length;
@@ -245,4 +246,16 @@ test('designer outcomes: booking needs a date, closing records the reason', asyn
   assert.equal(l.work.status, 'closed');
   assert.equal(l.work.closed_reason, 'not_interested');
   await assert.rejects(recordOutcome(lead.id, { outcome: 'teleport' }), /outcome must be/);
+});
+
+test('calls to another Vaani agent on the same account are ignored', async () => {
+  process.env.VAANI_API_KEY = 'test';
+  try {
+    const other = await processPostCall({ ...call('other-1'), simulated: false, phone: null });
+    assert.equal(other.ignored, true);
+    assert.equal((await store().all('leads')).length, 0);
+    const ours = await processPostCall({ ...call('ours-1'), simulated: false, phone: null });
+    assert.equal(ours.phone, '+919822222222', 'caller number comes from Vaani call history');
+    assert.equal(ours.costs.vaani_credits, 3);
+  } finally { delete process.env.VAANI_API_KEY; }
 });
