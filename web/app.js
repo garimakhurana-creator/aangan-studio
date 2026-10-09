@@ -24,33 +24,11 @@ function ago(iso) {
   return d < 7 ? `${d} day${d > 1 ? 's' : ''} ago` : dayMonth(iso);
 }
 
-// ---------------------------------------------------------------- photos
-// Free photos under the Unsplash License, credited in the footer. Each lead
-// gets a photo matching its project type, varied so the gallery never repeats
-// one image down the page.
-const POOLS = {
-  living: ['photo-1774200981075-a728eaaa3824', 'photo-1564078516393-cf04bd966897', 'photo-1541194577687-8c63bf9e7ee3', 'photo-1615800001964-5afd0ae8e49a', 'photo-1780659760416-3b62b5f18e11', 'photo-1773847469674-189153e5e32d'],
-  kitchen: ['photo-1764526624453-db32c24eca55', 'photo-1722605090433-41d1183a792d', 'photo-1609347744403-2306e8a9ae27'],
-  bedroom: ['photo-1668089677938-b52086753f77'],
-  office: ['photo-1763307411477-6bb3254f1496'],
-  villa: ['photo-1758448756207-54505680d130'],
-};
-const img = (id, w) => `https://images.unsplash.com/${id}?w=${w}&q=72&auto=format&fit=crop`;
-const hash = s => [...String(s)].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
-function photoFor(l) {
-  const p = l.project || {};
-  const type = String(p.property_type || '').toLowerCase();
-  const rooms = (p.rooms || []).join(' ').toLowerCase();
-  if (['hospitality', 'retail', 'fitness'].includes(p.segment) || l.decision?.route === 'no_conversation') return null;
-  let pool = 'living';
-  if (p.segment === 'commercial' || /office|clinic|studio|cowork/.test(type)) pool = 'office';
-  else if (/villa|house|bungalow/.test(type)) pool = 'villa';
-  else if (p.scope_type !== 'full_home' && /kitchen/.test(rooms) && !/living|bed/.test(rooms)) pool = 'kitchen';
-  else if (p.scope_type !== 'full_home' && /bed/.test(rooms) && !/living|kitchen/.test(rooms)) pool = 'bedroom';
-  else if (/kitchen/.test(rooms) && hash(l.id) % 3 === 0) pool = 'kitchen';
-  const list = POOLS[pool];
-  return list[hash(l.id) % list.length];
-}
+// ---------------------------------------------------------------- brand imagery
+// One Aangan image frames every lead (Unsplash License, credited in the footer);
+// leads themselves are clean text cards.
+const BRAND_IMG = 'photo-1773847469674-189153e5e32d';
+const img = (id, w) => `https://images.unsplash.com/${id}?w=${w}&q=75&auto=format&fit=crop`;
 
 // ---------------------------------------------------------------- vocabulary
 const SCOPE = { full_home: 'Full home', partial: 'Some rooms', single_room: 'One room', office_fitout: 'Office fit-out' };
@@ -218,22 +196,15 @@ function renderLeads() {
 
 function card(l) {
   const s = l._s; const p = l.project || {};
-  const ph = photoFor(l); const tag = tagOf(l);
+  const tag = tagOf(l);
   const project = [p.property_type, p.locality].filter(Boolean).join(' · ') || 'Details in the brief';
-  const foot = [dayMonth(l.last_call_at), p.carpet_area_sqft ? `${num(p.carpet_area_sqft)} sq ft` : null, SCOPE[p.scope_type]].filter(Boolean);
-  return `<button type="button" class="lcard ${s.bucket === 'notq' ? 'dim' : ''}" data-open="${esc(l.id)}" aria-label="${esc(nameOf(l))}, ${esc(s.label)}">
-    <div class="ph ${ph ? '' : 'none'}">
-      ${ph ? `<img src="${img(ph, 640)}" srcset="${img(ph, 480)} 480w, ${img(ph, 900)} 900w" sizes="(max-width: 760px) 100vw, 320px" alt="" loading="lazy">` : esc((p.property_type || 'Enquiry'))}
-      <span class="badge"><span class="sdot k-${s.dot}"></span>${esc(s.label)}</span>
-      ${tag ? `<span class="tagr">${tag}</span>` : ''}
-      ${l.simulated ? '<span class="sim">Demo</span>' : ''}
-    </div>
-    <div class="meta">
-      <span class="nm">${esc(nameOf(l))}</span>
-      <span class="pj">${esc(project)}</span>
-      <span class="why ${s.hot ? 'hot' : ''}">${esc(s.why)}</span>
-      <span class="ft">${foot.map(esc).join('<span>·</span>')}</span>
-    </div>
+  const foot = [p.carpet_area_sqft ? `${num(p.carpet_area_sqft)} sq ft` : null, SCOPE[p.scope_type], l.simulated ? 'Demo' : null].filter(Boolean);
+  return `<button type="button" class="lcard b-${s.bucket}" data-open="${esc(l.id)}" aria-label="${esc(nameOf(l))}, ${esc(s.label)}">
+    <span class="lc-top"><span class="badge"><span class="sdot k-${s.dot}"></span>${esc(s.label)}</span>${tag ? `<span class="tagr">${tag}</span>` : ''}<span class="lc-date">${esc(dayMonth(l.last_call_at))}</span></span>
+    <span class="nm">${esc(nameOf(l))}</span>
+    <span class="pj">${esc(project)}</span>
+    <span class="why ${s.hot ? 'hot' : ''}">${esc(s.why)}</span>
+    ${foot.length ? `<span class="ft">${foot.map(esc).join('<i>·</i>')}</span>` : ''}
   </button>`;
 }
 
@@ -266,7 +237,7 @@ async function openLead(id) {
   const listLead = state.leads.find(x => x.id === id) || l;
   const s = statusOf({ ...listLead, ...l, project: l.extraction?.project, timeline: listLead.timeline, complaint: listLead.complaint, reason: listLead.reason });
   const x = l.extraction || {}; const p = x.project || {}; const t = x.timeline || {}; const d = l.decision || {};
-  const ph = photoFor({ ...l, project: p });
+  const ph = BRAND_IMG;
   const qualifiedOpen = d.route === 'qualified' && !['closed'].includes(l.work?.status);
   const where = [p.locality, p.city].filter(Boolean).join(', ');
 
@@ -298,8 +269,8 @@ async function openLead(id) {
   ].join('');
 
   $('#d-content').innerHTML = `
-    <div class="d-hero ${ph ? '' : 'none'}">
-      ${ph ? `<img src="${img(ph, 1400)}" alt="">` : ''}
+    <div class="d-hero">
+      <img src="${img(ph, 1400)}" alt="">
       <button type="button" class="icon-btn" data-close-drawer aria-label="Close">${icon('x')}</button>
       <div class="cap">
         <span class="badge"><span class="sdot k-${s.dot}"></span>${esc(s.label)}</span>

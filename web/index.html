@@ -43,14 +43,17 @@
 
     <!-- ================= LEADS ================= -->
     <section id="view-leads" class="view">
-      <div class="page-head">
-        <div>
-          <p class="eyebrow" id="today"></p>
+      <header class="band">
+        <img class="band-img" alt="" src="https://images.unsplash.com/photo-1773847469674-189153e5e32d?w=1600&q=75&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1773847469674-189153e5e32d?w=900&q=75&auto=format&fit=crop 900w, https://images.unsplash.com/photo-1773847469674-189153e5e32d?w=1600&q=75&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1773847469674-189153e5e32d?w=2400&q=75&auto=format&fit=crop 2400w" sizes="100vw">
+        <div class="band-in wrap">
+          <p class="band-mark">Aangan Studio <span>·</span> Pune</p>
+          <p class="band-date" id="today"></p>
           <h1 id="hello">Enquiries</h1>
-          <p class="lede" id="lede"></p>
+          <p class="band-lede" id="lede"></p>
+          <p class="band-line">Every enquiry answered. Every designer briefed.</p>
+          <span class="demo-pill" id="demo-pill" hidden>Showing demo calls</span>
         </div>
-        <span class="demo-pill" id="demo-pill" hidden>Showing demo calls</span>
-      </div>
+      </header>
 
       <div class="toolbar">
         <div class="chips" id="chips" role="tablist" aria-label="Lead status"></div>
@@ -67,13 +70,14 @@
 
     <!-- ================= INSIGHTS ================= -->
     <section id="view-insights" class="view" hidden>
-      <div class="page-head">
-        <div>
-          <p class="eyebrow">Insights</p>
+      <header class="band short">
+        <img class="band-img" alt="" src="https://images.unsplash.com/photo-1774200981075-a728eaaa3824?w=1600&q=75&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1774200981075-a728eaaa3824?w=900&q=75&auto=format&fit=crop 900w, https://images.unsplash.com/photo-1774200981075-a728eaaa3824?w=1600&q=75&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1774200981075-a728eaaa3824?w=2400&q=75&auto=format&fit=crop 2400w" sizes="100vw">
+        <div class="band-in wrap">
+          <p class="band-mark">Aangan Studio <span>·</span> Insights</p>
           <h1>How the front desk is doing</h1>
+          <button type="button" class="btn light sm" id="csv"><svg class="i"><use href="#i-download"/></svg>Export CSV</button>
         </div>
-        <button type="button" class="btn ghost sm" id="csv"><svg class="i"><use href="#i-download"/></svg>Export CSV</button>
-      </div>
+      </header>
 
       <div class="stats" id="stats"></div>
 
@@ -101,7 +105,7 @@
       <article class="panel"><h2>Connections</h2><div id="setup"></div></article>
     </section>
 
-    <footer class="foot">Photos: Clay Banks, Stephen Owen, Jakob Owens, Roberto Nickson, Christian Lambert, Julia, Lotus Design N Print, Brooke Balentine and Aalo Lens on <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a></footer>
+    <footer class="foot"><span class="wordmark small">Aangan</span><span>Interior design for homes and studios in Pune and PCMC</span><span>Photography by Clay Banks on <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a></span></footer>
   </main>
 
   <dialog id="drawer" class="drawer" aria-labelledby="d-title">
