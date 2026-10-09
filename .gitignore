@@ -1,0 +1,17 @@
+node_modules/
+.env
+.env.local
+.vercel/
+data/
+*.log
+eval/cache/
+# Course transcripts: keep out of the public repo until sharing is confirmed
+eval/transcripts/
+eval/results.json
+eval/report.md
+eval/redteam-report.md
+eval/redteam-results.json
+
+.vercel
+.env*
+!.env.example

@@ -1,0 +1,173 @@
+{
+  "version": "2026-10-09.1",
+  "owner": "Nikhil Deshpande",
+  "agent": {
+    "name": "Shruti",
+    "discloses_ai": true,
+    "greeting": "Hello, thank you for calling Aangan Studio. I'm Shruti, the studio's virtual assistant. How can I help you today?"
+  },
+  "notes": "Every value the source documents disagree on carries confirmed:false and the evidence behind the default. Decisions that rest on an unconfirmed value are routed to review instead of being rejected.",
+  "service_area": {
+    "confirmed": true,
+    "source": "services.md > Service area; qualified.md > criterion 2",
+    "pune": [
+      "kothrud",
+      "baner",
+      "aundh",
+      "wakad",
+      "koregaon park",
+      "kalyani nagar",
+      "viman nagar",
+      "hadapsar",
+      "magarpatta",
+      "nibm",
+      "kondhwa",
+      "undri",
+      "shivane",
+      "warje",
+      "erandwane",
+      "deccan"
+    ],
+    "pcmc": [
+      "pimpri",
+      "chinchwad",
+      "pimple saudagar",
+      "pimple nilakh",
+      "ravet",
+      "hinjewadi"
+    ],
+    "adjoining_assumed": {
+      "confirmed": false,
+      "source": "services.md says 'and adjoining areas' without listing them. These are inside Pune or PCMC limits.",
+      "localities": [
+        "kharadi",
+        "nanded city",
+        "bavdhan",
+        "pashan",
+        "balewadi",
+        "sus",
+        "yerawada",
+        "mundhwa",
+        "shivajinagar",
+        "camp",
+        "model colony",
+        "sinhagad road",
+        "dhayari",
+        "katraj",
+        "wanowrie",
+        "pimple gurav",
+        "akurdi",
+        "nigdi",
+        "bhosari",
+        "tathawade",
+        "punawale",
+        "wagholi",
+        "sus road",
+        "dahanukar colony",
+        "magarpatta city",
+        "cybercity",
+        "sunderban"
+      ]
+    },
+    "excluded": [
+      "talegaon",
+      "talegaon dabhade",
+      "lonavala",
+      "nashik",
+      "mumbai",
+      "thane",
+      "navi mumbai",
+      "satara",
+      "nagpur",
+      "bangalore",
+      "bengaluru"
+    ]
+  },
+  "segments": {
+    "confirmed": true,
+    "source": "services.md > What we don't do",
+    "in_scope": [
+      "residential",
+      "commercial"
+    ],
+    "out_of_scope": [
+      "hospitality",
+      "retail",
+      "fitness"
+    ]
+  },
+  "engagement": {
+    "confirmed": true,
+    "source": "qualified.md > criterion 1; services.md > Decor and styling only",
+    "minimum": "A room redesign with full execution. Advice-only, styling-only, standalone furniture sourcing and standalone Vastu are out of scope."
+  },
+  "commercial_size_sqft": {
+    "min": 500,
+    "min_confirmed": false,
+    "min_source": "Front desk told caller T18 'typically 500 sq ft or more'. Not written in services.md.",
+    "max": 3000,
+    "max_confirmed": true,
+    "max_source": "services.md: offices up to approximately 3,000 sq ft",
+    "hard_decline_below_fraction_of_min": 0.5
+  },
+  "timeline": {
+    "hard_floor_weeks": 6,
+    "hard_floor_confirmed": true,
+    "hard_floor_source": "services.md: cannot begin execution on a project that needs to be ready in under 6 weeks from today",
+    "comfortable_weeks": 10,
+    "comfortable_confirmed": false,
+    "comfortable_source": "qualified.md says the site must be available within 8-10 weeks of the consultation; services.md uses 6 weeks; front desk accepted 6 weeks of lead time in T15.",
+    "site_ready_max_weeks": 10,
+    "site_ready_confirmed": false
+  },
+  "budget": {
+    "confirmed": false,
+    "source": "qualified.md > criterion 4 ('clearly below'); floors derived from the LOW end of pricing.md. Internal only, never spoken to a caller.",
+    "misaligned_below_fraction_of_floor": 0.5,
+    "floor_inr": {
+      "residential_per_sqft": 1800,
+      "commercial_per_sqft": 1200,
+      "per_room": 350000
+    }
+  },
+  "decision_rules": {
+    "confirmed": false,
+    "source": "qualified.md says 'if it fails one, close gracefully' and also 'two or more criteria fail: decline'. Resolved as below.",
+    "decline_on_single_fail": [
+      "c1",
+      "c2",
+      "c3",
+      "c4"
+    ],
+    "c3_only_fail_route": "nurture",
+    "c5_only_fail_route": "review",
+    "unclear_location_route": "review",
+    "unclear_other_route": "qualified_with_confirmations"
+  },
+  "flags": {
+    "vip_if_referrer_knows_founder": true,
+    "large_project_sqft": 3000,
+    "large_project_types": [
+      "villa",
+      "independent house",
+      "bungalow"
+    ]
+  },
+  "sla": {
+    "handoff_target_minutes": 2,
+    "designer_accept_hours": 4,
+    "complaint_callback_minutes": 15,
+    "dropped_call_merge_minutes": 30
+  },
+  "approved_lines": {
+    "pricing": "Pricing depends on the site, the materials you choose, and the scope — your designer will walk you through it in detail at the consultation. I can book that for you right now if you'd like.",
+    "decline_multi": "This sounds like it may not be the right fit for us right now — but feel free to reach out if your timeline or scope changes.",
+    "decline_area": "Thank you for thinking of us. We only work in Pune city and PCMC at the moment, because our execution depends on our own contractors being on site. I'm sorry we can't help with this one.",
+    "decline_advice_only": "We're a full-service studio, so our projects always include design and execution together. We don't do advice-only visits. If you decide to go ahead with a full redesign, we'd love to hear from you.",
+    "decline_segment": "Thank you for reaching out. Restaurants, hotels, retail stores and gyms are outside what we design. You'd be better served by a studio that specialises in them.",
+    "decline_size": "Our design and execution team is set up for spaces of a certain size, and we wouldn't be able to do this one at the quality we'd want to promise. A designer who specialises in smaller spaces would be a better fit.",
+    "decline_budget": "Thank you for being upfront about the budget. For the scope you've described, with full execution, that would be well below what a project with us would cost. I wouldn't want to bring you to a consultation if the numbers don't line up.",
+    "nurture_timeline": "We wouldn't be able to do justice to the project in that time — the design phase alone takes three to four weeks before execution starts. If a later start works for you, I'd be glad to note your details and have us follow up.",
+    "escalate_complaint": "I'm very sorry. I'm flagging this to the studio head right now, and someone senior will call you back within 15 minutes."
+  }
+}

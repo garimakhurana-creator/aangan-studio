@@ -1,0 +1,27 @@
+{
+  "name": "aangan-studio",
+  "version": "0.1.0",
+  "description": "AI phone front desk for Aangan Studio: answers every call, qualifies against Nikhil's rubric, books the consultation and hands designers a complete brief.",
+  "private": true,
+  "type": "commonjs",
+  "main": "server.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test",
+    "eval": "node eval/simulate.js",
+    "eval:offline": "node eval/simulate.js --offline",
+    "agent:build": "node agent/build.js",
+    "redteam": "node eval/redteam.js",
+    "vaani:sync": "node scripts/vaani-sync.js"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@neondatabase/serverless": "^1.2.0",
+    "@vercel/functions": "^3.9.11",
+    "express": "^5.2.1",
+    "zod": "^4.6.5"
+  }
+}

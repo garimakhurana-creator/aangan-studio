@@ -1,0 +1,4 @@
+{
+  "_about": "Who receives handoffs. Replace with the studio's real designers. Leads flagged large_project or vip_referral go to the principal designer; others rotate. If this list is empty, every handoff goes to DESIGNER_EMAIL from .env.",
+  "designers": []
+}

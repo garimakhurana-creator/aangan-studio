@@ -1,0 +1,23 @@
+{
+  "_about": "Rates used to price each call on the dashboard. Fill these from your own bills; a null rate shows as 'rate not set' rather than a made-up number.",
+  "currency": "INR",
+  "vaani_inr_per_credit": null,
+  "vaani_rate_source": "Vaani dashboard > Billing. Vaani reports call_cost in credits per call.",
+  "gemini_inr_per_million_input_tokens": null,
+  "gemini_inr_per_million_output_tokens": null,
+  "gemini_rate_source": "Google AI Studio pricing for the model in GEMINI_MODEL, converted to INR.",
+  "fixed_monthly_inr": {
+    "hubspot_free_crm": 0,
+    "neon_free_tier": 0,
+    "vercel_hobby": 0,
+    "resend_free_tier": 0,
+    "calendly": null,
+    "telegram": 0
+  },
+  "business": {
+    "avg_project_value_inr": 1100000,
+    "avg_project_value_source": "Case brief: average project value ₹8–14 lakh (midpoint).",
+    "consultation_to_project_rate": null,
+    "consultation_to_project_source": "Not in the case. Set from Aangan's own records; the dashboard's revenue scenario is hidden until it is set."
+  }
+}

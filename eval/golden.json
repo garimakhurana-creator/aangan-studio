@@ -1,0 +1,25 @@
+{
+  "_about": "Expected outcome for each of the 20 phone transcripts in eval/transcripts (staff notes and the 'ESCALATE' label removed from the source PDF so the system decides from the conversation alone). route must match exactly; every flag in flags must be present; reason is a reason code that must appear.",
+  "cases": {
+    "T01": { "route": "qualified", "flags": ["referral"], "why": "3BHK Kothrud, full redesign, by March, owner with husband's go-ahead." },
+    "T02": { "route": "qualified", "flags": ["pricing_asked"], "why": "Pushed twice for a price; deflected; booked. Pricing never disqualifies." },
+    "T03": { "route": "declined", "reason": "OUT_OF_AREA", "why": "Nashik." },
+    "T04": { "route": "declined", "reason": "ADVICE_ONLY", "why": "Wants colour and furniture suggestions only." },
+    "T05": { "route": "qualified", "flags": ["vip_referral", "site_visit_requested"], "why": "Referred by a close friend of Nikhil; 4BHK Koregaon Park." },
+    "T06": { "route": "qualified", "why": "800 sq ft startup office in Baner, bare shell, December, founder on the call." },
+    "T07": { "route": "nurture", "reason": "TIMELINE_TOO_SHORT", "why": "Wants it done before Diwali (~3 weeks). Only the timeline fails, so follow up for a November start." },
+    "T08": { "route": "no_conversation", "why": "Missed call at 10:47pm. With the AI agent this call would have been answered." },
+    "T09": { "route": "escalate", "reason": "EXISTING_CLIENT_ISSUE", "why": "Existing client, designer unresponsive for five days. Not a lead." },
+    "T10": { "route": "declined", "reason": "BUDGET_MISALIGNED", "flags": ["budget_volunteered"], "why": "Volunteered 1-1.5 lakh for kitchen + bedroom with execution." },
+    "T11": { "route": "qualified", "flags": ["rented"], "why": "Rented 2BHK, 3-year lease, no structural changes, landlord agreed." },
+    "T12": { "route": "qualified", "flags": ["large_project"], "why": "5,500 sq ft villa in Kalyani Nagar. Principal designer site visit." },
+    "T13": { "route": "qualified", "flags": ["pricing_asked"], "why": "Pushed for a range; deflected; booked." },
+    "T14": { "route": "qualified", "flags": ["proxy_caller"], "why": "Son calling for parents, who will attend and decide." },
+    "T15": { "route": "qualified", "why": "Possession in ~6 weeks, site accessible now, husband authorised." },
+    "T16": { "route": "qualified", "flags": ["repeat_caller"], "why": "Earlier enquiry was never followed up. High priority, open with an apology." },
+    "T17": { "route": "qualified", "flags": ["dropped_call"], "why": "First call dropped, rang back. One lead, not two." },
+    "T18": { "route": "declined", "reason": "BELOW_MIN_SIZE", "why": "180 sq ft coworking pod." },
+    "T19": { "route": "declined", "reason": "SEGMENT_OUT_OF_SCOPE", "why": "Restaurant." },
+    "T20": { "route": "qualified", "why": "2BHK Magarpatta, January start, both owners attending." }
+  }
+}
