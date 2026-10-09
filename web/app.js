@@ -1,86 +1,90 @@
-// Aangan Studio — AI front desk dashboard.
-// Reads /api/metrics and /api/leads for the selected period. Every number has a
-// definition behind its ⓘ, every status is icon + label (never colour alone),
-// and every chart has a table view.
+// Aangan Studio — front desk.
+// Leads: a photo-led gallery for the whole design team, filtered by what needs
+// doing. Clicking a lead opens everything needed for the call: an opening line,
+// what the caller already said, what to confirm, and a place to log the outcome.
+// Insights: the founder's numbers. Every figure has a definition on hover.
 
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
 const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-const nice = s => String(s ?? '').replace(/_/g, ' ');
-const icon = (name, cls = '') => `<svg class="i ${cls}" aria-hidden="true"><use href="#i-${name}"/></svg>`;
-const info = def => `<button type="button" class="def" data-def="${esc(def)}" aria-label="What this means: ${esc(def)}">i</button>`;
-const inr = n => (n == null ? '—' : `₹${Number(n).toLocaleString('en-IN', { maximumFractionDigits: n < 100 ? 2 : 0 })}`);
+const icon = name => `<svg class="i" aria-hidden="true"><use href="#i-${name}"/></svg>`;
 const num = n => Number(n || 0).toLocaleString('en-IN');
-
+const inr = n => (n == null ? '—' : `₹${Number(n).toLocaleString('en-IN', { maximumFractionDigits: n < 100 ? 2 : 0 })}`);
+const def = text => `<button type="button" class="def" data-def="${esc(text)}" aria-label="${esc(text)}">i</button>`;
+const IST = { timeZone: 'Asia/Kolkata' };
+const dayMonth = iso => new Date(iso).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', ...IST });
+const timeOf = iso => new Date(iso).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit', ...IST });
+const weekday = iso => new Date(iso).toLocaleDateString('en-IN', { weekday: 'long', ...IST });
+const duration = s => (s == null ? '—' : s < 90 ? `${Math.round(s)} s` : s < 5400 ? `${Math.round(s / 60)} min` : `${Math.round(s / 3600)} h`);
 function ago(iso) {
   const s = (Date.now() - new Date(iso)) / 1000;
-  if (s < 60) return 'just now';
-  if (s < 3600) return `${Math.floor(s / 60)} min ago`;
+  if (s < 3600) return `${Math.max(1, Math.floor(s / 60))} min ago`;
   if (s < 86400) return `${Math.floor(s / 3600)} h ago`;
-  if (s < 7 * 86400) return `${Math.floor(s / 86400)} d ago`;
-  return new Date(iso).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+  const d = Math.floor(s / 86400);
+  return d < 7 ? `${d} day${d > 1 ? 's' : ''} ago` : dayMonth(iso);
 }
-const when = iso => new Date(iso).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', timeZone: 'Asia/Kolkata' });
-const duration = s => (s == null ? '—' : s < 90 ? `${Math.round(s)} s` : s < 5400 ? `${Math.round(s / 60)} min` : `${Math.round(s / 3600)} h`);
 
-const ROUTE = {
-  qualified: { label: 'Qualified', icon: 'ok' },
-  review: { label: 'Needs review', icon: 'warning' },
-  escalate: { label: 'Escalated', icon: 'critical' },
-  nurture: { label: 'Follow up later', icon: 'info' },
-  declined: { label: 'Declined', icon: 'dot' },
-  no_conversation: { label: 'No conversation', icon: 'dot' },
+// ---------------------------------------------------------------- photos
+// Free photos under the Unsplash License, credited in the footer. Each lead
+// gets a photo matching its project type, varied so the gallery never repeats
+// one image down the page.
+const POOLS = {
+  living: ['photo-1774200981075-a728eaaa3824', 'photo-1564078516393-cf04bd966897', 'photo-1541194577687-8c63bf9e7ee3', 'photo-1615800001964-5afd0ae8e49a', 'photo-1780659760416-3b62b5f18e11', 'photo-1773847469674-189153e5e32d'],
+  kitchen: ['photo-1764526624453-db32c24eca55', 'photo-1722605090433-41d1183a792d', 'photo-1609347744403-2306e8a9ae27'],
+  bedroom: ['photo-1668089677938-b52086753f77'],
+  office: ['photo-1763307411477-6bb3254f1496'],
+  villa: ['photo-1758448756207-54505680d130'],
 };
-const BOOKING = { none: '—', no_email: 'Call to book', link_created: 'Link ready', link_sent: 'Link sent', booked: 'Booked' };
-const HANDOFF = { none: '—', sent: 'Awaiting accept', accepted: 'Accepted' };
-const SEV = { critical: 'Urgent', serious: 'Problem', warning: 'Decide', info: 'FYI' };
+const img = (id, w) => `https://images.unsplash.com/${id}?w=${w}&q=72&auto=format&fit=crop`;
+const hash = s => [...String(s)].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
+function photoFor(l) {
+  const p = l.project || {};
+  const type = String(p.property_type || '').toLowerCase();
+  const rooms = (p.rooms || []).join(' ').toLowerCase();
+  if (['hospitality', 'retail', 'fitness'].includes(p.segment) || l.decision?.route === 'no_conversation') return null;
+  let pool = 'living';
+  if (p.segment === 'commercial' || /office|clinic|studio|cowork/.test(type)) pool = 'office';
+  else if (/villa|house|bungalow/.test(type)) pool = 'villa';
+  else if (p.scope_type !== 'full_home' && /kitchen/.test(rooms) && !/living|bed/.test(rooms)) pool = 'kitchen';
+  else if (p.scope_type !== 'full_home' && /bed/.test(rooms) && !/living|kitchen/.test(rooms)) pool = 'bedroom';
+  else if (/kitchen/.test(rooms) && hash(l.id) % 3 === 0) pool = 'kitchen';
+  const list = POOLS[pool];
+  return list[hash(l.id) % list.length];
+}
+
+// ---------------------------------------------------------------- vocabulary
+const SCOPE = { full_home: 'Full home', partial: 'Some rooms', single_room: 'One room', office_fitout: 'Office fit-out' };
+const DECIDER = { self: 'The caller', authorised: 'The caller, with their partner', proxy_decider_will_attend: 'The owners (caller is family)', research_only: 'Someone else — confirm who' };
 const REASON = {
-  OUT_OF_AREA: 'Outside Pune / PCMC', ADVICE_ONLY: 'Advice only', SEGMENT_OUT_OF_SCOPE: 'Restaurant, retail or gym',
-  BELOW_MIN_SIZE: 'Space too small', BUDGET_MISALIGNED: 'Budget clearly too low', TIMELINE_TOO_SHORT: 'Timeline too short',
-  SITE_NOT_READY: 'Site not ready', MANUAL_DECLINE: 'Declined on review',
+  OUT_OF_AREA: 'Outside Pune and PCMC', ADVICE_ONLY: 'Wanted advice only', SEGMENT_OUT_OF_SCOPE: 'Restaurant, shop or gym',
+  BELOW_MIN_SIZE: 'Space too small', BUDGET_MISALIGNED: 'Budget far too low', TIMELINE_TOO_SHORT: 'Timeline too short', SITE_NOT_READY: 'Site not ready',
 };
-const FLAG = {
-  vip_referral: 'VIP referral', repeat_caller: 'Called before', known_caller: 'Known number', pricing_asked: 'Asked price',
-  proxy_caller: 'Calling for owner', rented: 'Rented', large_project: 'Large project', site_visit_requested: 'Site visit',
-  dropped_call: 'Dropped & rang back', tight_timeline: 'Tight timeline', budget_volunteered: 'Gave budget', referral: 'Referral',
-  structural_request: 'Wants structural work',
+const HEADS_UP = {
+  pricing_asked: "Asked about price. The assistant gave no figure, so pricing is yours to walk through at the consultation.",
+  vip_referral: 'Referred by a friend of Nikhil.',
+  repeat_caller: "Called before and wasn't followed up. Open with an apology.",
+  proxy_caller: 'Calling for the owners. Make sure the decision-makers come to the consultation.',
+  rented: 'Rented home: keep it reversible, no structural work.',
+  large_project: 'Large project: suggest the principal designer visits the site.',
+  tight_timeline: 'Tight timeline: confirm the completion date is firm.',
+  structural_request: "Mentioned structural work, which the studio doesn't do.",
 };
+const OUTCOMES = [['booked', 'Booked a consultation'], ['no_answer', 'No answer'], ['callback', 'Call back later'], ['not_interested', 'Not interested'], ['not_fit', 'Not a fit']];
+const OUTCOME_LABEL = Object.fromEntries([...OUTCOMES, ['note', 'Note']]);
 
-// Free photos under the Unsplash License (credited in the footer). Chosen by
-// project type so a row's picture says what kind of space it is at a glance.
-const PHOTOS = {
-  living: { id: 'photo-1774200981075-a728eaaa3824', label: 'Living spaces', credit: 'Clay Banks' },
-  kitchen: { id: 'photo-1764526624453-db32c24eca55', label: 'Kitchen', credit: 'Clay Banks' },
-  bedroom: { id: 'photo-1668089677938-b52086753f77', label: 'Bedroom', credit: 'Lotus Design N Print' },
-  office: { id: 'photo-1763307411477-6bb3254f1496', label: 'Office', credit: 'Brooke Balentine' },
-  villa: { id: 'photo-1758448756207-54505680d130', label: 'Villa / house', credit: 'Aalo Lens' },
-};
-const photoUrl = (key, w) => `https://images.unsplash.com/${PHOTOS[key].id}?w=${w}&q=70&auto=format&fit=crop`;
-function photoFor(project = {}) {
-  const type = String(project.property_type || '').toLowerCase();
-  const rooms = (project.rooms || []).join(' ').toLowerCase();
-  if (['hospitality', 'retail', 'fitness'].includes(project.segment)) return null;
-  if (project.segment === 'commercial' || /office|clinic|studio|cowork/.test(type)) return 'office';
-  if (/villa|house|bungalow/.test(type)) return 'villa';
-  if (project.scope_type !== 'full_home' && /kitchen/.test(rooms) && !/living|bed/.test(rooms)) return 'kitchen';
-  if (project.scope_type !== 'full_home' && /bed/.test(rooms) && !/living|kitchen/.test(rooms)) return 'bedroom';
-  return 'living';
-}
-const thumb = project => {
-  const k = photoFor(project);
-  return k ? `<img class="thumb" src="${photoUrl(k, 96)}" srcset="${photoUrl(k, 96)} 1x, ${photoUrl(k, 192)} 2x" alt="" loading="lazy" width="44" height="44">` : '<span class="thumb none" aria-hidden="true">—</span>';
-};
-
-const state = { bf: { q: '', area: '', type: '', flags: [], sort: 'urgent' }, view: 'overview', kind: 'qualified', scope: 'all', limit: 10, expanded: {}, period: 'all', sim: false, route: '', q: '', leads: [], metrics: null, attOpen: false, updatedAt: null };
+// ---------------------------------------------------------------- state
+const state = { view: 'leads', period: 'all', sim: false, simAuto: false, filter: null, q: '', area: '', type: '', flags: [], sort: 'urgent', leads: [], metrics: null, health: null, filtersOpen: false };
 try {
   state.period = localStorage.getItem('aangan.period') || 'all';
-  state.sim = localStorage.getItem('aangan.sim') === '1';
+  const s = localStorage.getItem('aangan.sim');
+  state.sim = s === '1';
+  state.simAuto = s === null; // decide after first load
 } catch { /* storage unavailable */ }
-// Shareable views: ?sim=1&period=30d
 const qs = new URLSearchParams(location.search);
-if (qs.has('sim')) state.sim = qs.get('sim') === '1';
+if (qs.has('sim')) { state.sim = qs.get('sim') === '1'; state.simAuto = false; }
 if (['7d', '30d', 'month', 'all'].includes(qs.get('period'))) state.period = qs.get('period');
-if (['qualified', 'notq'].includes(qs.get('kind'))) state.kind = qs.get('kind');
+if (qs.get('filter')) state.filter = qs.get('filter');
+const save = () => { try { localStorage.setItem('aangan.period', state.period); localStorage.setItem('aangan.sim', state.sim ? '1' : '0'); } catch { /* ignore */ } };
 
 async function api(url, opts) {
   const res = await fetch(url, opts);
@@ -89,21 +93,55 @@ async function api(url, opts) {
   return data;
 }
 const post = (url, body) => api(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}) });
-
 function toast(msg) {
-  const t = $('#toast');
-  t.textContent = msg; t.hidden = false;
-  clearTimeout(toast.t); toast.t = setTimeout(() => { t.hidden = true; }, 3200);
+  const t = $('#toast'); t.textContent = msg; t.hidden = false;
+  clearTimeout(toast.t); toast.t = setTimeout(() => { t.hidden = true; }, 3000);
 }
 
-// ------------------------------------------------------------------ load
+// ---------------------------------------------------------------- lead status
+function urgency(l) {
+  const d = l.decision || {}; const f = d.flags || [];
+  const r = [];
+  if (f.includes('vip_referral')) r.push('VIP: referred by a friend of Nikhil');
+  if (f.includes('repeat_caller') || (f.includes('known_caller') && d.priority === 'high')) r.push("Called before and wasn't followed up");
+  if (f.includes('tight_timeline')) r.push(`Tight timeline${l.timeline?.weeks_until_needed ? `, about ${l.timeline.weeks_until_needed} weeks` : ''}`);
+  if (l.work?.status === 'callback' && l.work.callback_at && new Date(l.work.callback_at) <= Date.now() + 36e5) r.unshift(`Callback due ${timeOf(l.work.callback_at)}`);
+  return r;
+}
 
+// One status per lead: what the team should do with it.
+function statusOf(l) {
+  const route = l.decision?.route;
+  if (route === 'escalate') return { bucket: 'needs', label: 'Existing client', dot: 'crit', why: l.complaint?.detail || 'Unhappy existing client — senior callback due', hot: true };
+  if (route === 'review') return { bucket: 'needs', label: 'Needs review', dot: 'warn', why: (l.decision.review_reasons || []).join(' '), hot: true };
+  if (route === 'qualified') {
+    if (l.work?.status === 'closed') return { bucket: 'notq', label: 'Closed', dot: 'muted', why: l.work.closed_reason === 'not_fit' ? 'Not a fit after the call' : 'Not interested after the call' };
+    if (l.booking?.status === 'booked') return { bucket: 'booked', label: l.booking.start_time ? `Booked · ${dayMonth(l.booking.start_time)}` : 'Booked', dot: 'good', why: l.booking.start_time ? `${weekday(l.booking.start_time)}, ${timeOf(l.booking.start_time)}${l.site_visit ? ' · site visit' : ''}` : 'Consultation booked' };
+    const u = urgency(l);
+    if (u.length) return { bucket: 'needs', label: 'Urgent', dot: 'crit', why: u[0], hot: true };
+    if (l.work?.status === 'callback') return { bucket: 'progress', label: `Callback ${dayMonth(l.work.callback_at)}`, dot: 'warn', why: `Call back ${weekday(l.work.callback_at)}, ${timeOf(l.work.callback_at)}` };
+    if (l.work?.attempts) return { bucket: 'progress', label: 'Tried calling', dot: 'warn', why: `${l.work.attempts} ${l.work.attempts > 1 ? 'tries' : 'try'}, no answer yet` };
+    if (l.booking?.status === 'link_sent') return { bucket: 'progress', label: 'Link sent', dot: 'warn', why: 'Booking link sent — waiting for them to pick a time' };
+    const days = Math.floor((Date.now() - new Date(l.last_call_at)) / 864e5);
+    return { bucket: 'new', label: 'New', dot: 'new', why: days >= 1 ? `Waiting ${days} day${days > 1 ? 's' : ''} for a call` : 'Called today' };
+  }
+  if (route === 'nurture') return { bucket: 'notq', label: 'Follow up later', dot: 'muted', why: l.reason || 'Timeline too short for now' };
+  if (route === 'no_conversation') return { bucket: 'notq', label: 'No conversation', dot: 'muted', why: 'Hung up before saying anything' };
+  return { bucket: 'notq', label: 'Not a fit', dot: 'muted', why: l.reason || 'Outside what the studio takes on' };
+}
+const tagOf = l => { const f = l.decision?.flags || []; return f.includes('vip_referral') ? 'VIP' : f.includes('large_project') ? 'Large' : f.includes('repeat_caller') ? 'Repeat' : ''; };
+const nameOf = l => l.name || (l.phone ? `Caller ···${String(l.phone).replace(/\D/g, '').slice(-4)}` : 'Caller');
+
+// ---------------------------------------------------------------- load & render
 async function load({ quiet = false } = {}) {
   const q = `?period=${state.period}${state.sim ? '&simulated=1' : ''}`;
   if (!quiet) $('main').classList.add('loading');
   try {
     const [m, leads, health] = await Promise.all([api(`/api/metrics${q}`), api(`/api/leads${q}`), api('/api/health')]);
-    state.metrics = m; state.leads = leads; state.health = health; state.updatedAt = Date.now();
+    // First visit with no real calls yet: show the demo calls automatically.
+    if (state.simAuto && !state.sim && leads.length === 0) { state.sim = true; state.simAuto = false; return load({ quiet }); }
+    state.simAuto = false;
+    Object.assign(state, { metrics: m, leads, health });
     render();
   } catch (err) {
     toast(`Couldn't load: ${err.message}`);
@@ -113,769 +151,431 @@ async function load({ quiet = false } = {}) {
 }
 
 function render() {
-  const m = state.metrics;
-  renderControls();
-  renderSetup(state.health);
-  renderAttention(m.attention);
-  renderOverview(m);
-  renderHourly(m);
-  renderBeforeAfter(m);
-  renderFunnel(m);
-  renderRoutes(m);
-  renderFilters(m);
-  renderLeads();
-  renderPricing(m);
-  renderCost(m);
-  renderHealth(m);
-  renderFilterBar();
-  renderBoard();
-  $('#policy-v').textContent = m.policy_version;
-  tickUpdated();
-}
-
-function tickUpdated() {
-  if (state.updatedAt) $('#updated').textContent = `Updated ${ago(new Date(state.updatedAt).toISOString())} · refreshes every 30 s`;
-}
-
-// ------------------------------------------------------------------ header & setup
-
-function renderControls() {
-  $$('#period button').forEach(b => b.setAttribute('aria-checked', String(b.dataset.period === state.period)));
+  $('#period').value = state.period;
   $('#sim').checked = state.sim;
+  $('#demo-pill').hidden = !state.sim;
+  renderLeads();
+  renderInsights();
 }
 
-function renderSetup(h) {
-  const items = [
-    ['Voice agent', h.vaani.configured], ['AI extraction', h.gemini.configured], ['Database', h.store === 'neon'],
-    ['HubSpot', h.integrations.hubspot], ['Calendly', h.integrations.calendly], ['Email', h.integrations.email], ['Telegram', h.integrations.telegram],
-  ];
-  const on = items.filter(([, v]) => v).length;
-  $('#setup').innerHTML = `<p class="muted small">${on === items.length ? 'Everything is connected.' : `${on} of ${items.length} connected. Actions for anything not connected are logged as skipped and can be retried later; no enquiry is lost.`}${h.email_test_mode ? ' Email is in test mode.' : ''}</p>
-    <div class="conn">${items.map(([k, v]) => `<span class="conn-item ${v ? 'on' : 'off'}">${icon(v ? 'ok' : 'dot')}${esc(k)}<small>${v ? 'Connected' : 'Not connected'}</small></span>`).join('')}</div>`;
-}
+// ---------------------------------------------------------------- leads view
+const CHIPS = [['needs', 'Needs you'], ['new', 'New'], ['progress', 'In progress'], ['booked', 'Booked'], ['notq', 'Not qualified'], ['all', 'All']];
 
-// ------------------------------------------------------------------ attention
-
-function renderAttention(allItems) {
-  const count = $('#att-count');
-  count.textContent = allItems.length;
-  count.classList.toggle('zero', allItems.length === 0);
-
-  // Two tabs: qualified leads vs everything that isn't one.
-  const split = { qualified: allItems.filter(i => i.qualified), notq: allItems.filter(i => !i.qualified) };
-  if (!state.attKind) state.attKind = split.qualified.length || !split.notq.length ? 'qualified' : 'notq';
-  const urgentIn = k => split[k].filter(i => i.severity === 'critical' || i.severity === 'serious').length;
-  $('#att-tabs').innerHTML = [['qualified', 'Qualified'], ['notq', 'Not qualified']].map(([k, label]) =>
-    `<button type="button" role="tab" aria-selected="${state.attKind === k}" data-att-kind="${k}">${label}<span class="n">${split[k].length}</span>${urgentIn(k) ? `<span class="dot-alert" title="${urgentIn(k)} urgent"></span>` : ''}</button>`).join('');
-  const items = split[state.attKind];
-
-  const list = $('#attention');
-  if (!items.length) {
-    list.innerHTML = `<li class="all-clear">${icon('ok')} All clear <span>— nothing here needs you right now.</span></li>`;
-    $('#att-more').hidden = true;
-    return;
-  }
-  // Repeats of the same low-urgency kind collapse into one row until expanded.
-  const GROUP = { no_email: n => `${n} qualified callers left no email`, callback: n => `${n} calls with no conversation` };
-  const rows = [];
-  for (const it of items) {
-    const groupable = GROUP[it.kind] && items.filter(x => x.kind === it.kind).length > 1 && !state.expanded[it.kind];
-    if (!groupable) { rows.push(it); continue; }
-    if (rows.some(r => r.group === it.kind)) continue;
-    const members = items.filter(x => x.kind === it.kind);
-    rows.push({ group: it.kind, route: it.route, severity: it.severity, title: GROUP[it.kind](members.length), detail: it.detail, who: members.slice(0, 3).map(x => x.who).join(', ') + (members.length > 3 ? '…' : ''), at: members[0].at });
-  }
-  const shown = state.attOpen ? rows : rows.slice(0, 4);
-  const btn = (a, it) => ({
-    approve: `<button class="btn good sm" data-act="approve" data-id="${it.lead_id}">Send to designer</button>`,
-    decline: `<button class="btn ghost sm" data-act="decline" data-id="${it.lead_id}">Decline</button>`,
-    retry: `<button class="btn sm" data-act="retry" data-id="${it.lead_id}">Retry</button>`,
-    open: `<button class="btn ghost sm" data-act="open" data-id="${it.lead_id}">Open</button>`,
-    handled: `<button class="btn ghost sm" data-act="handled" data-id="${it.lead_id}">Mark handled</button>`,
-  }[a]);
-  list.innerHTML = shown.map(it => it.group ? `<li class="att">
-    <span class="sev ${it.severity}">${icon(it.severity)}${SEV[it.severity]}</span>
-    <div class="what"><div class="att-line">${statusPill(it.route)}<b>${esc(it.title)}</b></div><span class="muted">${esc(it.who)}</span><div class="detail">${esc(it.detail)}</div></div>
-    <div class="acts"><span class="when">${esc(ago(it.at))}</span><button class="btn ghost sm" data-expand="${it.group}">Show each</button></div>
-  </li>` : `<li class="att">
-    <span class="sev ${it.severity}">${icon(it.severity)}${SEV[it.severity]}</span>
-    <div class="what"><div class="att-line">${statusPill(it.route)}<b>${esc(it.title)}</b></div><a href="#lead=${it.lead_id}" data-open="${it.lead_id}">${esc(it.who)}</a>${it.project ? ` <span class="muted">· ${esc(it.project)}</span>` : ''}${it.simulated ? ' <span class="pill sim">simulated</span>' : ''}
-      <div class="detail" title="${esc(it.detail)}">${esc(it.detail || '')}</div></div>
-    <div class="acts"><span class="when">${esc(ago(it.at))}</span>${it.actions.map(a => btn(a, it)).join('')}${it.actions.includes('open') ? '' : btn('open', it)}</div>
-  </li>`).join('');
-  const more = $('#att-more');
-  more.hidden = rows.length <= 4;
-  more.textContent = state.attOpen ? 'Show fewer' : `Show ${rows.length - 4} more`;
-}
-
-function statusPill(route) {
-  const s = STATUS[route];
-  return s ? `<span class="pill ${s.cls}">${icon(s.icon)}${esc(s.label)}</span>` : '';
-}
-
-async function act(action, id, el) {
-  if (action === 'open') return openLead(id);
-  if (el) el.disabled = true;
-  try {
-    if (action === 'approve' || action === 'decline') {
-      const r = await post(`/api/leads/${id}/decide`, { choice: action });
-      toast(action === 'approve' ? 'Sent to a designer.' : 'Declined and logged.');
-      if (r.route === 'qualified' && Object.values(r.action_status || {}).includes('failed')) toast('Sent to designer, but an action failed. See the enquiry.');
-    } else if (action === 'retry') {
-      const r = await post(`/api/leads/${id}/retry`);
-      const failed = Object.values(r.action_status || {}).filter(s => s === 'failed').length;
-      toast(failed ? `${failed} action(s) still failing.` : 'All actions completed.');
-    } else if (action === 'handled') {
-      await post(`/api/leads/${id}/handled`);
-      toast('Marked handled.');
+function filtered() {
+  const f = state;
+  return state.leads.filter(l => {
+    if (f.area && areaOf(l) !== f.area) return false;
+    if (f.type && typeOf(l) !== f.type) return false;
+    if (f.flags.length && !f.flags.every(x => (l.decision?.flags || []).includes(x))) return false;
+    if (f.q) {
+      const hay = [l.name, l.phone, l.project?.locality, l.project?.property_type, l.summary].join(' ').toLowerCase();
+      if (!f.q.toLowerCase().split(/\s+/).every(w => hay.includes(w))) return false;
     }
-    await load({ quiet: true });
-    if ($('#drawer').open) openLead(id);
-  } catch (err) {
-    toast(err.message);
-  } finally {
-    if (el) el.disabled = false;
-  }
+    return true;
+  });
 }
-
-// ------------------------------------------------------------------ overview
-
-function renderOverview(m) {
-  const q = m.funnel.find(f => f.key === 'qualified').value;
-  const total = m.funnel[0].value;
-  const r = m.response;
-  $('#hero-num').textContent = num(q);
-  let copy;
-  if (!total) copy = 'No enquiries in this period yet. Calls to the Vaani agent appear here within a minute.';
-  else if (r.median_handoff_s.value != null) copy = `of ${num(total)} enquiries passed all five of Nikhil's criteria, and reached a designer about ${duration(r.median_handoff_s.value)} after the call ended.`;
-  else copy = `of ${num(total)} enquiries passed all five of Nikhil's criteria. Designer emails start as soon as email is connected.`;
-  $('#hero-copy').textContent = copy;
-
-  const calls = r.calls.value;
-  const ahPct = calls ? Math.round((r.after_hours.value / calls) * 100) : null;
-  const tiles = [
-    { label: 'Calls answered', value: calls ? `${r.answered_pct.value}%` : '—', note: calls ? `${num(calls)} calls · 0 missed` : 'no calls yet', good: !!calls, def: r.answered_pct.def },
-    { label: 'After hours', value: num(r.after_hours.value), note: ahPct != null ? `${ahPct}% of calls, all answered` : '—', def: r.after_hours.def },
-    { label: 'Call → designer', value: duration(r.median_handoff_s.value), note: r.awaiting_accept.value ? `${r.awaiting_accept.value} awaiting accept` : 'median time to inbox', def: r.median_handoff_s.def },
-    { label: 'Cost per qualified lead', value: inr(m.cost.per_qualified_inr), note: m.cost.rates_missing.length ? 'add rates to show ₹' : 'variable cost', def: m.cost.def },
-  ];
-  $('#tiles').innerHTML = tiles.map(t => `<div class="tile">
-    <span class="label">${esc(t.label)} ${info(t.def)}</span>
-    <span class="value">${esc(t.value)}</span>
-    <span class="note ${t.good ? 'good' : ''}">${esc(t.note)}</span></div>`).join('');
-}
-
-// ------------------------------------------------------------------ hourly chart
-
-function niceMax(v) {
-  if (v <= 4) return 4;
-  const p = 10 ** Math.floor(Math.log10(v));
-  return [1, 2, 2.5, 5, 10].map(s => s * p).find(s => s >= v);
-}
-const hourLabel = h => (h === 0 ? '12am' : h < 12 ? `${h}am` : h === 12 ? '12pm' : `${h - 12}pm`);
-
-function renderHourly(m) {
-  const data = m.hourly.data;
-  const total = data.reduce((s, d) => s + d.calls, 0);
-  const after = data.filter(d => d.after_hours).reduce((s, d) => s + d.calls, 0);
-  $('#hourly-sub').textContent = total ? `${after} of ${total} calls (${Math.round(after / total * 100)}%) came while the front desk was closed. The agent answered all of them.` : m.hourly.def;
-  const el = $('#hourly');
-  if (!total) { el.innerHTML = '<p class="chart-empty">Calls will show here by hour of day.</p>'; $('#hourly-table').innerHTML = ''; return; }
-
-  const W = 720, H = 230, L = 30, R = 6, T = 26, B = 26;
-  const pw = W - L - R, ph = H - T - B, slot = pw / 24, bw = Math.min(22, slot * 0.64);
-  const max = niceMax(Math.max(...data.map(d => d.calls)));
-  const y = v => T + ph - (v / max) * ph;
-  const ticks = [0, max / 2, max].filter((v, i, a) => Number.isInteger(v) && a.indexOf(v) === i);
-  const [open, close] = m.hourly.office_hours;
-  const peak = data.reduce((a, d) => (d.calls > a.calls ? d : a), data[0]);
-  const r = 4;
-  const colPath = (x, top, bottom) => {
-    const h = bottom - top;
-    if (h <= 0) return '';
-    const rr = Math.min(r, h, bw / 2);
-    return `M${x},${bottom}V${top + rr}Q${x},${top} ${x + rr},${top}H${x + bw - rr}Q${x + bw},${top} ${x + bw},${top + rr}V${bottom}Z`;
-  };
-  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Calls by hour of day. ${after} of ${total} outside 10am to 7pm.">
-    <rect class="band" x="${L + open * slot}" y="${T - 18}" width="${(close - open) * slot}" height="${ph + 18}" rx="6"/>
-    <text class="band-label" x="${L + ((open + close) / 2) * slot}" y="${T - 6}" text-anchor="middle">Front desk open</text>
-    ${ticks.map(v => `<line class="grid-line" x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"/><text class="axis" x="${L - 8}" y="${y(v) + 4}" text-anchor="end">${v}</text>`).join('')}
-    ${data.map((d, i) => {
-      const x = L + i * slot + (slot - bw) / 2;
-      return `<g><rect class="col-hit" x="${L + i * slot}" y="${T}" width="${slot}" height="${ph}" data-h="${d.hour}" data-c="${d.calls}" data-a="${d.after_hours ? 1 : 0}" tabindex="${d.calls ? 0 : -1}"/>
-        <path class="col" d="${colPath(x, y(d.calls), T + ph)}"/></g>`;
-    }).join('')}
-    ${peak.calls ? `<text class="val" x="${L + peak.hour * slot + slot / 2}" y="${y(peak.calls) - 6}" text-anchor="middle">${peak.calls}</text>` : ''}
-    ${[0, 6, 12, 18, 23].map(h => `<text class="axis" x="${L + h * slot + slot / 2}" y="${H - 6}" text-anchor="middle">${hourLabel(h)}</text>`).join('')}
-  </svg>`;
-  $('#hourly-table').innerHTML = `<table><thead><tr><th>Hour (IST)</th><th>Calls</th><th>Front desk</th></tr></thead><tbody>${data.filter(d => d.calls).map(d => `<tr><td>${hourLabel(d.hour)}–${hourLabel((d.hour + 1) % 24)}</td><td>${d.calls}</td><td>${d.after_hours ? 'Closed' : 'Open'}</td></tr>`).join('')}</tbody></table>`;
-}
-
-function showTip(target, html) {
-  const tip = $('#tip');
-  tip.innerHTML = html; tip.hidden = false;
-  const r = target.getBoundingClientRect();
-  const tw = tip.offsetWidth, th = tip.offsetHeight;
-  let x = r.left + r.width / 2 - tw / 2;
-  x = Math.max(8, Math.min(window.innerWidth - tw - 8, x));
-  let yy = r.top - th - 8;
-  if (yy < 8) yy = r.bottom + 8;
-  tip.style.left = `${x}px`; tip.style.top = `${yy}px`;
-}
-const hideTip = () => { $('#tip').hidden = true; };
-
-function tipFor(el) {
-  if (el.classList.contains('col-hit')) {
-    const h = Number(el.dataset.h), c = Number(el.dataset.c);
-    return `<b>${hourLabel(h)}–${hourLabel((h + 1) % 24)}</b>${c} call${c === 1 ? '' : 's'} · front desk ${el.dataset.a === '1' ? 'closed' : 'open'}`;
-  }
-  if (el.classList.contains('def')) return esc(el.dataset.def);
-  return null;
-}
-document.addEventListener('mouseover', e => { const t = e.target.closest('.col-hit, .def'); if (t) { const h = tipFor(t); if (h) showTip(t, h); } });
-document.addEventListener('mouseout', e => { if (e.target.closest('.col-hit, .def')) hideTip(); });
-document.addEventListener('focusin', e => { const t = e.target.closest('.col-hit, .def'); if (t) showTip(t, tipFor(t)); });
-document.addEventListener('focusout', e => { if (e.target.closest('.col-hit, .def')) hideTip(); });
-window.addEventListener('scroll', hideTip, { passive: true });
-
-// ------------------------------------------------------------------ comparison, funnel, routes
-
-function renderBeforeAfter(m) {
-  const b = m.baseline, r = m.response;
-  const calls = r.calls.value;
-  $('#ba').innerHTML = `<div class="compare">
-    <div class="then"><span class="k">Last month, by hand</span><span class="big">${b.no_reply_48h_pct}%</span><p>of ~${b.enquiries_per_month} enquiries had no reply after 48 hours. ${b.outside_hours_pct}% arrived when the desk was closed.</p></div>
-    <div class="now"><span class="k">With the AI front desk</span><span class="big">${calls ? '0%' : '—'}</span><p>${calls ? `unanswered. All ${num(calls)} calls were picked up live${r.after_hours.value ? `, including ${num(r.after_hours.value)} after hours` : ''}.` : 'Every call is picked up live, day or night.'}</p></div>
-  </div>
-  <p class="footnote">Nikhil's data: replying within an hour converts at ${b.conversion_multiple_within_1h}× a next-day reply. That's the case baseline, not a claimed result.</p>`;
-}
-
-function bars(items, max) {
-  const top = max || Math.max(1, ...items.map(i => i.value));
-  return `<div class="bars">${items.map(i => `<div class="bar-row"><span class="name">${esc(i.label)}${i.def ? ` ${info(i.def)}` : ''}</span><span class="bar" role="img" aria-label="${esc(i.label)}: ${i.value}"><i style="width:${(i.value / top) * 100}%"></i></span><span class="n">${num(i.value)}</span></div>`).join('')}</div>`;
-}
-
-function renderFunnel(m) {
-  const f = m.funnel;
-  const top = Math.max(1, f[0].value);
-  $('#funnel').innerHTML = `<div class="bars">${f.map((s, i) => {
-    const prev = i ? f[i - 1].value : null;
-    const conv = i && prev ? `${Math.round((s.value / prev) * 100)}%` : i ? '—' : '';
-    return `${i ? `<div class="step"><span>↓ ${conv}</span></div>` : ''}<div class="bar-row"><span class="name">${esc(s.label)} ${info(s.def)}</span><span class="bar" role="img" aria-label="${esc(s.label)}: ${s.value}"><i style="width:${(s.value / top) * 100}%"></i></span><span class="n">${num(s.value)}</span></div>`;
-  }).join('')}</div>`;
-}
-
-function renderRoutes(m) {
-  const routes = Object.entries(m.routes).map(([k, v]) => ({ label: ROUTE[k].label, value: v }));
-  const reasons = Object.entries(m.decline_reasons)
-    .filter(([k]) => REASON[k])
-    .sort((a, b) => b[1] - a[1]).map(([k, v]) => ({ label: REASON[k], value: v }));
-  const max = Math.max(1, ...routes.map(r => r.value));
-  $('#routes').innerHTML = bars(routes, max) + (reasons.length ? `<h3 class="sub-h">Why enquiries were declined or deferred</h3>${bars(reasons, max)}` : '');
-}
-
-// ------------------------------------------------------------------ enquiries table
-
-function renderFilters(m) {
-  const all = m.funnel[0].value;
-  const opts = [['', 'All', all], ...Object.entries(m.routes).filter(([, v]) => v).map(([k, v]) => [k, ROUTE[k].label, v])];
-  if (state.route && !opts.some(([k]) => k === state.route)) state.route = '';
-  $('#route-filter').innerHTML = opts.map(([k, label, n]) => `<button type="button" role="radio" aria-checked="${state.route === k}" data-route="${k}">${esc(label)}<span>${n}</span></button>`).join('');
-}
-
-function matches(l) {
-  if (state.route && l.decision?.route !== state.route) return false;
-  if (!state.q) return true;
-  const hay = [l.name, l.phone, l.email, l.project?.locality, l.project?.property_type, l.summary].join(' ').toLowerCase();
-  return state.q.toLowerCase().split(/\s+/).every(w => hay.includes(w));
-}
-
-function routePill(route) {
-  const r = ROUTE[route] || { label: nice(route), icon: 'dot' };
-  return `<span class="pill ${esc(route)}">${icon(r.icon)}${esc(r.label)}</span>`;
-}
+const areaOf = l => String(l.project?.locality || '').split(/[,·—-]/)[0].trim();
+const typeOf = l => (l.project?.segment === 'commercial' ? 'office' : l.project?.segment === 'residential' ? 'home' : 'other');
 
 function renderLeads() {
-  const all = state.leads.filter(matches);
-  const rows = all.slice(0, state.limit);
-  const moreBtn = $('#leads-more');
-  moreBtn.hidden = all.length <= state.limit;
-  moreBtn.textContent = all.length - state.limit > 10 ? `Show 10 more (${all.length - state.limit} left)` : `Show ${all.length - state.limit} more`;
+  const leads = filtered();
+  const by = { needs: [], new: [], progress: [], booked: [], notq: [], all: leads };
+  for (const l of leads) { l._s = statusOf(l); by[l._s.bucket].push(l); }
+  if (!state.filter) state.filter = by.needs.length ? 'needs' : by.new.length ? 'new' : 'all';
+
+  const hour = Number(new Date().toLocaleString('en-IN', { hour: 'numeric', hour12: false, ...IST }));
+  $('#today').textContent = new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', ...IST });
+  $('#hello').textContent = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+  const parts = [[by.needs.length, 'need you'], [by.new.length, 'new'], [by.booked.length, 'booked']];
+  $('#lede').innerHTML = state.leads.length ? parts.map(([n, t]) => `<b>${n}</b> ${t}`).join('<span class="sep"> · </span>') : 'No enquiries in this period yet.';
+
+  $('#chips').innerHTML = CHIPS.map(([k, label]) => `<button type="button" role="tab" aria-selected="${state.filter === k}" data-chip="${k}">${k === 'needs' && by.needs.length ? '<span class="dot"></span>' : ''}${label} <span class="n">${by[k].length}</span></button>`).join('');
+
+  const nf = (state.area ? 1 : 0) + (state.type ? 1 : 0) + state.flags.length + (state.sort !== 'urgent' ? 1 : 0);
+  $('#fcount').hidden = !nf; $('#fcount').textContent = nf;
+  renderFiltersPanel();
+
+  let list = by[state.filter] || leads;
+  const rank = { urgent: 0, high: 1, normal: 2 };
+  const sorters = {
+    urgent: (a, b) => (rank[a.decision?.priority] ?? 2) - (rank[b.decision?.priority] ?? 2) || a.last_call_at.localeCompare(b.last_call_at),
+    newest: (a, b) => b.last_call_at.localeCompare(a.last_call_at),
+    size: (a, b) => (b.project?.carpet_area_sqft || 0) - (a.project?.carpet_area_sqft || 0),
+  };
+  list = [...list].sort(state.filter === 'booked' && state.sort === 'urgent'
+    ? (a, b) => String(a.booking?.start_time).localeCompare(String(b.booking?.start_time))
+    : sorters[state.sort] || sorters.urgent);
+
+  $('#cards').innerHTML = list.map(card).join('');
   const empty = $('#empty');
-  empty.hidden = rows.length > 0;
-  if (!rows.length) {
+  empty.hidden = list.length > 0;
+  if (!list.length) {
     empty.innerHTML = state.leads.length
-      ? '<b>No enquiries match.</b><span>Try a different search or outcome.</span>'
-      : `<b>No enquiries in this period.</b><span>Call the Vaani agent, or replay September's calls to see the system work end to end.</span><button type="button" class="btn" data-replay>${icon('play')}Replay calls</button>`;
+      ? `<h3>${state.filter === 'needs' ? 'Nothing needs you' : 'Nothing here'}</h3><p>${state.filter === 'needs' ? 'Every urgent enquiry has been handled.' : 'Try another filter.'}</p>`
+      : `<h3>No enquiries yet</h3><p>Calls to the studio appear here a minute after they end. To see how it works, replay September's calls.</p><button class="btn" type="button" data-open-demo>Replay demo calls</button>`;
   }
-  $('#leads tbody').innerHTML = rows.map(l => {
-    const d = l.decision || {};
-    const failed = Object.values(l.action_status || {}).filter(s => s === 'failed').length;
-    const flags = (d.flags || []).filter(f => FLAG[f]).slice(0, 3);
-    return `<tr tabindex="0" data-id="${esc(l.id)}" aria-label="${esc(l.name || 'Unknown caller')}, ${esc(ROUTE[d.route]?.label || d.route)}">
-      <td><span title="${esc(when(l.last_call_at))}">${esc(ago(l.last_call_at))}</span>${l.simulated ? '<div class="sub"><span class="pill sim">simulated</span></div>' : ''}</td>
-      <td><b>${esc(l.name || 'Unknown caller')}</b><div class="sub">${esc(l.phone || '')}</div></td>
-      <td><div class="proj">${thumb(l.project)}<div><div class="clip">${esc([l.project?.property_type, l.project?.locality].filter(Boolean).join(' · ') || '—')}</div><div class="sub clip">${esc(l.summary || '')}</div></div></div></td>
-      <td>${routePill(d.route)}${d.priority && d.priority !== 'normal' ? ` <span class="pill ${esc(d.priority)}">${esc(d.priority)}</span>` : ''}${failed ? ` <span class="pill failed">${icon('serious')}${failed} failed</span>` : ''}<div>${flags.map(f => `<span class="flag">${esc(FLAG[f])}</span>`).join('')}</div></td>
-      <td>${l.booking?.status && l.booking.status !== 'none' ? `<span class="pill ${esc(l.booking.status)}">${esc(BOOKING[l.booking.status])}</span>` : '<span class="muted">—</span>'}</td>
-      <td>${l.handoff?.status && l.handoff.status !== 'none' ? `<span class="pill ${esc(l.handoff.status)}">${esc(HANDOFF[l.handoff.status])}</span><div class="sub">${esc(l.assigned_to?.name || '')}</div>` : '<span class="muted">—</span>'}</td>
-    </tr>`;
-  }).join('');
 }
 
-// ------------------------------------------------------------------ the cut, cost, health
-
-function renderPricing(m) {
-  const p = m.pricing;
-  const quoted = m.health.pricing_quotes;
-  $('#pricing').innerHTML = `<dl class="stat-list">
-    <div><dt>Callers who asked the price</dt><dd>${num(p.asked)}</dd></div>
-    <div><dt>…and still qualified</dt><dd>${num(p.asked_and_qualified)}</dd></div>
-    <div><dt>…and booked a consultation</dt><dd>${num(p.asked_and_booked)}</dd></div>
-    <div><dt>Prices quoted by the agent ${info('Any figure, range or per-sq-ft rate the agent said, caught by the post-call fact-check.')}</dt><dd class="${quoted ? 'bad' : 'good'}">${num(quoted)}</dd></div>
-  </dl>
-  <div class="note-box ${quoted ? 'warn' : ''}"><b>Why there's no price quote.</b> Nikhil asked for one, but his own pricing guide says pricing varies by site and no number should ever be quoted. The agent gives his approved line and offers the free consultation instead; this card shows whether that costs bookings.</div>`;
+function card(l) {
+  const s = l._s; const p = l.project || {};
+  const ph = photoFor(l); const tag = tagOf(l);
+  const project = [p.property_type, p.locality].filter(Boolean).join(' · ') || 'Details in the brief';
+  const foot = [dayMonth(l.last_call_at), p.carpet_area_sqft ? `${num(p.carpet_area_sqft)} sq ft` : null, SCOPE[p.scope_type]].filter(Boolean);
+  return `<button type="button" class="lcard ${s.bucket === 'notq' ? 'dim' : ''}" data-open="${esc(l.id)}" aria-label="${esc(nameOf(l))}, ${esc(s.label)}">
+    <div class="ph ${ph ? '' : 'none'}">
+      ${ph ? `<img src="${img(ph, 640)}" srcset="${img(ph, 480)} 480w, ${img(ph, 900)} 900w" sizes="(max-width: 760px) 100vw, 320px" alt="" loading="lazy">` : esc((p.property_type || 'Enquiry'))}
+      <span class="badge"><span class="sdot k-${s.dot}"></span>${esc(s.label)}</span>
+      ${tag ? `<span class="tagr">${tag}</span>` : ''}
+      ${l.simulated ? '<span class="sim">Demo</span>' : ''}
+    </div>
+    <div class="meta">
+      <span class="nm">${esc(nameOf(l))}</span>
+      <span class="pj">${esc(project)}</span>
+      <span class="why ${s.hot ? 'hot' : ''}">${esc(s.why)}</span>
+      <span class="ft">${foot.map(esc).join('<span>·</span>')}</span>
+    </div>
+  </button>`;
 }
 
-function renderCost(m) {
-  const c = m.cost;
-  $('#cost').innerHTML = `<dl class="stat-list">
-    <div><dt>Per call</dt><dd>${inr(c.per_call_inr)}</dd></div>
-    <div><dt>Per qualified lead</dt><dd>${inr(c.per_qualified_inr)}</dd></div>
-    <div><dt>Per booked consultation</dt><dd>${inr(c.per_booking_inr)}</dd></div>
-    <div><dt>Voice ${info("Vaani's own per-call charge, in credits, from its call history.")}</dt><dd>${num(c.vaani_credits)} cr${c.vaani_inr != null ? ` · ${inr(c.vaani_inr)}` : ''}</dd></div>
-    <div><dt>AI extraction ${info('Gemini tokens used to read each call, counted per call.')}</dt><dd>${num(c.gemini_tokens.input + c.gemini_tokens.output)} tok${c.gemini_inr != null ? ` · ${inr(c.gemini_inr)}` : ''}</dd></div>
-    <div><dt>Tools per month ${info('HubSpot free CRM, Neon, Vercel and Resend free tiers, Telegram; Calendly per your plan.')}</dt><dd>${inr(c.fixed_monthly_inr)}</dd></div>
-  </dl>
-  ${c.rates_missing.length ? `<div class="note-box warn">Usage is measured on every call. To show rupees, set ${esc(c.rates_missing.join(', '))} in <code>config/costs.json</code>.</div>` : ''}
-  ${m.value.projected_projects != null ? `<div class="note-box"><span class="tag proj">Projection</span> ≈ ${m.value.projected_projects} projects, ${inr(m.value.projected_projects * m.value.avg_project_value_inr)}</div>` : ''}`;
+const FLAG_FILTERS = [['vip_referral', 'VIP'], ['repeat_caller', 'Called before'], ['site_visit_requested', 'Wants site visit'], ['pricing_asked', 'Asked price'], ['tight_timeline', 'Tight timeline'], ['rented', 'Rented'], ['large_project', 'Large project']];
+function renderFiltersPanel() {
+  const panel = $('#filters-panel');
+  panel.hidden = !state.filtersOpen;
+  $('#more-filters').setAttribute('aria-expanded', String(state.filtersOpen));
+  if (!state.filtersOpen || panel.contains(document.activeElement)) return;
+  const areas = [...new Set(state.leads.map(areaOf).filter(Boolean))].sort();
+  const opt = (v, t, cur) => `<option value="${esc(v)}" ${v === cur ? 'selected' : ''}>${esc(t)}</option>`;
+  panel.innerHTML = `
+    <label class="fgroup"><span>Area</span><select id="f-area">${opt('', 'All areas', state.area)}${areas.map(a => opt(a, a, state.area)).join('')}</select></label>
+    <label class="fgroup"><span>Type</span><select id="f-type">${opt('', 'Homes and offices', state.type)}${opt('home', 'Homes', state.type)}${opt('office', 'Offices', state.type)}</select></label>
+    <label class="fgroup"><span>Sort</span><select id="f-sort">${opt('urgent', 'Most urgent first', state.sort)}${opt('newest', 'Newest first', state.sort)}${opt('size', 'Largest space first', state.sort)}</select></label>
+    <div class="fgroup"><span>Only show</span><div class="flags">${FLAG_FILTERS.map(([k, t]) => `<button type="button" aria-pressed="${state.flags.includes(k)}" data-flag="${k}">${t}</button>`).join('')}</div></div>
+    <button type="button" class="link" id="f-clear">Clear</button>`;
 }
 
-function renderHealth(m) {
-  const x = m.health;
-  const row = (label, value, ok, def) => `<div><dt>${label}${def ? ` ${info(def)}` : ''}</dt><dd class="${ok ? 'good' : value === 0 || value === '—' ? '' : 'bad'}">${esc(value)}</dd></div>`;
-  $('#health').innerHTML = `<dl class="stat-list">
-    ${row('Transcript eval', x.eval ? `${x.eval.passed}/${x.eval.total}` : '—', x.eval && x.eval.passed === x.eval.total, "The 20 September phone calls replayed against the expected outcome for each.")}
-    ${row('Red-team', x.redteam ? `${x.redteam.passed}/${x.redteam.total}` : '—', x.redteam && x.redteam.passed === x.redteam.total, 'Scripted callers trying to extract a price or bait the agent into inventing facts.')}
-    ${row('Agent off-script', x.factcheck_violations, x.factcheck_violations === 0, 'Anything the agent said that is not an approved fact: prices, false bookings, invented names or offers.')}
-    ${row('Unsupported facts removed', x.grounding_removed_facts, x.grounding_removed_facts === 0, 'Facts the AI extracted that the caller never said, removed before reaching a designer or the CRM.')}
-    ${row('Integration failures', x.integration_failures, x.integration_failures === 0)}
-  </dl>
-  ${x.unconfirmed_policy.length ? `<div class="note-box warn"><b>Waiting on Nikhil:</b> ${esc(x.unconfirmed_policy.join(' · '))}. Leads that hinge on these go to review, never to a decline.</div>` : ''}`;
-}
-
-// ------------------------------------------------------------------ drawer
-
+// ---------------------------------------------------------------- lead detail
+// Only the most recently requested lead may render, so a slow response can
+// never swap the panel to another lead (and a call can't be logged on the wrong person).
+let openSeq = 0;
 async function openLead(id) {
+  const seq = ++openSeq;
+  state.openId = id;
   let l;
   try { l = await api(`/api/leads/${id}`); } catch (err) { return toast(err.message); }
-  const d = l.decision, x = l.extraction, p = x.project || {}, t = x.timeline || {};
-  const STATUS_ICON = { pass: 'ok', unclear: 'warning', fail: 'critical' };
-  $('#d-title').innerHTML = `${esc(l.name || 'Unknown caller')}`;
-  $('#d-sub').innerHTML = `${routePill(d.route)} ${d.priority !== 'normal' ? `<span class="pill ${esc(d.priority)}">${esc(d.priority)}</span>` : ''} ${l.simulated ? '<span class="pill sim">simulated</span>' : ''} <span class="muted">· ${esc(when(l.last_call_at))}${l.call_ids.length > 1 ? ` · ${l.call_ids.length} calls merged` : ''}</span>`;
+  if (seq !== openSeq) return;
+  const listLead = state.leads.find(x => x.id === id) || l;
+  const s = statusOf({ ...listLead, ...l, project: l.extraction?.project, timeline: listLead.timeline, complaint: listLead.complaint, reason: listLead.reason });
+  const x = l.extraction || {}; const p = x.project || {}; const t = x.timeline || {}; const d = l.decision || {};
+  const ph = photoFor({ ...l, project: p });
+  const qualifiedOpen = d.route === 'qualified' && !['closed'].includes(l.work?.status);
+  const where = [p.locality, p.city].filter(Boolean).join(', ');
 
-  const failed = Object.values(l.action_status || {}).includes('failed');
-  const inAttention = state.metrics.attention.some(a => a.lead_id === l.id);
-  $('#d-actions').innerHTML = [
-    d.route === 'review' ? `<button class="btn good" data-act="approve" data-id="${l.id}">Send to designer</button><button class="btn ghost" data-act="decline" data-id="${l.id}">Decline</button>` : '',
-    failed ? `<button class="btn" data-act="retry" data-id="${l.id}">Retry failed actions</button>` : '',
-    d.route === 'qualified' ? `<a class="btn ghost" href="/api/leads/${l.id}/brief" target="_blank" rel="noopener">${icon('ext')}Designer email</a>` : '',
-    l.recording_url ? `<a class="btn ghost" href="${esc(l.recording_url)}" target="_blank" rel="noopener">${icon('play')}Recording</a>` : '',
-    inAttention && d.route !== 'review' ? `<button class="btn ghost" data-act="handled" data-id="${l.id}">Mark handled</button>` : '',
+  const told = [
+    ['Project', [p.property_type, SCOPE[p.scope_type]].filter(Boolean).join(' · ')],
+    ['Rooms', (p.rooms || []).join(', ')],
+    ['Where', where],
+    ['Size', p.carpet_area_sqft ? `${num(p.carpet_area_sqft)} sq ft carpet` : ''],
+    ['As it is now', p.current_state],
+    ['Timeline', t.needed_by_text || t.preferred_start_text],
+    ['Who decides', DECIDER[x.decision_maker?.status] || x.decision_maker?.detail],
+    ['Consultation', [x.requests?.site_visit ? 'Site visit' : '', x.requests?.preferred_slots].filter(Boolean).join(' · ')],
+    ['Found us', [x.referral?.how_found, x.referral?.referrer_name].filter(Boolean).join(' — ')],
+    ['Phone', l.phone], ['Email', l.email],
+  ].filter(([, v]) => v);
+  // Pricing and budget wait for the consultation, so they're not on the call checklist.
+  const confirm = [...new Set(d.confirm_at_consultation || [])].filter(q => !/budget|price|cost|afford/i.test(q));
+  const heads = (d.flags || []).map(f => HEADS_UP[f]).filter(Boolean);
+  const quotes = (x.evidence || []).map(e => e.quote).filter(q => q && q.trim().split(/s+/).length >= 4).slice(0, 2);
+  const first = String(x.caller_name || l.name || '').split(/\s+/)[0];
+  const opening = `Hi${first ? ` ${first}` : ''}, this is [your name] from Aangan Studio.${(d.flags || []).includes('repeat_caller') ? " First, I'm sorry nobody got back to you earlier — that shouldn't have happened." : ''} You spoke to our assistant on ${weekday(l.last_call_at)} about your ${[p.property_type, p.locality ? `in ${p.locality}` : ''].filter(Boolean).join(' ') || 'project'}, so I already have your details.${(d.flags || []).includes('proxy_caller') ? ' Could we find a time when the owners can join us too?' : " I'd love to set up a time to see the space."}`;
+
+  const actions = [
+    l.phone ? `<a class="btn" href="tel:${esc(l.phone.replace(/\s/g, ''))}">${icon('phone')}Call ${esc(l.phone)}</a>` : '',
+    where ? `<a class="btn ghost" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${where}, Pune`)}" target="_blank" rel="noopener">${icon('pin')}Map</a>` : '',
+    d.route === 'qualified' ? `<a class="btn ghost" href="/api/leads/${esc(id)}/brief" target="_blank" rel="noopener">${icon('mail')}Designer email</a>` : '',
+    d.route === 'review' ? `<button class="btn good" data-act="approve" data-id="${esc(id)}">Send to the design team</button><button class="btn ghost" data-act="decline" data-id="${esc(id)}">Decline</button>` : '',
+    d.route === 'escalate' && !l.handled_at ? `<button class="btn ghost" data-act="handled" data-id="${esc(id)}">Mark handled</button>` : '',
   ].join('');
 
-  const facts = [
-    ['Phone', l.phone], ['Email', l.email], ['Location', [p.locality, p.city].filter(Boolean).join(', ')],
-    ['Project', [p.property_type, nice(p.scope_type !== 'unknown' ? p.scope_type : '')].filter(Boolean).join(' · ')],
-    ['Rooms', (p.rooms || []).join(', ')], ['Carpet area', p.carpet_area_sqft ? `${num(p.carpet_area_sqft)} sq ft` : ''],
-    ['Timeline', t.needed_by_text || t.preferred_start_text || t.site_available_text], ['Decision-maker', x.decision_maker?.detail || (x.decision_maker?.status !== 'unknown' ? nice(x.decision_maker?.status) : '')],
-    ['Found us via', [x.referral?.how_found, x.referral?.referrer_name].filter(Boolean).join(' — ')],
-    ['Consultation', [x.requests?.site_visit ? 'Site visit' : '', x.requests?.preferred_slots].filter(Boolean).join(' · ')],
-    ['Language', x.language], ['Designer', l.assigned_to?.name],
-  ].filter(([, v]) => v);
+  $('#d-content').innerHTML = `
+    <div class="d-hero ${ph ? '' : 'none'}">
+      ${ph ? `<img src="${img(ph, 1400)}" alt="">` : ''}
+      <button type="button" class="icon-btn" data-close-drawer aria-label="Close">${icon('x')}</button>
+      <div class="cap">
+        <span class="badge"><span class="sdot k-${s.dot}"></span>${esc(s.label)}</span>
+        <h2 id="d-title">${esc(nameOf(l))}</h2>
+        <p>${esc([p.property_type, where].filter(Boolean).join(' · ') || 'Enquiry')}${l.simulated ? ' · Demo call' : ''}</p>
+      </div>
+    </div>
+    ${actions ? `<div class="d-actions">${actions}</div>` : ''}
+    <div class="d-body">
+      <p class="d-summary">${esc(x.summary || '')}</p>
 
-  const crit = Object.values(d.criteria || {});
-  const ev = l.events || [];
-  const pk = photoFor(p);
-  $('#d-body').innerHTML = `
-    ${pk ? `<figure class="banner"><img src="${photoUrl(pk, 900)}" srcset="${photoUrl(pk, 720)} 720w, ${photoUrl(pk, 1440)} 1440w" sizes="(max-width: 720px) 100vw, 720px" alt=""><figcaption><span>${esc(PHOTOS[pk].label)}</span><b>${esc([p.property_type, p.locality].filter(Boolean).join(' · ') || 'Project')}</b></figcaption></figure>` : ''}
-    <section><p>${esc(x.summary)}</p>
-      ${(d.flags || []).filter(f => FLAG[f]).length ? `<div style="margin-top:8px">${d.flags.filter(f => FLAG[f]).map(f => `<span class="flag">${esc(FLAG[f])}</span>`).join('')}</div>` : ''}
-      ${d.review_reasons?.length ? `<div class="note-box warn" style="margin-top:12px"><b>Why it needs review:</b> ${esc(d.review_reasons.join(' '))}</div>` : ''}
-      ${d.overridden ? `<div class="note-box" style="margin-top:12px">Decided on review: <b>${d.overridden.choice === 'approve' ? 'sent to designer' : 'declined'}</b> · ${esc(when(d.overridden.at))}</div>` : ''}
-    </section>
-    ${facts.length ? `<section><h3>What the caller told us</h3><dl class="facts">${facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></section>` : ''}
-    ${d.caller_line ? `<section><h3>What the caller was told</h3><div class="said">“${esc(d.caller_line)}”</div></section>` : ''}
-    ${crit.length ? `<section><h3>Nikhil's five criteria · policy ${esc(d.policy_version)}</h3>${crit.map(c => `<div class="crit">${icon(STATUS_ICON[c.status], c.status)}<div><b>${esc(c.name)}</b><br><span class="muted">${esc(c.reason)}</span>${c.evidence?.[0] ? `<q>${esc(c.evidence[0])}</q>` : ''}</div></div>`).join('')}</section>` : ''}
-    ${d.confirm_at_consultation?.length ? `<section><h3>For the designer to confirm</h3><ul class="plain">${[...new Set(d.confirm_at_consultation)].map(q => `<li>${esc(q)}</li>`).join('')}</ul></section>` : ''}
-    <section><h3>Checks on the AI</h3><div class="checks">
-      <div>${l.factcheck.ok ? `${icon('ok', 'ok')}<span>Nothing the agent said broke the rules: no prices, no invented facts, no false booking.</span>` : `${icon('critical', 'bad')}<span>${l.factcheck.violations.map(v => `<b>${esc(nice(v.type))}</b>: “${esc(v.text.slice(0, 160))}”`).join('<br>')}</span>`}</div>
-      <div>${l.grounding_warnings.length ? `${icon('warning', 'bad')}<span>Removed ${l.grounding_warnings.length} fact(s) the caller never said: ${esc(l.grounding_warnings.join(' · '))}</span>` : `${icon('ok', 'ok')}<span>Every extracted fact appears in the transcript.</span>`}</div>
-    </div></section>
-    <section><h3>Activity</h3><ul class="timeline">${ev.map(e => `<li><span class="t">${esc(new Date(e.at).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit', timeZone: 'Asia/Kolkata' }))}</span><span class="dot ${esc(e.status)}"></span><span><b>${esc(eventLabel(e))}</b> <span class="e">${esc(e.error || e.detail || (e.result?.route ? `→ ${ROUTE[e.result.route]?.label || e.result.route}` : ''))}</span></span></li>`).join('')}</ul></section>
-    <section><details class="transcript"><summary>Transcript</summary><pre class="transcript">${esc(l.transcript)}</pre></details></section>`;
+      ${d.route === 'escalate' ? `<section class="d-sec"><h3>What happened</h3><p class="reason">${esc(x.complaint?.detail || x.summary || '')}</p>${x.complaint?.designer_named ? `<p class="told-line"><span>Their designer:</span> ${esc(x.complaint.designer_named)}</p>` : ''}<p class="told-line"><span>They were told:</span> someone senior will call back within 15 minutes. Nikhil has been alerted.</p></section>` : ''}
 
-  if (!$('#drawer').open) $('#drawer').showModal();
+      ${['declined', 'nurture', 'no_conversation'].includes(d.route) || l.work?.status === 'closed' ? `<section class="d-sec"><h3>Why it isn't a lead</h3><p class="reason">${esc(statusOf({ ...listLead }).why)}</p>${d.caller_line ? `<p class="told-line"><span>They were told:</span> “${esc(d.caller_line)}”</p>` : ''}</section>` : ''}
+
+      ${d.route === 'review' ? `<section class="d-sec"><h3>Why it needs a decision</h3><p class="reason">${esc((d.review_reasons || []).join(' '))}</p></section>` : ''}
+
+      ${qualifiedOpen ? `<section class="say"><span class="k">Open with</span><p id="opening">${esc(opening)}</p><button type="button" data-copy="opening">${icon('copy')}Copy</button></section>` : ''}
+
+      ${told.length && d.route !== 'no_conversation' ? `<section class="d-sec"><h3>They already told us</h3><dl class="facts">${told.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></section>` : ''}
+
+      ${qualifiedOpen && confirm.length ? `<section class="d-sec"><h3>Confirm on the call</h3><ul class="list">${confirm.map(c => `<li>${icon('check')}<span>${esc(c)}</span></li>`).join('')}</ul></section>` : ''}
+      ${qualifiedOpen && heads.length ? `<section class="d-sec"><h3>Good to know</h3><ul class="list heads">${heads.map(h => `<li>${icon('alert')}<span>${esc(h)}</span></li>`).join('')}</ul></section>` : ''}
+      ${quotes.length ? `<section class="d-sec"><h3>In their words</h3>${quotes.map(q => `<q class="quote">${esc(q)}</q>`).join('')}</section>` : ''}
+
+      ${d.route === 'qualified' ? `<section class="d-sec"><h3>Log the call</h3>
+        <form class="oc-form" data-outcome="${esc(id)}">
+          <div class="oc-choices" role="radiogroup" aria-label="How did the call go">${OUTCOMES.map(([k, label]) => `<label class="oc"><input type="radio" name="oc" value="${k}" required><span>${label}</span></label>`).join('')}</div>
+          <div class="oc-row"><label class="oc-when" hidden>When <input type="datetime-local" name="when"></label><input type="text" name="by" placeholder="Your name (optional)" maxlength="60" value="${esc(localStorage.getItem('aangan.me') || '')}"></div>
+          <textarea name="note" rows="2" maxlength="1000" placeholder="Note for the team (optional)"></textarea>
+          <div class="oc-row"><button class="btn" type="submit">Save</button><span class="sub" role="status"></span></div>
+        </form>
+        ${(l.notes || []).length ? `<ul class="history" style="margin-top:16px">${l.notes.slice().reverse().map(n => `<li><span class="t">${esc(ago(n.at))}${n.by && n.by !== 'A designer' ? ` · ${esc(n.by)}` : ''}</span><b>${esc(OUTCOME_LABEL[n.outcome] || n.outcome)}</b>${n.when ? ` — ${esc(weekday(n.when))} ${esc(dayMonth(n.when))}, ${esc(timeOf(n.when))}` : ''}${n.text ? `<br>${esc(n.text)}` : ''}</li>`).join('')}</ul>` : ''}
+      </section>` : ''}
+
+      <details class="more"><summary>How the assistant decided</summary><div>
+        ${Object.values(d.criteria || {}).map(c => `<div class="crit"><span class="mk ${c.status}">${c.status === 'pass' ? '✓' : c.status === 'fail' ? '✕' : '?'}</span><div>${esc(c.name)}<br><span>${esc(c.reason)}</span></div></div>`).join('') || '<p class="sub">Not assessed: this wasn\'t a new enquiry.</p>'}
+        <div class="checks" style="margin-top:14px">
+          <div>${l.factcheck?.ok ? '<span class="ok">✓</span> The assistant stayed on script: no prices, no invented facts.' : `<span class="bad">!</span> ${esc((l.factcheck?.violations || []).map(v => `${v.type.replace(/_/g, ' ')}: “${v.text.slice(0, 120)}”`).join(' · '))}`}</div>
+          <div>${(l.grounding_warnings || []).length ? `<span class="bad">!</span> Removed ${l.grounding_warnings.length} detail(s) the caller never said.` : '<span class="ok">✓</span> Every detail above was said on the call.'}</div>
+        </div>
+      </div></details>
+      <details class="more"><summary>Activity</summary><div><ul class="timeline">${(l.events || []).map(e => `<li><span class="t">${esc(timeOf(e.at))}</span>${esc(eventLabel(e))}${e.status !== 'ok' ? ` — ${esc(e.status === 'skipped' ? 'not connected yet' : e.error || e.status)}` : ''}</li>`).join('')}</ul></div></details>
+      <details class="more"><summary>Transcript</summary><div><pre class="transcript">${esc(l.transcript)}</pre>${l.recording_url ? `<p style="margin-top:10px"><a href="${esc(l.recording_url)}" target="_blank" rel="noopener">Listen to the recording</a></p>` : ''}</div></details>
+    </div>`;
+  const dlg = $('#drawer');
+  if (!dlg.open) dlg.showModal();
+  dlg.scrollTop = 0;
   history.replaceState(null, '', `#lead=${id}`);
 }
 
 function eventLabel(e) {
   return {
-    decision: 'Decision', hubspot: 'HubSpot', calendly: 'Booking link', email_caller: 'Email to caller', email_designer: 'Email to designer',
-    telegram: 'Telegram alert', handoff_accepted: 'Designer accepted', booked: 'Consultation booked', review_decision: 'Review decision', marked_handled: 'Marked handled',
-  }[e.type] || nice(e.type);
+    decision: `Assistant decided: ${e.result?.route === 'qualified' ? 'qualified' : e.result?.route || ''}`, hubspot: 'Saved to HubSpot', calendly: 'Booking link created',
+    email_caller: 'Booking link emailed to caller', email_designer: 'Brief emailed to the design team', telegram: 'Nikhil alerted on Telegram',
+    handoff_accepted: 'Picked up by a designer', booked: 'Consultation booked', review_decision: 'Decision on review', marked_handled: 'Marked handled',
+    designer_outcome: e.detail || 'Call logged',
+  }[e.type] || e.type.replace(/_/g, ' ');
 }
 
-// ------------------------------------------------------------------ leads board (designers)
+// ---------------------------------------------------------------- insights
+function renderInsights() {
+  const m = state.metrics; if (!m) return;
+  const r = m.response;
+  const q = m.funnel.find(f => f.key === 'qualified').value;
+  const calls = r.calls.value;
+  const ah = r.after_hours.value;
+  $('#stats').innerHTML = [
+    ['Calls answered', calls ? '100%' : '—', calls ? `${num(calls)} calls, none missed` : 'No calls yet', r.answered_pct.def],
+    ['After hours', num(ah), calls ? `${Math.round(ah / calls * 100)}% of calls, all answered` : '—', r.after_hours.def],
+    ['Qualified', num(q), `of ${num(m.funnel[0].value)} enquiries`, m.funnel[1].def],
+    ['Cost per qualified lead', inr(m.cost.per_qualified_inr), m.cost.rates_missing.length ? 'Add rates in config/costs.json' : 'Voice + AI', m.cost.def],
+  ].map(([k, v, n, d]) => `<div class="stat"><span class="k">${esc(k)} ${def(d)}</span><span class="v">${esc(v)}</span><span class="n">${esc(n)}</span></div>`).join('');
 
-// Qualified and not-qualified enquiries are separate views with their own buckets.
-const BUCKETS = {
-  qualified: [
-    { key: 'urgent', title: 'Urgent', hint: 'Call these first', sev: 'critical' },
-    { key: 'new', title: 'New', hint: 'Waiting for a designer to pick up', sev: 'info' },
-    { key: 'picked', title: 'Picked up', hint: 'Accepted or booked', sev: 'ok' },
-  ],
-  notq: [
-    { key: 'declined', title: 'Declined', hint: "Outside what Aangan takes on", sev: 'dot' },
-    { key: 'later', title: 'Follow up later', hint: 'Timeline too short for now', sev: 'info' },
-    { key: 'existing', title: 'Existing clients', hint: 'Problems with a project, not new leads', sev: 'critical' },
-    { key: 'other', title: 'Other', hint: "Awaiting Nikhil's review, or no conversation", sev: 'dot' },
-  ],
-};
-const NOTQ_KEYS = new Set(BUCKETS.notq.map(b => b.key));
+  renderHourly(m);
+  const b = m.baseline;
+  $('#ba').innerHTML = `<h2>Before and now</h2><div class="big2">
+    <div class="then"><span class="k">Last month, by hand</span><span class="v">${b.no_reply_48h_pct}%</span><p>of ~${b.enquiries_per_month} enquiries had no reply after 48 hours.</p></div>
+    <div class="now"><span class="k">With the front desk</span><span class="v">${calls ? '0%' : '—'}</span><p>unanswered. Every call is picked up live, day or night.</p></div></div>`;
 
-const STATUS = {
-  qualified: { label: 'Qualified', cls: 'qualified', icon: 'ok' },
-  escalate: { label: 'Existing client', cls: 'escalate', icon: 'critical' },
-  declined: { label: 'Not qualified', cls: 'declined', icon: 'dot' },
-  nurture: { label: 'Not yet: timeline', cls: 'nurture', icon: 'info' },
-  review: { label: "Awaiting Nikhil's review", cls: 'review', icon: 'warning' },
-  no_conversation: { label: 'No conversation', cls: 'no_conversation', icon: 'dot' },
-};
+  const f = m.funnel; const top = Math.max(1, f[0].value);
+  $('#funnel').innerHTML = `<div class="bars">${f.map((s, i) => `${i ? `<div class="conv">↓ ${f[i - 1].value ? Math.round(s.value / f[i - 1].value * 100) + '%' : '—'}</div>` : ''}<div class="bar-row"><span class="nm">${esc(s.label)}</span><span class="bar"><i style="width:${s.value / top * 100}%"></i></span><span class="n">${num(s.value)}</span></div>`).join('')}</div>`;
 
-function urgencyReasons(l) {
-  const d = l.decision || {};
-  const r = [];
-  const sla = state.health?.sla_accept_hours || 4;
-  if (d.route === 'escalate') r.push(`Existing client${l.complaint?.designer ? ` of ${l.complaint.designer}` : ''}: wants a senior callback within 15 min`);
-  if (d.flags?.includes('vip_referral')) r.push('VIP: referred by a friend of Nikhil');
-  if (d.flags?.includes('repeat_caller') || (d.flags?.includes('known_caller') && d.priority === 'high')) r.push("Called before and wasn't followed up: open with an apology");
-  if (d.flags?.includes('tight_timeline')) r.push(`Tight timeline${l.timeline?.weeks_until_needed ? `: needed in ~${l.timeline.weeks_until_needed} weeks` : ''}`);
-  if (l.handoff?.status === 'sent' && Date.now() - new Date(l.handoff.sent_at) > sla * 36e5) r.push(`Not picked up in ${sla}h`);
-  return r;
-}
+  const routes = [['qualified', 'Qualified'], ['declined', 'Not a fit'], ['nurture', 'Follow up later'], ['escalate', 'Existing clients'], ['review', 'Needs review'], ['no_conversation', 'No conversation']].map(([k, label]) => ({ label, value: m.routes[k] || 0 }));
+  const reasons = Object.entries(m.decline_reasons).filter(([k]) => REASON[k]).sort((a, b2) => b2[1] - a[1]).map(([k, v]) => ({ label: REASON[k], value: v }));
+  const max = Math.max(1, ...routes.map(x => x.value));
+  const bars = items => `<div class="bars">${items.map(i => `<div class="bar-row"><span class="nm">${esc(i.label)}</span><span class="bar"><i style="width:${i.value / max * 100}%"></i></span><span class="n">${num(i.value)}</span></div>`).join('')}</div>`;
+  $('#routes').innerHTML = bars(routes) + (reasons.length ? `<p class="sub" style="margin-top:8px">Why some weren't a fit</p>${bars(reasons)}` : '');
 
-function bucketOf(l) {
-  const route = l.decision?.route;
-  if (route === 'declined') return 'declined';
-  if (route === 'nurture') return 'later';
-  if (route === 'escalate') return 'existing';
-  if (route !== 'qualified') return 'other';
-  if (l.handoff?.status === 'accepted' || l.booking?.status === 'booked') return 'picked';
-  return urgencyReasons(l).length ? 'urgent' : 'new';
-}
+  const p = m.pricing; const quoted = m.health.pricing_quotes;
+  $('#pricing').innerHTML = `<dl class="kv">
+    <div><dt>Asked the price</dt><dd>${num(p.asked)}</dd></div>
+    <div><dt>…still qualified</dt><dd>${num(p.asked_and_qualified)}</dd></div>
+    <div><dt>…booked</dt><dd>${num(p.asked_and_booked)}</dd></div>
+    <div><dt>Prices quoted ${def('Any figure or rate the assistant said, caught by the post-call fact-check.')}</dt><dd class="${quoted ? 'bad' : 'good'}">${num(quoted)}</dd></div></dl>
+    <p class="note">Nikhil asked for instant per-sq-ft quotes; his own pricing guide says never quote. The assistant gives his approved line and offers the free consultation.</p>`;
 
-const me = () => { try { return localStorage.getItem('aangan.me') || ''; } catch { return ''; } };
-const isMine = l => me() && (l.assigned_to?.name || '').toLowerCase() === me().toLowerCase();
+  const c = m.cost;
+  $('#cost').innerHTML = `<dl class="kv">
+    <div><dt>Per call</dt><dd>${inr(c.per_call_inr)}</dd></div>
+    <div><dt>Per qualified lead</dt><dd>${inr(c.per_qualified_inr)}</dd></div>
+    <div><dt>Per booking</dt><dd>${inr(c.per_booking_inr)}</dd></div>
+    <div><dt>Voice ${def("Vaani's own per-call charge, in credits.")}</dt><dd>${num(c.vaani_credits)} cr</dd></div>
+    <div><dt>AI ${def('Gemini tokens used to read each call.')}</dt><dd>${num(c.gemini_tokens.input + c.gemini_tokens.output)} tok</dd></div></dl>
+    ${c.rates_missing.length ? `<p class="note">Usage is measured on every call. Add rates in config/costs.json to see rupees.</p>` : ''}`;
 
-const SCOPE = { full_home: 'full home', partial: 'some rooms', single_room: 'one room', office_fitout: 'office fit-out' };
-const DECIDER = {
-  self: 'Caller (owner)',
-  authorised: 'Caller, partner agreed',
-  proxy_decider_will_attend: 'Owners: caller is family, owners will attend',
-  research_only: 'Someone else: confirm who decides',
-};
-// "Design team" is the fallback inbox, not a person.
-const designerName = l => (l.assigned_to?.name && l.assigned_to.name !== 'Design team' ? l.assigned_to.name : '');
+  const h = m.health;
+  const row = (k, v, ok, d) => `<div><dt>${k}${d ? ` ${def(d)}` : ''}</dt><dd class="${ok ? 'good' : v ? 'bad' : ''}">${esc(v)}</dd></div>`;
+  $('#health').innerHTML = `<dl class="kv">
+    ${row('Transcript test', h.eval ? `${h.eval.passed}/${h.eval.total}` : '—', h.eval && h.eval.passed === h.eval.total, "September's 20 calls replayed against the expected outcome.")}
+    ${row('Red-team', h.redteam ? `${h.redteam.passed}/${h.redteam.total}` : '—', h.redteam && h.redteam.passed === h.redteam.total, 'Callers trying to extract a price or bait the assistant into inventing facts.')}
+    ${row('Off-script lines', h.factcheck_violations, h.factcheck_violations === 0, 'Anything the agent said that is not an approved fact.')}
+    ${row('Failed actions', h.integration_failures, h.integration_failures === 0)}</dl>
+    ${h.unconfirmed_policy.length ? `<p class="note">Waiting on Nikhil: ${esc(h.unconfirmed_policy.join(' · '))}.</p>` : ''}`;
 
-function leadCard(l, bucket) {
-  const d = l.decision || {};
-  const s = STATUS[d.route] || { label: nice(d.route), cls: 'none', icon: 'dot' };
-  const p = l.project || {};
-  const where = [p.locality, p.carpet_area_sqft ? `${num(p.carpet_area_sqft)} sq ft` : null].filter(Boolean).join(' · ');
-  const timeline = l.timeline?.needed_by || l.timeline?.preferred_start || null;
-  const reasons = bucket === 'urgent' || bucket === 'existing' ? urgencyReasons(l) : [];
-  const facts = [
-    ['Project', [p.property_type, SCOPE[p.scope_type]].filter(Boolean).join(' · ')],
-    ['Where', where],
-    ['Timeline', timeline],
-    ['Decides', DECIDER[l.decision_maker?.status]],
-    ['Consultation', [l.site_visit ? 'Site visit' : null, l.preferred_slots].filter(Boolean).join(' · ')],
-  ].filter(([, v]) => v);
-  const booking = l.booking?.status === 'booked' ? 'Consultation booked'
-    : l.booking?.status === 'link_sent' ? 'Booking link sent — waiting for them to pick a time'
-    : l.booking?.status === 'no_email' ? 'No email — call them to fix a time' : null;
-  const canClaim = d.route === 'qualified' && l.handoff?.status !== 'accepted';
-  return `<article class="lead-card ${bucket}" data-open-card="${esc(l.id)}">
-    <header><span class="pill ${s.cls}">${icon(s.icon)}${esc(s.label)}</span>${d.priority && d.priority !== 'normal' ? `<span class="pill ${esc(d.priority)}">${esc(d.priority)}</span>` : ''}${l.simulated ? '<span class="pill sim">sim</span>' : ''}<span class="lc-when" title="${esc(when(l.last_call_at))}">${esc(ago(l.last_call_at))}</span></header>
-    <div class="lc-title">${thumb(p)}<div><b>${esc(l.name || 'Unknown caller')}</b><span>${esc(l.summary || '')}</span></div></div>
-    ${reasons.length ? `<ul class="lc-why">${reasons.map(r => `<li>${icon('serious')}${esc(r)}</li>`).join('')}</ul>` : ''}
-    ${NOTQ_KEYS.has(bucket) && bucket !== 'existing' ? `<p class="lc-reason"><b>Why:</b> ${esc(l.reason || (d.route === 'review' ? (d.review_reasons || []).join(' ') : d.route === 'no_conversation' ? 'The caller hung up before saying anything.' : 'See details.'))}</p>` : ''}
-    ${facts.length && !NOTQ_KEYS.has(bucket) ? `<dl class="lc-facts">${facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>` : ''}
-    ${booking || designerName(l) ? `<p class="lc-status">${booking ? esc(booking) : ''}${booking && designerName(l) ? ' · ' : ''}${designerName(l) ? `Designer: <b>${esc(designerName(l))}</b>` : ''}</p>` : ''}
-    <footer>
-      ${canClaim ? `<button type="button" class="btn sm" data-claim="${esc(l.id)}">I've got this</button>` : ''}
-      ${l.phone ? `<a class="btn ghost sm" href="tel:${esc(l.phone.replace(/\s/g, ''))}">Call</a>` : ''}
-      <button type="button" class="btn ghost sm" data-open="${esc(l.id)}">Full brief</button>
-    </footer>
-  </article>`;
-}
-
-const QUICK = [
-  ['vip_referral', 'VIP'], ['repeat_caller', 'Called before'], ['site_visit_requested', 'Site visit'],
-  ['pricing_asked', 'Asked price'], ['tight_timeline', 'Tight timeline'], ['rented', 'Rented'], ['large_project', 'Large project'],
-];
-const areaOf = l => String(l.project?.locality || '').split(/[,·—-]/)[0].trim();
-const typeOf = l => (l.project?.segment === 'commercial' ? 'office' : ['hospitality', 'retail', 'fitness'].includes(l.project?.segment) ? 'other' : l.project?.segment === 'residential' ? 'home' : 'other');
-
-function passesFilters(l) {
-  const f = state.bf;
-  if (f.area && areaOf(l).toLowerCase() !== f.area.toLowerCase()) return false;
-  if (f.type && typeOf(l) !== f.type) return false;
-  if (f.flags.length && !f.flags.every(x => (l.decision?.flags || []).includes(x) || (x === 'repeat_caller' && l.decision?.flags?.includes('known_caller')))) return false;
-  if (f.q) {
-    const hay = [l.name, l.phone, l.email, l.project?.locality, l.project?.property_type, l.summary].join(' ').toLowerCase();
-    if (!f.q.toLowerCase().split(/\s+/).every(w => hay.includes(w))) return false;
+  const hh = state.health;
+  if (hh) {
+    const items = [['Voice agent', hh.vaani.configured], ['AI', hh.gemini.configured], ['Database', hh.store === 'neon'], ['HubSpot', hh.integrations.hubspot], ['Calendly', hh.integrations.calendly], ['Email', hh.integrations.email], ['Telegram', hh.integrations.telegram]];
+    $('#setup').innerHTML = `<div class="conn">${items.map(([k, v]) => `<span class="${v ? 'on' : ''}"><span class="cd"></span>${esc(k)}</span>`).join('')}</div><p class="sub">Anything not connected is logged as skipped and can be retried later; no enquiry is lost.</p>`;
   }
-  return true;
 }
 
-const SORTS = {
-  urgent: null, // per-column default
-  newest: (a, b) => b.last_call_at.localeCompare(a.last_call_at),
-  waiting: (a, b) => a.last_call_at.localeCompare(b.last_call_at),
-  size: (a, b) => (b.project?.carpet_area_sqft || 0) - (a.project?.carpet_area_sqft || 0),
-};
-
-function renderFilterBar() {
-  // Don't rebuild under someone's cursor (the 30 s refresh would steal focus).
-  if ($('#board-filters').contains(document.activeElement) && $('#board-filters').innerHTML) return;
-  const f = state.bf;
-  const areas = [...new Set(state.leads.map(areaOf).filter(Boolean))].sort((a, b) => a.localeCompare(b));
-  const sel = (id, label, opts, val) => `<label class="fsel"><span>${label}</span><select id="${id}">${opts.map(([v, t]) => `<option value="${esc(v)}" ${v === val ? 'selected' : ''}>${esc(t)}</option>`).join('')}</select></label>`;
-  $('#board-filters').innerHTML = `
-    <div class="frow">
-      <label class="search"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg><input id="bf-q" type="search" placeholder="Search name, area, phone" value="${esc(f.q)}" aria-label="Search leads"></label>
-      ${sel('bf-area', 'Area', [['', 'All areas'], ...areas.map(a => [a, a])], f.area)}
-      ${sel('bf-type', 'Type', [['', 'All types'], ['home', 'Homes'], ['office', 'Offices'], ['other', 'Other']], f.type)}
-      ${sel('bf-sort', 'Sort', [['urgent', 'Most urgent first'], ['newest', 'Newest first'], ['waiting', 'Waiting longest'], ['size', 'Largest space']], f.sort)}
-    </div>
-    <div class="frow">
-      <div class="quick" role="group" aria-label="Quick filters">${QUICK.map(([k, t]) => `<button type="button" class="qchip" aria-pressed="${f.flags.includes(k)}" data-flag="${k}">${esc(t)}</button>`).join('')}</div>
-      <span class="spacer"></span>
-      <span class="muted small" id="bf-count"></span>
-      <button type="button" class="link small" id="bf-clear" ${f.q || f.area || f.type || f.flags.length || f.sort !== 'urgent' ? '' : 'hidden'}>Clear filters</button>
-    </div>`;
+const hourLabel = h => (h === 0 ? '12am' : h < 12 ? `${h}am` : h === 12 ? '12pm' : `${h - 12}pm`);
+function renderHourly(m) {
+  const data = m.hourly.data;
+  const total = data.reduce((s, d) => s + d.calls, 0);
+  const after = data.filter(d => d.after_hours).reduce((s, d) => s + d.calls, 0);
+  $('#hourly-sub').textContent = total ? `${after} of ${total} calls came while the front desk was closed.` : 'Calls by hour of day.';
+  if (!total) { $('#hourly').innerHTML = '<p class="sub">Calls will appear here by hour of day.</p>'; $('#hourly-table').innerHTML = ''; return; }
+  const W = 720, H = 220, L = 26, R = 4, T = 26, B = 24;
+  const pw = W - L - R, ph = H - T - B, slot = pw / 24, bw = Math.min(18, slot * 0.56);
+  const max = Math.max(4, ...data.map(d => d.calls));
+  const y = v => T + ph - (v / max) * ph;
+  const [open, close] = m.hourly.office_hours;
+  const peak = data.reduce((a, d) => (d.calls > a.calls ? d : a), data[0]);
+  const path = (x, top, bottom) => { const h2 = bottom - top; if (h2 <= 0) return ''; const r = Math.min(4, h2, bw / 2); return `M${x},${bottom}V${top + r}Q${x},${top} ${x + r},${top}H${x + bw - r}Q${x + bw},${top} ${x + bw},${top + r}V${bottom}Z`; };
+  $('#hourly').innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Calls by hour; ${after} of ${total} outside 10am to 7pm">
+    <rect class="band" x="${L + open * slot}" y="${T - 18}" width="${(close - open) * slot}" height="${ph + 18}" rx="8"/>
+    <text class="band-label" x="${L + ((open + close) / 2) * slot}" y="${T - 6}" text-anchor="middle">Desk open</text>
+    <line class="grid-line" x1="${L}" x2="${W - R}" y1="${T + ph}" y2="${T + ph}"/>
+    ${data.map((d, i) => `<g><rect class="col-hit" x="${L + i * slot}" y="${T}" width="${slot}" height="${ph}" data-h="${d.hour}" data-c="${d.calls}" data-a="${d.after_hours ? 1 : 0}" tabindex="${d.calls ? 0 : -1}"/><path class="col" d="${path(L + i * slot + (slot - bw) / 2, y(d.calls), T + ph)}"/></g>`).join('')}
+    ${peak.calls ? `<text class="val" x="${L + peak.hour * slot + slot / 2}" y="${y(peak.calls) - 6}" text-anchor="middle">${peak.calls}</text>` : ''}
+    ${[0, 6, 12, 18, 23].map(h => `<text class="axis" x="${L + h * slot + slot / 2}" y="${H - 4}" text-anchor="middle">${hourLabel(h)}</text>`).join('')}
+  </svg>`;
+  $('#hourly-table').innerHTML = `<table><thead><tr><th>Hour</th><th>Calls</th><th>Desk</th></tr></thead><tbody>${data.filter(d => d.calls).map(d => `<tr><td>${hourLabel(d.hour)}</td><td>${d.calls}</td><td>${d.after_hours ? 'Closed' : 'Open'}</td></tr>`).join('')}</tbody></table>`;
 }
 
-function renderBoard() {
-  // "Mine" only applies to qualified leads (designers own those).
-  const all = state.leads.filter(passesFilters);
-  const groups = Object.fromEntries([...BUCKETS.qualified, ...BUCKETS.notq].map(b => [b.key, []]));
-  for (const l of all) {
-    const k = bucketOf(l);
-    if (NOTQ_KEYS.has(k) || state.scope !== 'mine' || isMine(l)) groups[k].push(l);
-  }
-  const rank = { urgent: 0, high: 1, normal: 2 };
-  groups.urgent.sort((a, b) => (rank[a.decision.priority] - rank[b.decision.priority]) || a.last_call_at.localeCompare(b.last_call_at));
-  groups.new.sort((a, b) => a.last_call_at.localeCompare(b.last_call_at)); // oldest first: waiting longest
-  for (const k of ['picked', ...NOTQ_KEYS]) groups[k].sort((a, b) => b.last_call_at.localeCompare(a.last_call_at));
-  if (SORTS[state.bf.sort]) for (const k of Object.keys(groups)) groups[k].sort(SORTS[state.bf.sort]);
-  const shownCount = state.kind === 'qualified' ? BUCKETS.qualified.reduce((s, b) => s + groups[b.key].length, 0) : [...NOTQ_KEYS].reduce((s, k) => s + groups[k].length, 0);
-  const totalKind = state.leads.filter(l => (state.kind === 'qualified') === (l.decision?.route === 'qualified')).length;
-  const countEl = $('#bf-count');
-  if (countEl) countEl.textContent = shownCount === totalKind ? `${totalKind} ${state.kind === 'qualified' ? 'qualified' : 'not qualified'}` : `Showing ${shownCount} of ${totalKind}`;
-
-  const tab = $('#tab-urgent');
-  const nUrgent = groups.urgent.length + groups.existing.length;
-  tab.hidden = !nUrgent; tab.textContent = nUrgent;
-
-  // The two halves, each with its own count and breakdown.
-  const count = keys => keys.reduce((s, k) => s + groups[k].length, 0);
-  const brief = list => list.filter(b => groups[b.key].length).map(b => `${groups[b.key].length} ${b.title.toLowerCase()}`).join(' · ') || 'none';
-  const kinds = [
-    { key: 'qualified', label: 'Qualified leads', n: count(BUCKETS.qualified.map(b => b.key)), sub: brief(BUCKETS.qualified), icon: 'ok' },
-    { key: 'notq', label: 'Not qualified', n: count([...NOTQ_KEYS]), sub: brief(BUCKETS.notq), icon: 'dot' },
-  ];
-  $('#kind').innerHTML = kinds.map(k => `<button type="button" role="tab" class="kind ${k.key}" aria-selected="${state.kind === k.key}" data-kind="${k.key}">
-    <span class="kind-top">${icon(k.icon)}${esc(k.label)}</span><span class="kind-n">${k.n}</span><span class="kind-sub">${esc(k.sub)}</span></button>`).join('');
-
-  $('#scope-wrap').hidden = state.kind !== 'qualified';
-  $$('#scope button').forEach(b => b.setAttribute('aria-checked', String(b.dataset.scope === state.scope)));
-  $('#me').value = me();
-  const cols = BUCKETS[state.kind];
-  $('#board-cols').style.setProperty('--cols', cols.length);
-  $('#board-cols').innerHTML = cols.map(b => `<section class="col ${b.key}" aria-labelledby="col-${b.key}">
-    <header><h3 id="col-${b.key}"><span class="dot-${b.sev}"></span>${esc(b.title)} <span class="n">${groups[b.key].length}</span></h3><p>${esc(b.hint)}</p></header>
-    <div class="col-body">${groups[b.key].length ? groups[b.key].map(l => leadCard(l, b.key)).join('') : `<p class="col-empty">${state.kind === 'qualified' && state.scope === 'mine' && !me() ? 'Add your name above to see your leads.' : 'Nothing here.'}</p>`}</div>
-  </section>`).join('');
+// ---------------------------------------------------------------- tooltips
+function showTip(el, html) {
+  const tip = $('#tip'); tip.innerHTML = html; tip.hidden = false;
+  const r = el.getBoundingClientRect();
+  const x = Math.max(8, Math.min(innerWidth - tip.offsetWidth - 8, r.left + r.width / 2 - tip.offsetWidth / 2));
+  let y = r.top - tip.offsetHeight - 8; if (y < 8) y = r.bottom + 8;
+  tip.style.left = `${x}px`; tip.style.top = `${y}px`;
 }
+const tipHtml = el => (el.classList.contains('col-hit')
+  ? `<b>${hourLabel(+el.dataset.h)}–${hourLabel((+el.dataset.h + 1) % 24)}</b>${el.dataset.c} call${el.dataset.c === '1' ? '' : 's'} · desk ${el.dataset.a === '1' ? 'closed' : 'open'}`
+  : esc(el.dataset.def));
+document.addEventListener('mouseover', e => { const t = e.target.closest('.col-hit, .def'); if (t) showTip(t, tipHtml(t)); });
+document.addEventListener('mouseout', e => { if (e.target.closest('.col-hit, .def')) $('#tip').hidden = true; });
+document.addEventListener('focusin', e => { const t = e.target.closest('.col-hit, .def'); if (t) showTip(t, tipHtml(t)); });
+document.addEventListener('focusout', e => { if (e.target.closest('.col-hit, .def')) $('#tip').hidden = true; });
+addEventListener('scroll', () => { $('#tip').hidden = true; }, { passive: true });
 
-async function claim(id, el) {
-  let name = me();
-  if (!name) {
-    name = (prompt('Your name, so the team knows who has this lead:') || '').trim();
-    if (!name) return;
-    try { localStorage.setItem('aangan.me', name); } catch { /* ignore */ }
-  }
-  el.disabled = true;
+// ---------------------------------------------------------------- actions
+async function act(action, id, el) {
+  if (el) el.disabled = true;
   try {
-    await post(`/api/leads/${id}/claim`, { designer: name });
-    toast(`It's yours, ${name.split(' ')[0]}.`);
+    if (action === 'approve' || action === 'decline') { await post(`/api/leads/${id}/decide`, { choice: action }); toast(action === 'approve' ? 'Sent to the design team.' : 'Declined.'); }
+    if (action === 'handled') { await post(`/api/leads/${id}/handled`); toast('Marked handled.'); }
     await load({ quiet: true });
-  } catch (err) { toast(err.message); el.disabled = false; }
+    if (state.openId === id && $('#drawer').open) openLead(id);
+  } catch (err) { toast(err.message); if (el) el.disabled = false; }
 }
 
-const VIEWS = ['overview', 'board', 'reports'];
-function showView(view) {
-  state.view = VIEWS.includes(view) ? view : 'overview';
-  for (const v of VIEWS) $(`#view-${v}`).hidden = state.view !== v;
-  window.scrollTo({ top: 0 });
-  $$('.tabs a').forEach(a => (a.dataset.view === state.view ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current')));
-  try { localStorage.setItem('aangan.view', state.view); } catch { /* ignore */ }
+// ---------------------------------------------------------------- views
+const VIEWS = ['leads', 'insights'];
+function showView(v) {
+  state.view = VIEWS.includes(v) ? v : 'leads';
+  for (const name of VIEWS) $(`#view-${name}`).hidden = name !== state.view;
+  $$('[data-nav]').forEach(a => (a.dataset.nav === state.view && a.closest('.nav') ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current')));
+  scrollTo({ top: 0 });
 }
 
-// ------------------------------------------------------------------ replay
-
-let samples = [];
-async function openReplay() {
-  const dlg = $('#replay');
-  if (!samples.length) samples = await api('/api/samples').catch(() => []);
-  $('#r-list').innerHTML = samples.length
-    ? samples.map(s => `<li><label><input type="checkbox" value="${esc(s.id)}"><span><span class="h">${esc(s.header)}</span><span class="p">${esc(s.preview)}</span></span></label></li>`).join('')
-    : '<li class="muted">Sample transcripts are not deployed on this server.</li>';
-  $('#r-all').disabled = $('#r-selected').disabled = !samples.length;
-  $('#r-status').textContent = '';
-  $('#r-progress').hidden = true;
-  dlg.showModal();
-}
-
-async function replay(ids) {
-  if (!ids.length) return toast('Pick at least one call.');
+// ---------------------------------------------------------------- demo
+async function replayAll() {
+  const samples = await api('/api/samples').catch(() => []);
+  if (!samples.length) return toast('Demo transcripts are not available on this server.');
   const email = $('#r-email').value.trim() || undefined;
   const bar = $('#r-progress'), fill = bar.querySelector('i'), status = $('#r-status');
-  bar.hidden = false; fill.style.width = '0%';
-  $$('#replay .modal-foot button').forEach(b => { b.disabled = true; });
-  const tally = {};
-  for (let i = 0; i < ids.length; i++) {
-    status.textContent = `Replaying ${ids[i]} (${i + 1} of ${ids.length})…`;
-    try {
-      const r = await post('/api/simulate', { sample: ids[i], email });
-      tally[r.route] = (tally[r.route] || 0) + 1;
-    } catch (err) {
-      tally.error = (tally.error || 0) + 1;
-    }
-    fill.style.width = `${((i + 1) / ids.length) * 100}%`;
+  bar.hidden = false; $('#r-all').disabled = true;
+  for (let i = 0; i < samples.length; i++) {
+    status.textContent = `Replaying ${i + 1} of ${samples.length}…`;
+    await post('/api/simulate', { sample: samples[i].id, email }).catch(() => null);
+    fill.style.width = `${((i + 1) / samples.length) * 100}%`;
   }
-  status.textContent = `Done: ${Object.entries(tally).map(([k, v]) => `${v} ${ROUTE[k]?.label.toLowerCase() || k}`).join(', ')}.`;
-  $$('#replay .modal-foot button').forEach(b => { b.disabled = false; });
-  if (!state.sim) { state.sim = true; save(); }
+  status.textContent = 'Done. The calls are now in Leads.';
+  $('#r-all').disabled = false;
+  state.sim = true; save();
   await load({ quiet: true });
 }
 
-// ------------------------------------------------------------------ events
-
-function save() {
-  try { localStorage.setItem('aangan.period', state.period); localStorage.setItem('aangan.sim', state.sim ? '1' : '0'); } catch { /* ignore */ }
-}
-
-$('#period').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; state.period = b.dataset.period; save(); load(); });
-$('#period').addEventListener('keydown', e => {
-  if (!['ArrowLeft', 'ArrowRight'].includes(e.key)) return;
-  const btns = $$('#period button'); const i = btns.findIndex(b => b.dataset.period === state.period);
-  const n = btns[(i + (e.key === 'ArrowRight' ? 1 : btns.length - 1)) % btns.length];
-  n.focus(); n.click();
-});
-$('#sim').addEventListener('change', e => { state.sim = e.target.checked; save(); load(); });
-$('#refresh').addEventListener('click', () => load());
-$('#q').addEventListener('input', e => { state.q = e.target.value.trim(); state.limit = 10; renderLeads(); });
-$('#leads-more').addEventListener('click', () => { state.limit += 10; renderLeads(); });
-$('#route-filter').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; state.route = b.dataset.route; state.limit = 10; renderFilters(state.metrics); renderLeads(); });
-$('#att-tabs').addEventListener('click', e => { const b = e.target.closest('[data-att-kind]'); if (!b) return; state.attKind = b.dataset.attKind; state.attOpen = false; renderAttention(state.metrics.attention); });
-$('#att-more').addEventListener('click', () => { state.attOpen = !state.attOpen; renderAttention(state.metrics.attention); });
-
+// ---------------------------------------------------------------- events
 document.addEventListener('click', e => {
+  const nav = e.target.closest('[data-nav]');
+  if (nav) { e.preventDefault(); showView(nav.dataset.nav); history.replaceState(null, '', `#${state.view}`); return; }
+  const open = e.target.closest('[data-open]');
+  if (open) { e.preventDefault(); return openLead(open.dataset.open); }
   const a = e.target.closest('[data-act]');
-  if (a) { e.preventDefault(); return act(a.dataset.act, a.dataset.id, a); }
-  const o = e.target.closest('[data-open]');
-  if (o) { e.preventDefault(); return openLead(o.dataset.open); }
-  if (e.target.closest('[data-replay]')) return openReplay();
-  const x = e.target.closest('[data-expand]');
-  if (x) { state.expanded[x.dataset.expand] = true; state.attOpen = true; return renderAttention(state.metrics.attention); }
-  const tr = e.target.closest('#leads tbody tr[data-id]');
-  if (tr) openLead(tr.dataset.id);
+  if (a) return act(a.dataset.act, a.dataset.id, a);
+  const chip = e.target.closest('[data-chip]');
+  if (chip) { state.filter = chip.dataset.chip; return renderLeads(); }
+  const flag = e.target.closest('[data-flag]');
+  if (flag) { const k = flag.dataset.flag; state.flags = state.flags.includes(k) ? state.flags.filter(x => x !== k) : [...state.flags, k]; flag.setAttribute('aria-pressed', String(state.flags.includes(k))); return renderLeads(); }
+  if (e.target.id === 'f-clear') { Object.assign(state, { area: '', type: '', flags: [], sort: 'urgent' }); $('#filters-panel').innerHTML = ''; return renderLeads(); }
+  if (e.target.closest('#more-filters')) { state.filtersOpen = !state.filtersOpen; return renderLeads(); }
+  if (e.target.closest('[data-close-drawer]')) return $('#drawer').close();
+  if (e.target.closest('[data-open-demo]') || e.target.closest('#open-demo')) return $('#demo').showModal();
+  if (e.target.closest('[data-close]')) return e.target.closest('dialog').close();
+  const copy = e.target.closest('[data-copy]');
+  if (copy) { navigator.clipboard?.writeText($(`#${copy.dataset.copy}`).textContent).then(() => toast('Copied.'), () => toast('Copy not available.')); }
 });
-$('#leads tbody').addEventListener('keydown', e => {
-  const tr = e.target.closest('tr[data-id]');
-  if (!tr) return;
-  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLead(tr.dataset.id); }
-  if (e.key === 'ArrowDown') { e.preventDefault(); tr.nextElementSibling?.focus(); }
-  if (e.key === 'ArrowUp') { e.preventDefault(); tr.previousElementSibling?.focus(); }
-});
-
-$('#d-close').addEventListener('click', () => $('#drawer').close());
-
-// Views and board controls
-$$('.tabs a').forEach(a => a.addEventListener('click', e => { e.preventDefault(); showView(a.dataset.view); history.replaceState(null, '', `#${a.dataset.view}`); }));
-$('#board-filters').addEventListener('input', e => {
-  const f = state.bf;
-  if (e.target.id === 'bf-q') f.q = e.target.value.trim();
-  else if (e.target.id === 'bf-area') f.area = e.target.value;
-  else if (e.target.id === 'bf-type') f.type = e.target.value;
-  else if (e.target.id === 'bf-sort') f.sort = e.target.value;
-  else return;
-  $('#bf-clear').hidden = !(f.q || f.area || f.type || f.flags.length || f.sort !== 'urgent');
-  renderBoard();
-});
-$('#board-filters').addEventListener('click', e => {
-  const chip = e.target.closest('[data-flag]');
-  if (chip) {
-    const f = state.bf.flags; const k = chip.dataset.flag;
-    state.bf.flags = f.includes(k) ? f.filter(x => x !== k) : [...f, k];
-    chip.setAttribute('aria-pressed', String(state.bf.flags.includes(k)));
-    $('#bf-clear').hidden = false;
-    return renderBoard();
+document.addEventListener('change', e => {
+  if (e.target.id === 'period') { state.period = e.target.value; save(); load(); }
+  if (e.target.id === 'sim') { state.sim = e.target.checked; save(); load(); }
+  if (e.target.id === 'f-area') { state.area = e.target.value; renderLeads(); }
+  if (e.target.id === 'f-type') { state.type = e.target.value; renderLeads(); }
+  if (e.target.id === 'f-sort') { state.sort = e.target.value; renderLeads(); }
+  if (e.target.name === 'oc') {
+    const when = e.target.closest('form').querySelector('.oc-when');
+    when.hidden = !['booked', 'callback'].includes(e.target.value);
+    when.querySelector('input').required = !when.hidden;
   }
-  if (e.target.id === 'bf-clear') { state.bf = { q: '', area: '', type: '', flags: [], sort: 'urgent' }; renderFilterBar(); renderBoard(); }
 });
-$('#kind').addEventListener('click', e => { const b = e.target.closest('[data-kind]'); if (!b) return; state.kind = b.dataset.kind; renderBoard(); });
-$('#scope').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; state.scope = b.dataset.scope; renderBoard(); });
-$('#me').addEventListener('change', e => { try { localStorage.setItem('aangan.me', e.target.value.trim()); } catch { /* ignore */ } renderBoard(); });
-$('#board-cols').addEventListener('click', e => {
-  const c = e.target.closest('[data-claim]');
-  if (c) { e.stopPropagation(); return claim(c.dataset.claim, c); }
-  if (e.target.closest('a, button')) return;
-  const card = e.target.closest('[data-open-card]');
-  if (card) openLead(card.dataset.openCard);
+$('#q').addEventListener('input', e => { state.q = e.target.value.trim(); renderLeads(); });
+document.addEventListener('submit', async e => {
+  const form = e.target.closest('[data-outcome]');
+  if (!form) return;
+  e.preventDefault();
+  const id = form.dataset.outcome; const fd = new FormData(form);
+  const status = form.querySelector('[role="status"]'); const btn = form.querySelector('button[type="submit"]');
+  const by = String(fd.get('by') || '').trim();
+  try { if (by) localStorage.setItem('aangan.me', by); } catch { /* ignore */ }
+  btn.disabled = true; status.textContent = 'Saving…';
+  try {
+    const res = await post(`/api/leads/${id}/outcome`, { designer: by || 'Design team', outcome: fd.get('oc'), note: fd.get('note'), when: fd.get('when') ? new Date(fd.get('when')).toISOString() : undefined });
+    toast({ booked: 'Consultation booked.', no_answer: 'Logged: no answer.', callback: 'Callback scheduled.', not_interested: 'Closed: not interested.', not_fit: 'Closed: not a fit.' }[fd.get('oc')] || 'Saved.');
+    // Show the change straight away; the server copy follows in the background.
+    const local = state.leads.find(x => x.id === id);
+    if (local) Object.assign(local, { work: res.work, booking: res.booking, notes_count: res.notes.length });
+    renderLeads();
+    form.reset(); form.querySelector('.oc-when').hidden = true; btn.disabled = false; status.textContent = 'Saved.';
+    const hist = form.parentElement.querySelector('.history') || form.insertAdjacentElement('afterend', Object.assign(document.createElement('ul'), { className: 'history', style: 'margin-top:16px' }));
+    const n = res.notes.at(-1);
+    hist.insertAdjacentHTML('afterbegin', `<li><span class="t">just now${n.by && n.by !== 'Design team' ? ` · ${esc(n.by)}` : ''}</span><b>${esc(OUTCOME_LABEL[n.outcome])}</b>${n.when ? ` — ${esc(weekday(n.when))} ${esc(dayMonth(n.when))}, ${esc(timeOf(n.when))}` : ''}${n.text ? `<br>${esc(n.text)}` : ''}</li>`);
+    if (local) { const b = $('.d-hero .badge'); const s = statusOf(local); if (b) b.innerHTML = `<span class="sdot k-${s.dot}"></span>${esc(s.label)}`; }
+    load({ quiet: true });
+  } catch (err) { status.textContent = err.message; btn.disabled = false; }
 });
-$('#drawer').addEventListener('close', () => history.replaceState(null, '', `${location.pathname}${location.search}#${state.view}`));
 $('#drawer').addEventListener('click', e => { if (e.target === $('#drawer')) $('#drawer').close(); });
-
-$('#open-replay').addEventListener('click', openReplay);
-$('#replay').addEventListener('click', e => { if (e.target === $('#replay') || e.target.closest('[data-close]')) $('#replay').close(); });
-$('#r-all').addEventListener('click', () => replay(samples.map(s => s.id)));
-$('#r-selected').addEventListener('click', () => replay($$('#r-list input:checked').map(i => i.value)));
-$('#r-clear').addEventListener('click', async e => {
-  if (!confirm('Remove all simulated calls, enquiries and their activity? Real calls are not touched.')) return;
-  e.target.disabled = true;
-  try { const r = await post('/api/admin/clear-simulated'); $('#r-status').textContent = `Removed ${r.removed} simulated records.`; await load({ quiet: true }); }
-  catch (err) { toast(err.message); } finally { e.target.disabled = false; }
+$('#drawer').addEventListener('close', () => { state.openId = null; openSeq++; history.replaceState(null, '', `#${state.view}`); });
+$('#r-all').addEventListener('click', replayAll);
+$('#r-clear').addEventListener('click', async () => {
+  if (!confirm('Remove all demo calls? Real calls are not touched.')) return;
+  const r = await post('/api/admin/clear-simulated').catch(err => ({ error: err.message }));
+  $('#r-status').textContent = r.error || `Removed ${r.removed} demo records.`;
+  load({ quiet: true });
 });
-
-document.addEventListener('keydown', e => {
-  if (e.key === '/' && !e.target.closest('input, textarea, dialog')) { e.preventDefault(); $('#q').focus(); }
+$('#csv').addEventListener('click', () => {
+  const cols = ['Called', 'Name', 'Phone', 'Email', 'Project', 'Area', 'Status', 'Reason'];
+  const rows = state.leads.map(l => { const s = statusOf(l); return [l.last_call_at, l.name, l.phone, l.email, l.project?.property_type, l.project?.locality, s.label, s.why]; });
+  const csv = [cols, ...rows].map(r => r.map(v => `"${String(v ?? '').replace(/"/g, '""')}"`).join(',')).join('\n');
+  Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([csv], { type: 'text/csv' })), download: 'aangan-enquiries.csv' }).click();
 });
+setInterval(() => { if (!document.hidden && !$('#drawer').open && !$('#demo').open) load({ quiet: true }); }, 30000);
 
-setInterval(() => { if (!document.hidden && !$('#drawer').open && !$('#replay').open) load({ quiet: true }); }, 30000);
-setInterval(tickUpdated, 10000);
-
-{
-  let saved = 'overview';
-  try { saved = localStorage.getItem('aangan.view') || 'overview'; } catch { /* ignore */ }
-  const fromHash = location.hash.slice(1);
-  showView(VIEWS.includes(fromHash) ? fromHash : saved);
-}
-load().then(() => {
-  const m = location.hash.match(/lead=(\w+)/);
-  if (m) openLead(m[1]);
-});
+// ---------------------------------------------------------------- start
+showView(location.hash.slice(1) === 'insights' ? 'insights' : 'leads');
+load().then(() => { const m = location.hash.match(/lead=(\w+)/); if (m && openSeq === 0) openLead(m[1]); });

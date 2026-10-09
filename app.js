@@ -7,7 +7,7 @@ const express = require('express');
 require('./lib/env').loadDotEnv();
 const { store } = require('./lib/store');
 const { normalizeWebhook } = require('./lib/vaani');
-const { processPostCall, runActions, acceptHandoff, sweep, logEvent, decideReview, markHandled, claimLead } = require('./lib/pipeline');
+const { processPostCall, runActions, acceptHandoff, sweep, logEvent, decideReview, markHandled, claimLead, recordOutcome } = require('./lib/pipeline');
 const { designerHandoff } = require('./lib/templates');
 const { computeMetrics, periodStart } = require('./lib/metrics');
 const { requirePassword } = require('./lib/auth');
@@ -120,6 +120,9 @@ app.get('/api/leads', async (req, res) => {
       site_visit: !!extraction?.requests?.site_visit,
       preferred_slots: extraction?.requests?.preferred_slots || null,
       reason: Object.values(l.decision?.criteria || {}).find(c => c.status === 'fail')?.reason || null,
+      work: l.work || null,
+      notes_count: (l.notes || []).length,
+      last_note: (l.notes || []).at(-1) || null,
       handoff: { ...l.handoff, token_hash: undefined },
     }));
   res.json(leads);
@@ -138,6 +141,13 @@ app.post('/api/leads/:id/decide', async (req, res) => {
   try {
     const lead = await decideReview(req.params.id, choice);
     res.json({ route: lead.decision.route, action_status: lead.action_status });
+  } catch (err) { res.status(400).json({ error: err.message }); }
+});
+
+app.post('/api/leads/:id/outcome', async (req, res) => {
+  try {
+    const lead = await recordOutcome(req.params.id, req.body || {});
+    res.json({ work: lead.work, booking: lead.booking, assigned_to: lead.assigned_to, notes: lead.notes });
   } catch (err) { res.status(400).json({ error: err.message }); }
 });
 

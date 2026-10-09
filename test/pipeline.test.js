@@ -7,7 +7,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const { useMemoryStore, store } = require('../lib/store');
 const extract = require('../lib/extract');
-const { processPostCall, runActions, acceptHandoff, sweep, decideReview, markHandled } = require('../lib/pipeline');
+const { processPostCall, runActions, acceptHandoff, sweep, decideReview, markHandled, recordOutcome } = require('../lib/pipeline');
 const { computeMetrics } = require('../lib/metrics');
 const crypto = require('crypto');
 
@@ -221,4 +221,28 @@ test('period filter counts only enquiries in range', async () => {
   const mAll = computeMetrics({ leads: all, calls: await store().all('calls'), events: [], includeSimulated: true, period: 'all' });
   assert.equal(m30.funnel[0].value, 1);
   assert.equal(mAll.funnel[0].value, 2);
+});
+
+test('designer outcomes: no answer counts attempts, booking claims the lead and books it', async () => {
+  const lead = await processPostCall(call('o1'));
+  let l = await recordOutcome(lead.id, { designer: 'Ananya', outcome: 'no_answer' });
+  l = await recordOutcome(lead.id, { designer: 'Ananya', outcome: 'no_answer', note: 'Rang twice, voicemail full' });
+  assert.equal(l.work.attempts, 2);
+  assert.equal(l.assigned_to.name, 'Ananya');
+  assert.equal(l.handoff.status, 'accepted');
+  const when = new Date(Date.now() + 2 * 864e5).toISOString();
+  l = await recordOutcome(lead.id, { designer: 'Ananya', outcome: 'booked', when });
+  assert.equal(l.booking.status, 'booked');
+  assert.equal(l.booking.start_time, when);
+  assert.equal(l.notes.length, 3);
+  assert.ok((await store().all('events')).some(e => e.type === 'designer_outcome'));
+});
+
+test('designer outcomes: booking needs a date, closing records the reason', async () => {
+  const lead = await processPostCall(call('o2'));
+  await assert.rejects(recordOutcome(lead.id, { designer: 'Rahul', outcome: 'booked' }), /date/);
+  const l = await recordOutcome(lead.id, { designer: 'Rahul', outcome: 'not_interested', note: 'Went with a contractor' });
+  assert.equal(l.work.status, 'closed');
+  assert.equal(l.work.closed_reason, 'not_interested');
+  await assert.rejects(recordOutcome(lead.id, { outcome: 'teleport' }), /outcome must be/);
 });
