@@ -45,7 +45,8 @@ app.post('/api/vaani/webhook', async (req, res) => {
   if (!safeEq(req.query.key || '', secret)) return res.status(401).json({ error: 'bad key' });
 
   const w = normalizeWebhook(req.body);
-  if (!w.call_id) return res.status(400).json({ error: 'no call id' });
+  // Vaani's 'Test Connectivity' ping has no call; acknowledge it so the test passes.
+  if (!w.call_id) return res.json({ status: 'ok', note: 'connected; no call in this event' });
   if (w.event === 'call_postprocessing') {
     res.json({ status: 'accepted' });
     // Hobby-plan cron runs daily, so also sweep SLA nudges whenever a call lands.
