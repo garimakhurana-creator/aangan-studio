@@ -254,14 +254,61 @@ function parseConvo(text) {
 }
 function chatHtml(text) {
   const items = parseConvo(text);
+  let n = 0;
   if (!items.length) return '<p class="sub">No transcript.</p>';
   let last = '';
   return items.map(it => {
     if (it.kind === 'divider') return `<div class="chat-div"><span>${esc(it.text)}</span></div>`;
     if (it.kind === 'meta') return `<div class="chat-meta">${esc(it.text)}</div>`;
     const showName = it.label !== last; last = it.label;
-    return `<div class="bubble ${it.side}">${showName ? `<span class="who">${esc(it.label)}${it.t ? ` · ${esc(it.t)}` : ''}</span>` : ''}<p>${esc(it.text)}</p></div>`;
+    return `<div class="bubble ${it.side}" data-i="${n++}">${showName ? `<span class="who">${esc(it.label)}${it.t ? ` · ${esc(it.t)}` : ''}</span>` : ''}<p>${esc(it.text)}</p></div>`;
   }).join('');
+}
+
+// ---------------------------------------------------------------- demo playback
+// Reads a demo transcript aloud with two voices (Indian English where the
+// device has them) and highlights the bubble being spoken. Labelled as demo
+// playback; real calls play Vaani's recording instead.
+let ttsRun = 0;
+function pickVoices() {
+  const all = speechSynthesis.getVoices();
+  const rank = v => (/en[-_]IN/i.test(v.lang) ? 0 : /^en[-_]GB/i.test(v.lang) ? 1 : /^en/i.test(v.lang) ? 2 : 9);
+  const en = all.filter(v => rank(v) < 9).sort((a, b) => rank(a) - rank(b));
+  const female = en.find(v => /female|heera|veena|neerja|swara|zira|aria|samantha|google .*english/i.test(v.name)) || en[0];
+  const other = en.find(v => v !== female && (rank(v) === rank(female) || true)) || female;
+  return { agent: female, caller: other };
+}
+function ttsStop() {
+  ttsRun++;
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  $$('.bubble.speaking').forEach(b => b.classList.remove('speaking'));
+  const play = $('[data-tts="play"]'), stop = $('[data-tts="stop"]');
+  if (play) play.hidden = false; if (stop) stop.hidden = true;
+}
+async function ttsPlay() {
+  ttsStop();
+  const run = ttsRun;
+  if (!speechSynthesis.getVoices().length) await new Promise(r => { speechSynthesis.onvoiceschanged = r; setTimeout(r, 800); });
+  const voices = pickVoices();
+  const msgs = parseConvo(state.openTranscript).filter(m => m.kind === 'msg');
+  $('[data-tts="play"]').hidden = true; $('[data-tts="stop"]').hidden = false;
+  for (let i = 0; i < msgs.length; i++) {
+    if (run !== ttsRun) return;
+    const text = msgs[i].text.replace(/\([^)]*\)/g, ' ').replace(/[—–]/g, ', ').trim();
+    if (!text) continue;
+    const bubble = $(`.chat .bubble[data-i="${i}"]`);
+    $$('.bubble.speaking').forEach(b => b.classList.remove('speaking'));
+    if (bubble) { bubble.classList.add('speaking'); bubble.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+    await new Promise(resolve => {
+      const u = new SpeechSynthesisUtterance(text);
+      const v = msgs[i].side === 'caller' ? voices.caller : voices.agent;
+      if (v) { u.voice = v; u.lang = v.lang; }
+      u.rate = 1.02; u.pitch = msgs[i].side === 'caller' ? 0.92 : 1.08;
+      u.onend = u.onerror = resolve;
+      speechSynthesis.speak(u);
+    });
+  }
+  if (run === ttsRun) ttsStop();
 }
 
 // ---------------------------------------------------------------- table view
@@ -302,10 +349,12 @@ function renderTable(list) {
 let openSeq = 0;
 async function openLead(id) {
   const seq = ++openSeq;
+  ttsStop();
   state.openId = id;
   let l;
   try { l = await api(`/api/leads/${id}`); } catch (err) { return toast(err.message); }
   if (seq !== openSeq) return;
+  state.openTranscript = l.transcript;
   const listLead = state.leads.find(x => x.id === id) || l;
   const s = statusOf({ ...listLead, ...l, project: l.extraction?.project, timeline: listLead.timeline, complaint: listLead.complaint, reason: listLead.reason });
   const x = l.extraction || {}; const p = x.project || {}; const t = x.timeline || {}; const d = l.decision || {};
@@ -380,7 +429,9 @@ async function openLead(id) {
 
       <section class="d-sec"><h3>The call</h3>
         ${l.simulated
-          ? '<p class="sub">Demo calls are replays of written September transcripts, so there is no audio.</p>'
+          ? (('speechSynthesis' in window)
+            ? `<div class="demo-play"><button type="button" class="btn sm" data-tts="play">${icon('play')}Play the call</button><button type="button" class="btn ghost sm" data-tts="stop" hidden>Stop</button><span class="sub">Demo playback: computer voices read the transcript. Real calls play the actual recording.</span></div>`
+            : '<p class="sub">Demo calls are written transcripts, so there is no audio.</p>')
           : l.call_ids.map((cid, i) => `<div class="rec">${l.call_ids.length > 1 ? `<span class="sub">Call ${i + 1}${i ? ' (rang back)' : ''}</span>` : ''}<audio controls preload="none" src="/api/leads/${esc(id)}/recording?call=${encodeURIComponent(cid)}"></audio></div>`).join('')}
         <div class="chat" role="log" aria-label="Conversation">${chatHtml(l.transcript, d.flags?.includes('pricing_asked'))}</div>
       </section>
@@ -573,6 +624,8 @@ document.addEventListener('click', e => {
   if (e.target.closest('[data-close-drawer]')) return $('#drawer').close();
   if (e.target.closest('[data-open-demo]') || e.target.closest('#open-demo')) return $('#demo').showModal();
   if (e.target.closest('[data-close]')) return e.target.closest('dialog').close();
+  const tts = e.target.closest('[data-tts]');
+  if (tts) return tts.dataset.tts === 'play' ? ttsPlay() : ttsStop();
   const copy = e.target.closest('[data-copy]');
   if (copy) { navigator.clipboard?.writeText($(`#${copy.dataset.copy}`).textContent).then(() => toast('Copied.'), () => toast('Copy not available.')); }
 });
@@ -615,7 +668,7 @@ document.addEventListener('submit', async e => {
   } catch (err) { status.textContent = err.message; btn.disabled = false; }
 });
 $('#drawer').addEventListener('click', e => { if (e.target === $('#drawer')) $('#drawer').close(); });
-$('#drawer').addEventListener('close', () => { state.openId = null; openSeq++; history.replaceState(null, '', `#${state.view}`); });
+$('#drawer').addEventListener('close', () => { ttsStop(); state.openId = null; openSeq++; history.replaceState(null, '', `#${state.view}`); });
 $('#r-all').addEventListener('click', replayAll);
 $('#r-clear').addEventListener('click', async () => {
   if (!confirm('Remove all demo calls? Real calls are not touched.')) return;
