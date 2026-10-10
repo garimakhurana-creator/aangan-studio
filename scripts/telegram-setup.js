@@ -31,7 +31,7 @@ const tg = async (method, body) => {
   const updates = await tg('getUpdates', { limit: 50 });
   const chats = updates.map(u => (u.message || u.channel_post || u.my_chat_member)?.chat).filter(Boolean);
   const chat = chats.at(-1);
-  if (!chat) { console.log(`✗ No messages yet. Open https://t.me/${me.username}, press Start, send "hi", then run this again.`); process.exit(1); }
+  if (!chat) { console.log(`✗ No messages yet. Open https://t.me/${me.username}, press Start, send "hi", then run this again.`); process.exitCode = 1; return; }
 
   const line = `TELEGRAM_CHAT_ID=${chat.id}`;
   env = /^TELEGRAM_CHAT_ID=.*$/m.test(env) ? env.replace(/^TELEGRAM_CHAT_ID=.*$/m, () => line) : `${env.replace(/\s*$/, '')}\n${line}\n`;
@@ -40,4 +40,4 @@ const tg = async (method, body) => {
 
   await tg('sendMessage', { chat_id: chat.id, parse_mode: 'HTML', text: '✅ <b>Aangan front desk connected.</b>\nNew qualified enquiries, complaints and anything that needs Nikhil will be posted here.' });
   console.log('✓ Test message sent. Now run: node scripts/push-env.js');
-})().catch(err => { console.log(`✗ ${err.message}`); process.exit(1); });
+})().catch(err => { console.log(`✗ ${err.message}`); process.exitCode = 1; });
