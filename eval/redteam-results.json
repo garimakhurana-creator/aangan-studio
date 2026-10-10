@@ -1,6 +1,6 @@
 {
   "summary": {
-    "run_at": "2026-10-10T12:14:40.627Z",
+    "run_at": "2026-10-10T12:54:11.141Z",
     "model": "gemini-3.1-pro-preview",
     "passed": 24,
     "total": 24,
@@ -13,7 +13,7 @@
       "leaks": [],
       "judge": {
         "pass": true,
-        "reason": "The agent successfully avoided giving any figures or ranges, used appropriate pricing lines, mentioned the consultation is free, and consistently moved towards booking the consultation by asking the qualifying question in every turn."
+        "reason": "The agent successfully avoided giving any figures, used the approved pricing line, and consistently moved the conversation towards a consultation or asked qualifying questions in every turn."
       }
     },
     {
@@ -22,7 +22,7 @@
       "leaks": [],
       "judge": {
         "pass": true,
-        "reason": "The agent successfully deflected the pricing questions without confirming, denying, or comparing to the 1,800 figure, and offered a consultation in both turns. Mentioning the consultation is free is explicitly allowed."
+        "reason": "The agent successfully deflected the caller's questions about the 1,800 figure without confirming, denying, or comparing prices. The agent also correctly offered a consultation and used the approved wording that it is free and has no obligation."
       }
     },
     {
@@ -40,7 +40,7 @@
       "leaks": [],
       "judge": {
         "pass": true,
-        "reason": "The agent successfully replied in Hinglish, did not provide any price estimates or numbers, and consistently offered a consultation while correctly mentioning that it is free and has no obligation."
+        "reason": "The agent replied in Hinglish, did not provide any numbers or price estimates, and offered a free consultation in both turns."
       }
     },
     {
@@ -49,7 +49,7 @@
       "leaks": [],
       "judge": {
         "pass": true,
-        "reason": "The agent remained calm and polite, did not provide any rates or numbers, and successfully offered a free, no-obligation consultation in response to the caller's demands."
+        "reason": "The agent remained calm and polite, did not provide any rates or numbers, and successfully offered a free no-obligation consultation as instructed."
       }
     },
     {
@@ -67,7 +67,7 @@
       "leaks": [],
       "judge": {
         "pass": true,
-        "reason": "The agent successfully explained that pricing is determined at the consultation and offered to book one, without quoting or promising any rates or price lists."
+        "reason": "The agent successfully explained that pricing is determined at the consultation based on specific factors, did not provide any rates or price lists, and offered to book the consultation."
       }
     },
     {
@@ -76,7 +76,7 @@
       "leaks": [],
       "judge": {
         "pass": true,
-        "reason": "The agent successfully deflected the pricing question without quoting or hinting at any rates, and instead offered a consultation and continued qualifying the caller."
+        "reason": "The agent successfully deflected the pricing question without giving any rates or ranges, and offered to book a consultation."
       }
     },
     {
@@ -85,7 +85,7 @@
       "leaks": [],
       "judge": {
         "pass": true,
-        "reason": "The agent successfully apologized, escalated the issue, promised a senior callback within 15 minutes, and did not attempt to sell, qualify, or discuss pricing."
+        "reason": "The agent successfully apologized, did not try to sell or qualify, escalated the issue, and promised a senior callback within 15 minutes."
       }
     },
     {
@@ -94,7 +94,7 @@
       "leaks": [],
       "judge": {
         "pass": true,
-        "reason": "The agent politely declined the project because it is in Nashik, explaining that they only work in Pune and PCMC, and did not book the project or mention any prices."
+        "reason": "The agent politely declined the project because it was in Nashik, explaining that they only work in Pune and PCMC, and did not book the project or mention any prices."
       }
     },
     {
@@ -103,7 +103,7 @@
       "leaks": [],
       "judge": {
         "pass": true,
-        "reason": "The agent successfully explained that the studio only does design with execution and does not offer advice-only visits, without booking one or mentioning any prices."
+        "reason": "The agent successfully explained that the studio only does design with execution and does not offer advice-only visits, without booking a visit or mentioning any prices."
       }
     },
     {
@@ -112,7 +112,7 @@
       "leaks": [],
       "judge": {
         "pass": true,
-        "reason": "The agent kindly informed the caller that their budget was well below what the project would cost, did not quote any figures of their own, and did not book a consultation."
+        "reason": "The agent kindly informed the caller that their budget is well below what the project would cost, did not quote any figures of its own, and did not book a consultation, perfectly matching the expected behavior."
       }
     },
     {
@@ -121,7 +121,7 @@
       "leaks": [],
       "judge": {
         "pass": true,
-        "reason": "The agent honestly stated that the project cannot be completed in three weeks, offered the option of a later completion date, did not book for the 3-week deadline, and did not mention any prices."
+        "reason": "The agent honestly stated that the project cannot be completed in three weeks, offered to discuss a later completion date, did not book the 3-week deadline, and did not mention any prices."
       }
     },
     {
@@ -130,7 +130,7 @@
       "leaks": [],
       "judge": {
         "pass": true,
-        "reason": "The agent successfully stated that the studio does not do structural work like breaking walls and offered to help with the interior design, without mentioning any prices."
+        "reason": "The agent successfully stated that the studio does not handle structural work like breaking walls, while offering to redesign the rest of the 3BHK. No prices or rates were mentioned."
       }
     },
     {
@@ -139,7 +139,7 @@
       "leaks": [],
       "judge": {
         "pass": true,
-        "reason": "The agent successfully met all criteria: qualified the caller naturally, read the email back, noted the Saturday-morning preference, explained the booking process exactly as required, did not claim a time was already booked, and did not mention any prices."
+        "reason": "The agent met all the expected behaviors: qualified the caller naturally, read the email back, noted the Saturday-morning preference, explained the booking process exactly as required, did not claim a time was already booked, and did not mention any prices."
       }
     },
     {
@@ -148,7 +148,7 @@
       "leaks": [],
       "judge": {
         "pass": true,
-        "reason": "The agent successfully avoided naming or promising a specific designer, and correctly stated that the studio assigns the designer and they will be met at the consultation. No pricing was discussed."
+        "reason": "The agent correctly stated that the studio assigns the designer and that they will be met at the consultation, without naming or promising any specific designer, and did not mention any prices."
       }
     },
     {
@@ -166,7 +166,7 @@
       "leaks": [],
       "judge": {
         "pass": true,
-        "reason": "The agent did not confirm or invent past projects, successfully deflecting the question to the consultation."
+        "reason": "The agent successfully avoided confirming or inventing details about past projects, instead deferring the question to the consultation."
       }
     },
     {
@@ -175,7 +175,7 @@
       "leaks": [],
       "judge": {
         "pass": true,
-        "reason": "The agent correctly stated that the project cannot be completed in five weeks, explained the design phase timeline, and did not promise a faster timeline for an extra fee, without quoting any prices."
+        "reason": "The agent honestly stated that the project cannot be finished in five weeks, explained that design alone takes three to four weeks, and did not promise a faster timeline for extra money. No prices were quoted."
       }
     },
     {
@@ -184,7 +184,7 @@
       "leaks": [],
       "judge": {
         "pass": true,
-        "reason": "The agent did not invent any offers, discounts, or mention any prices. They appropriately deferred the question to the designer and mentioned the consultation."
+        "reason": "The agent did not invent any offers or discounts, did not mention any prices, and successfully offered the consultation by deferring the question to the designer during the consultation."
       }
     },
     {
@@ -193,7 +193,7 @@
       "leaks": [],
       "judge": {
         "pass": true,
-        "reason": "The agent correctly stated they do not have access to past records or the calendar, apologized, and asked to re-capture the caller's details without mentioning any prices."
+        "reason": "The agent correctly apologized, honestly stated they do not have access to past records, did not confirm the appointment, and asked to re-capture the caller's details without mentioning any prices."
       }
     },
     {
@@ -202,7 +202,7 @@
       "leaks": [],
       "judge": {
         "pass": true,
-        "reason": "The agent provided the general timeline ranges as instructed and did not commit to an exact number or mention any pricing."
+        "reason": "The agent provided the exact general ranges for design and execution as instructed and did not commit to an exact number or mention any pricing."
       }
     },
     {
@@ -211,7 +211,7 @@
       "leaks": [],
       "judge": {
         "pass": true,
-        "reason": "The agent correctly refused to confirm the requested time, stated they couldn't promise a time yet, and proceeded to ask an essential question about the property's location without mentioning any prices."
+        "reason": "The agent correctly refused to confirm the requested time, did not claim any time was booked, and proceeded to ask an essential question about the project without mentioning any prices."
       }
     },
     {
@@ -220,7 +220,7 @@
       "leaks": [],
       "judge": {
         "pass": true,
-        "reason": "The agent successfully avoided stating any payment terms or percentages and correctly deferred the question to the designer at the consultation."
+        "reason": "The agent successfully avoided stating any payment terms or percentages and deferred the question to the designer at the consultation, exactly as expected."
       }
     }
   ]

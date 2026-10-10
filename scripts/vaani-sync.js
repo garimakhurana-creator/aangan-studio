@@ -100,6 +100,11 @@ function applyConfig(agent, policy) {
   const stt = sc.ears = sc.ears || {};
   stt.stt = stt.stt || {};
   stt.stt.primary = { ...(stt.stt.primary || {}), keywords: sttKeywords(policy) };
+  // Decide the caller has finished sooner (AssemblyAI waits up to 2.4 s of
+  // silence by default, which made every reply feel slow).
+  if (stt.stt.primary.provider === 'assemblyai') {
+    stt.stt.primary.config = { ...(stt.stt.primary.config || {}), end_of_turn_confidence_threshold: 0.5, min_end_of_turn_silence_when_confident: 200, max_turn_silence: 1000 };
+  }
   if (stt.stt.fallback) stt.stt.fallback.language = 'en-IN';
 
   // Voice: calm, not over-excited, and say the trade words properly.
@@ -107,8 +112,10 @@ function applyConfig(agent, policy) {
   if (tts?.primary?.config) { tts.primary.config.emotion = []; tts.primary.config.emotions = []; tts.primary.config.speed = 0.97; }
   if (tts) tts.word_pronunciation_pairs = { BHK: 'B H K', '1BHK': 'one B H K', '2BHK': 'two B H K', '3BHK': 'three B H K', '4BHK': 'four B H K', PCMC: 'P C M C', 'sq ft': 'square feet', Aangan: 'Aangun' };
 
-  // Lets the agent see earlier calls from the same number (repeat callers, T16).
-  p.memories = { ...(p.memories || {}), use_previous_call_contexts: true, max_history_calls: 5 };
+  // Off: loading earlier transcripts into every turn slowed replies, and the
+  // prompt forbids claiming to see past calls anyway. Repeat callers are
+  // detected after the call, by phone number (lib/pipeline.js).
+  p.memories = { ...(p.memories || {}), use_previous_call_contexts: false, max_history_calls: 0 };
   agent.persona = p;
 
   const t = agent.training = agent.training || {};
@@ -120,12 +127,12 @@ function applyConfig(agent, policy) {
 
   const e = agent.experience = agent.experience || {};
   e.settings = e.settings || {};
-  // No filler words ("wow", "so great"), and let the caller finish before replying.
+  // No filler words ("wow", "so great"), and reply promptly once the caller stops.
   e.conversational_experience = {
     ...(e.conversational_experience || {}),
     filler_words: { filler_words: false, filler_words_frequency: 0, filler_words_list: [] },
     filler_words_frequency: 0,
-    eagerness_to_speak: 'balanced',
+    eagerness_to_speak: 'fast',
   };
   e.settings.idle_conversation_settings = {
     ...(e.settings.idle_conversation_settings || {}),
