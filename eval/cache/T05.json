@@ -1,17 +1,17 @@
 {
-  "key": "464896e3-2cf185b8",
+  "key": "464896e3-bcf9d5b7",
   "call_date": "2026-09-05",
-  "latency_ms": 7231,
+  "latency_ms": 7614,
   "usage": {
     "model": "gemini-3.1-pro-preview",
     "input_tokens": 984,
-    "output_tokens": 785
+    "output_tokens": 829
   },
   "extraction": {
     "call_type": "new_enquiry",
     "caller_name": "Aarti Mehta",
     "language": "English",
-    "summary": "Aarti Mehta is looking for a complete redesign of a 2,400 sq ft 4BHK in Koregaon Park. She was referred by Vikram Agarwal, a close friend of the founder, and wants to move back in by February.",
+    "summary": "Aarti Mehta, referred by Nikhil's friend Vikram Agarwal, is looking for a complete redesign of a 4BHK in Koregaon Park. The family has already moved out and wants to move back in by February.",
     "referral": {
       "how_found": "friend referral",
       "referrer_name": "Vikram Agarwal",
@@ -38,9 +38,9 @@
       "signal": "Complete redesign. New flooring, kitchen, all four bedrooms."
     },
     "timeline": {
-      "needed_by_text": "move back in by February",
+      "needed_by_text": "move back in by February. About 4 months.",
       "weeks_until_needed": 21,
-      "site_available_text": "already moved out temporarily",
+      "site_available_text": "We’ve already moved out temporarily.",
       "weeks_until_site_available": 0,
       "preferred_start_text": null,
       "flexible": false
@@ -73,7 +73,13 @@
       "site_visit": true,
       "consultation_wanted": true,
       "preferred_slots": null,
-      "email": null
+      "email": null,
+      "preferred_window": {
+        "days": [],
+        "part_of_day": "any",
+        "specific_date": null,
+        "specific_time": null
+      }
     },
     "evidence": [
       {
@@ -86,7 +92,7 @@
       },
       {
         "criterion": "c3",
-        "quote": "We want to move back in by February."
+        "quote": "We want to move back in by February. About 4 months."
       },
       {
         "criterion": "c5",
@@ -95,8 +101,7 @@
     ],
     "open_questions": [
       "What is the budget for the project?",
-      "What is the preferred style or aesthetic?",
-      "Are there any specific requirements for the bedrooms or kitchen?"
+      "When is the caller available for the site visit next week?"
     ]
   }
 }

@@ -1,17 +1,17 @@
 {
-  "key": "e4bbdea4-2cf185b8",
+  "key": "e4bbdea4-bcf9d5b7",
   "call_date": "2026-09-22",
-  "latency_ms": 15267,
+  "latency_ms": 16564,
   "usage": {
     "model": "gemini-3.1-pro-preview",
     "input_tokens": 1008,
-    "output_tokens": 1812
+    "output_tokens": 1991
   },
   "extraction": {
     "call_type": "new_enquiry",
     "caller_name": "Ritu Kapoor",
     "language": "English",
-    "summary": "Ritu Kapoor is inquiring about interior design for her 3BHK in Pimple Saudagar. She wants to redesign the kitchen, wardrobes, and living room by March.",
+    "summary": "Ritu Kapoor is looking to redesign her 3BHK in Pimple Saudagar, specifically the kitchen, wardrobes, and living room. She currently lives there and wants the project completed by March.",
     "referral": {
       "how_found": null,
       "referrer_name": null,
@@ -26,22 +26,22 @@
       "scope_type": "partial",
       "rooms": [
         "kitchen",
-        "living room",
-        "wardrobes"
+        "wardrobes",
+        "living room"
       ],
-      "room_count": 3,
-      "current_state": "We moved in with builder furniture and it’s very basic.",
+      "room_count": null,
+      "current_state": "Lived there two years with basic builder furniture",
       "occupancy": "owner",
       "structural_changes": false
     },
     "engagement": {
-      "wants_design_and_execution": "unknown",
-      "signal": null
+      "wants_design_and_execution": "yes",
+      "signal": "never properly did the interiors. We want to start now."
     },
     "timeline": {
       "needed_by_text": "Ideally done by March.",
       "weeks_until_needed": 24,
-      "site_available_text": "We’ve been here two years",
+      "site_available_text": "We've been here two years",
       "weeks_until_site_available": 0,
       "preferred_start_text": "We want to start now.",
       "flexible": true
@@ -72,9 +72,15 @@
     "dropped_call": true,
     "requests": {
       "site_visit": false,
-      "consultation_wanted": false,
+      "consultation_wanted": true,
       "preferred_slots": null,
-      "email": null
+      "email": null,
+      "preferred_window": {
+        "days": [],
+        "part_of_day": "any",
+        "specific_date": null,
+        "specific_time": null
+      }
     },
     "evidence": [
       {
@@ -92,8 +98,7 @@
     ],
     "open_questions": [
       "What is the budget for the project?",
-      "Are there any specific requirements for the bedrooms?",
-      "Does the scope include execution?"
+      "Are there any specific design styles or requirements?"
     ]
   }
 }

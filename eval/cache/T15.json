@@ -1,17 +1,17 @@
 {
-  "key": "64ad27ed-2cf185b8",
+  "key": "64ad27ed-bcf9d5b7",
   "call_date": "2026-09-18",
-  "latency_ms": 7055,
+  "latency_ms": 8069,
   "usage": {
     "model": "gemini-3.1-pro-preview",
     "input_tokens": 987,
-    "output_tokens": 771
+    "output_tokens": 841
   },
   "extraction": {
     "call_type": "new_enquiry",
     "caller_name": "Smita",
     "language": "English",
-    "summary": "Smita is looking for end-to-end interior design for her 2BHK flat in Undri. She gets possession in six weeks and wants to start the design process immediately.",
+    "summary": "Smita is getting possession of her 2BHK flat in Undri in six weeks and wants to start the design process immediately. She is looking for a full home design and execution, and her husband has authorised her to book a consultation.",
     "referral": {
       "how_found": null,
       "referrer_name": null,
@@ -30,7 +30,7 @@
         "living room"
       ],
       "room_count": null,
-      "current_state": "under construction/awaiting possession",
+      "current_state": "waiting for possession",
       "occupancy": "owner",
       "structural_changes": false
     },
@@ -71,10 +71,16 @@
     },
     "dropped_call": false,
     "requests": {
-      "site_visit": false,
+      "site_visit": true,
       "consultation_wanted": true,
       "preferred_slots": null,
-      "email": null
+      "email": null,
+      "preferred_window": {
+        "days": [],
+        "part_of_day": "any",
+        "specific_date": null,
+        "specific_time": null
+      }
     },
     "evidence": [
       {
@@ -95,7 +101,8 @@
       }
     ],
     "open_questions": [
-      "What is the budget for the project?"
+      "What is the budget for the project?",
+      "When would they like to schedule the consultation and site visit?"
     ]
   }
 }

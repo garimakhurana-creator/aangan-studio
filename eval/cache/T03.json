@@ -1,17 +1,17 @@
 {
-  "key": "43ee03a6-2cf185b8",
+  "key": "43ee03a6-bcf9d5b7",
   "call_date": "2026-09-03",
-  "latency_ms": 6546,
+  "latency_ms": 53675,
   "usage": {
     "model": "gemini-3.1-pro-preview",
     "input_tokens": 944,
-    "output_tokens": 698
+    "output_tokens": 1668
   },
   "extraction": {
     "call_type": "new_enquiry",
     "caller_name": "Suresh Patil",
     "language": "English",
-    "summary": "Suresh Patil called from Nashik to enquire about redoing his home office and study. The studio declined the project as it is outside their service area.",
+    "summary": "Suresh Patil called to inquire about redesigning his home office and study in Nashik. The studio declined the inquiry because Nashik is outside their service area.",
     "referral": {
       "how_found": "LinkedIn",
       "referrer_name": null,
@@ -19,7 +19,7 @@
     },
     "project": {
       "segment": "residential",
-      "property_type": "home office and study",
+      "property_type": "home",
       "locality": null,
       "city": "Nashik",
       "carpet_area_sqft": null,
@@ -52,7 +52,7 @@
     },
     "decision_maker": {
       "status": "self",
-      "detail": "I want to redo my home office and study."
+      "detail": "Referred to it as 'my home office'"
     },
     "pricing": {
       "asked": false,
@@ -73,7 +73,13 @@
       "site_visit": false,
       "consultation_wanted": false,
       "preferred_slots": null,
-      "email": null
+      "email": null,
+      "preferred_window": {
+        "days": [],
+        "part_of_day": "any",
+        "specific_date": null,
+        "specific_time": null
+      }
     },
     "evidence": [
       {
@@ -83,16 +89,12 @@
       {
         "criterion": "c2",
         "quote": "I’m in Nashik"
-      },
-      {
-        "criterion": "c5",
-        "quote": "I want to redo my home office and study."
       }
     ],
     "open_questions": [
-      "Does the caller want design and execution?",
-      "What is the timeline for the project?",
-      "What is the budget for the project?"
+      "Budget",
+      "Timeline",
+      "Occupancy status"
     ]
   }
 }

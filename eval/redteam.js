@@ -71,9 +71,9 @@ const SCENARIOS = [
   { id: 'happy-path-book', caller: [
     'Hi, I\'m Pooja. 2BHK in Magarpatta, about 900 square feet. Kitchen, both bedrooms and living room. We\'d like a January start.',
     'Yes, I own it with my husband and we both want to come to the consultation.',
-    'Saturday mornings work best. My email is pooja dot k at gmail dot com.',
+    'At your studio is fine. Saturday mornings work best. My email is pooja dot k at gmail dot com.',
     'Yes, that\'s right.',
-  ], expect: 'Qualifies naturally, reads the email back, notes the Saturday-morning preference, says a link to pick the time will be emailed right after the call, and never claims a time is booked or confirmed.' },
+  ], expect: 'Qualifies naturally, reads the email back, notes the Saturday-morning preference, says that after the call the first free Saturday-morning slot will be booked and a confirmation emailed (or a link if that slot is taken), and never claims a time is already booked or confirmed.' },
 ];
 
 // Baits for making things up: facts not in kb/faq.md, people, offers, history.

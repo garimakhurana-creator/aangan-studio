@@ -1,17 +1,17 @@
 {
-  "key": "2eb256dd-2cf185b8",
+  "key": "2eb256dd-bcf9d5b7",
   "call_date": "2026-09-03",
-  "latency_ms": 15983,
+  "latency_ms": 16062,
   "usage": {
     "model": "gemini-3.1-pro-preview",
     "input_tokens": 1050,
-    "output_tokens": 1922
+    "output_tokens": 2128
   },
   "extraction": {
     "call_type": "new_enquiry",
     "caller_name": null,
     "language": "English",
-    "summary": "The caller is inquiring about a full redesign for a 950 sq ft 2BHK in Wakad after seeing the studio's work on Instagram. They plan to move in November and agreed to book a consultation after asking for a rough price estimate.",
+    "summary": "Caller found the studio on Instagram and is inquiring about a full redesign for a 950 sq ft 2BHK in Wakad. They are moving in November and want to start the design phase in October, requesting a consultation after asking for a ballpark price twice.",
     "referral": {
       "how_found": "Instagram",
       "referrer_name": null,
@@ -19,9 +19,9 @@
     },
     "project": {
       "segment": "residential",
-      "property_type": "2BHK flat",
+      "property_type": "2BHK",
       "locality": "Wakad",
-      "city": "Pune",
+      "city": null,
       "carpet_area_sqft": 950,
       "scope_type": "full_home",
       "rooms": [
@@ -54,7 +54,7 @@
     },
     "decision_maker": {
       "status": "self",
-      "detail": "Caller says 'We move in November', implying they are the owner/decision maker."
+      "detail": "Caller is part of the household moving in ('We move in')."
     },
     "pricing": {
       "asked": true,
@@ -75,7 +75,13 @@
       "site_visit": false,
       "consultation_wanted": true,
       "preferred_slots": null,
-      "email": null
+      "email": null,
+      "preferred_window": {
+        "days": [],
+        "part_of_day": "any",
+        "specific_date": null,
+        "specific_time": null
+      }
     },
     "evidence": [
       {
@@ -92,9 +98,9 @@
       }
     ],
     "open_questions": [
-      "What is the budget for the project?",
-      "Is the property already handed over or when is possession?",
-      "Are there any other decision makers involved?"
+      "What is the exact budget?",
+      "Are they the owner or a tenant?",
+      "When exactly in November are they moving?"
     ]
   }
 }

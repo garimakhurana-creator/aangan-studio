@@ -1,17 +1,17 @@
 {
-  "key": "6ffac384-2cf185b8",
+  "key": "6ffac384-bcf9d5b7",
   "call_date": "2026-09-11",
-  "latency_ms": 6960,
+  "latency_ms": 8247,
   "usage": {
     "model": "gemini-3.1-pro-preview",
     "input_tokens": 982,
-    "output_tokens": 716
+    "output_tokens": 796
   },
   "extraction": {
     "call_type": "new_enquiry",
     "caller_name": null,
     "language": "English",
-    "summary": "The caller enquired about redesigning a kitchen and one bedroom in a 1BHK in Kharadi. The studio declined the project as the caller's budget of 1 to 1.5 lakh was too low.",
+    "summary": "The caller enquired about redesigning a kitchen and one bedroom in a 1BHK in Kharadi. They stated a maximum budget of 1 to 1.5 lakh, which the studio advised was too low for their services.",
     "referral": {
       "how_found": null,
       "referrer_name": null,
@@ -19,9 +19,9 @@
     },
     "project": {
       "segment": "residential",
-      "property_type": "1BHK",
+      "property_type": "1BHK flat",
       "locality": "Kharadi",
-      "city": null,
+      "city": "Pune",
       "carpet_area_sqft": 550,
       "scope_type": "partial",
       "rooms": [
@@ -34,8 +34,8 @@
       "structural_changes": false
     },
     "engagement": {
-      "wants_design_and_execution": "unknown",
-      "signal": null
+      "wants_design_and_execution": "yes",
+      "signal": "I want to do the kitchen and one bedroom. My budget is 1 to 1.5 lakh maximum for everything."
     },
     "timeline": {
       "needed_by_text": null,
@@ -73,7 +73,13 @@
       "site_visit": false,
       "consultation_wanted": false,
       "preferred_slots": null,
-      "email": null
+      "email": null,
+      "preferred_window": {
+        "days": [],
+        "part_of_day": "any",
+        "specific_date": null,
+        "specific_time": null
+      }
     },
     "evidence": [
       {
@@ -91,8 +97,8 @@
     ],
     "open_questions": [
       "Timeline for the project",
-      "Decision maker status",
-      "Occupancy status"
+      "Occupancy status (owner or tenant)",
+      "Decision maker status"
     ]
   }
 }

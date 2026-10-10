@@ -1,17 +1,17 @@
 {
-  "key": "af795a07-2cf185b8",
+  "key": "af795a07-bcf9d5b7",
   "call_date": "2026-09-24",
-  "latency_ms": 13668,
+  "latency_ms": 13331,
   "usage": {
     "model": "gemini-3.1-pro-preview",
     "input_tokens": 954,
-    "output_tokens": 1591
+    "output_tokens": 1768
   },
   "extraction": {
     "call_type": "new_enquiry",
     "caller_name": null,
     "language": "English",
-    "summary": "The caller inquired about interior design services for a new restaurant in Koregaon Park. The studio declined the project as hospitality spaces are out of scope.",
+    "summary": "The caller inquired about interior design services for a new restaurant in Koregaon Park. The studio declined the project as hospitality spaces are out of their scope.",
     "referral": {
       "how_found": "seen your work",
       "referrer_name": null,
@@ -48,8 +48,8 @@
       "text": null
     },
     "decision_maker": {
-      "status": "unknown",
-      "detail": null
+      "status": "self",
+      "detail": "I’m planning to open a restaurant"
     },
     "pricing": {
       "asked": false,
@@ -70,7 +70,13 @@
       "site_visit": false,
       "consultation_wanted": false,
       "preferred_slots": null,
-      "email": null
+      "email": null,
+      "preferred_window": {
+        "days": [],
+        "part_of_day": "any",
+        "specific_date": null,
+        "specific_time": null
+      }
     },
     "evidence": [
       {
@@ -79,13 +85,17 @@
       },
       {
         "criterion": "c2",
-        "quote": "restaurant in Koregaon Park"
+        "quote": "in Koregaon Park"
+      },
+      {
+        "criterion": "c5",
+        "quote": "I’m planning to open a restaurant"
       }
     ],
     "open_questions": [
-      "What is the timeline?",
-      "What is the budget?",
-      "Who is the decision maker?"
+      "What is the carpet area?",
+      "What is the timeline for the project?",
+      "What is the budget?"
     ]
   }
 }

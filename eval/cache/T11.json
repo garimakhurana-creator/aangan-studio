@@ -1,17 +1,17 @@
 {
-  "key": "12b85d1f-2cf185b8",
+  "key": "12b85d1f-bcf9d5b7",
   "call_date": "2026-09-12",
-  "latency_ms": 12514,
+  "latency_ms": 13633,
   "usage": {
     "model": "gemini-3.1-pro-preview",
     "input_tokens": 1018,
-    "output_tokens": 1470
+    "output_tokens": 1601
   },
   "extraction": {
     "call_type": "new_enquiry",
     "caller_name": null,
     "language": "English",
-    "summary": "The caller wants to design the living room, bedroom, and kitchen of their rented 2BHK apartment in Baner. They have secured landlord approval for the work as long as there are no structural changes.",
+    "summary": "The caller wants to design the living room, bedroom, and kitchen of their rented 2BHK apartment in Baner. They have landlord approval for non-structural changes and agreed to set up a consultation.",
     "referral": {
       "how_found": null,
       "referrer_name": null,
@@ -36,7 +36,7 @@
     },
     "engagement": {
       "wants_design_and_execution": "yes",
-      "signal": "I want to properly design the living room, bedroom, and kitchen — no structural changes, just design and fittings."
+      "signal": "just design and fittings"
     },
     "timeline": {
       "needed_by_text": null,
@@ -53,7 +53,7 @@
     },
     "decision_maker": {
       "status": "self",
-      "detail": "Caller is the tenant and has already checked with the landlord who approved the work."
+      "detail": "Tenant with a 3-year lease; landlord has approved non-structural changes."
     },
     "pricing": {
       "asked": false,
@@ -74,7 +74,13 @@
       "site_visit": false,
       "consultation_wanted": true,
       "preferred_slots": null,
-      "email": null
+      "email": null,
+      "preferred_window": {
+        "days": [],
+        "part_of_day": "any",
+        "specific_date": null,
+        "specific_time": null
+      }
     },
     "evidence": [
       {
@@ -93,7 +99,7 @@
     "open_questions": [
       "What is the budget for the project?",
       "What is the preferred timeline for completion?",
-      "What is the caller's name and contact information?"
+      "When would they like to schedule the consultation?"
     ]
   }
 }

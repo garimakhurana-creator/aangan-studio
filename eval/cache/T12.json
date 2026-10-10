@@ -1,17 +1,17 @@
 {
-  "key": "a081c513-2cf185b8",
+  "key": "a081c513-bcf9d5b7",
   "call_date": "2026-09-15",
-  "latency_ms": 13612,
+  "latency_ms": 7158,
   "usage": {
     "model": "gemini-3.1-pro-preview",
     "input_tokens": 968,
-    "output_tokens": 1665
+    "output_tokens": 773
   },
   "extraction": {
     "call_type": "new_enquiry",
     "caller_name": "Anand Sharma",
     "language": "English",
-    "summary": "Anand Sharma is inquiring about a full end-to-end design for a new 5,500 sq ft villa in Kalyani Nagar. He already has possession and is looking to move in by March next year.",
+    "summary": "Anand Sharma is enquiring about a full end-to-end design for a new 5,500 sq ft villa in Kalyani Nagar. He has possession and plans to move in by March next year.",
     "referral": {
       "how_found": null,
       "referrer_name": null,
@@ -21,7 +21,7 @@
       "segment": "residential",
       "property_type": "villa",
       "locality": "Kalyani Nagar",
-      "city": null,
+      "city": "Pune",
       "carpet_area_sqft": 5500,
       "scope_type": "full_home",
       "rooms": [],
@@ -35,8 +35,8 @@
       "signal": "Full end-to-end design."
     },
     "timeline": {
-      "needed_by_text": "March next year to move in.",
-      "weeks_until_needed": 26,
+      "needed_by_text": "March next year to move in. No rush.",
+      "weeks_until_needed": 24,
       "site_available_text": "Possession was last month.",
       "weeks_until_site_available": 0,
       "preferred_start_text": null,
@@ -49,7 +49,7 @@
     },
     "decision_maker": {
       "status": "self",
-      "detail": "Caller is inquiring for his own property to move into."
+      "detail": "Caller is enquiring for his own villa project."
     },
     "pricing": {
       "asked": false,
@@ -70,7 +70,13 @@
       "site_visit": true,
       "consultation_wanted": true,
       "preferred_slots": "this week or next if possible",
-      "email": null
+      "email": null,
+      "preferred_window": {
+        "days": [],
+        "part_of_day": "any",
+        "specific_date": null,
+        "specific_time": null
+      }
     },
     "evidence": [
       {
@@ -88,8 +94,7 @@
     ],
     "open_questions": [
       "What is the budget for the project?",
-      "Are there any specific design styles or requirements?",
-      "What is the email address for correspondence?"
+      "Are there any specific design preferences or requirements?"
     ]
   }
 }

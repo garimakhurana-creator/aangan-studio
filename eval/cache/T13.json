@@ -1,17 +1,17 @@
 {
-  "key": "2c0f5650-2cf185b8",
+  "key": "2c0f5650-bcf9d5b7",
   "call_date": "2026-09-16",
-  "latency_ms": 6731,
+  "latency_ms": 6958,
   "usage": {
     "model": "gemini-3.1-pro-preview",
     "input_tokens": 1002,
-    "output_tokens": 693
+    "output_tokens": 743
   },
   "extraction": {
     "call_type": "new_enquiry",
     "caller_name": null,
     "language": "English",
-    "summary": "The caller wants to redo their 3BHK flat in Aundh, covering the kitchen, wardrobes in two bedrooms, and the living room. They pushed for a rough price range but agreed to book a consultation when told pricing depends on scope.",
+    "summary": "The caller wants to redo a 3BHK flat in Aundh, covering the kitchen, living room, and wardrobes in two bedrooms. They pushed for a rough price range but agreed to book a consultation when told pricing depends on scope.",
     "referral": {
       "how_found": null,
       "referrer_name": null,
@@ -21,12 +21,12 @@
       "segment": "residential",
       "property_type": "3BHK flat",
       "locality": "Aundh",
-      "city": null,
+      "city": "Pune",
       "carpet_area_sqft": 1100,
       "scope_type": "partial",
       "rooms": [
         "kitchen",
-        "bedroom wardrobes",
+        "wardrobes in both bedrooms",
         "living room"
       ],
       "room_count": 4,
@@ -74,23 +74,29 @@
       "site_visit": false,
       "consultation_wanted": true,
       "preferred_slots": null,
-      "email": null
+      "email": null,
+      "preferred_window": {
+        "days": [],
+        "part_of_day": "any",
+        "specific_date": null,
+        "specific_time": null
+      }
     },
     "evidence": [
       {
         "criterion": "c1",
-        "quote": "Kitchen, wardrobes in both bedrooms, living room."
+        "quote": "I want to redo my flat... Kitchen, wardrobes in both bedrooms, living room."
       },
       {
         "criterion": "c2",
-        "quote": "I want to redo my flat in Aundh."
+        "quote": "in Aundh"
       }
     ],
     "open_questions": [
-      "Does the caller want design and execution?",
+      "Does the caller want execution included?",
       "What is the timeline for the project?",
-      "Who is the decision maker?",
-      "What is the budget?"
+      "What is the budget?",
+      "Who is the decision maker?"
     ]
   }
 }

@@ -1,17 +1,17 @@
 {
-  "key": "390853f9-2cf185b8",
+  "key": "390853f9-bcf9d5b7",
   "call_date": "2026-09-25",
-  "latency_ms": 14221,
+  "latency_ms": 13908,
   "usage": {
     "model": "gemini-3.1-pro-preview",
     "input_tokens": 950,
-    "output_tokens": 1818
+    "output_tokens": 1891
   },
   "extraction": {
     "call_type": "new_enquiry",
     "caller_name": "Pooja",
     "language": "English",
-    "summary": "Pooja is inquiring about end-to-end interior design and execution for her 900 sq ft 2BHK in Magarpatta. She and her husband are the owners and are looking for a flexible January start.",
+    "summary": "Pooja is inquiring about end-to-end interior design for her 900 sq ft 2BHK in Magarpatta. She and her husband are the owners and are looking for a flexible January start for execution.",
     "referral": {
       "how_found": null,
       "referrer_name": null,
@@ -20,7 +20,7 @@
     "project": {
       "segment": "residential",
       "property_type": "2BHK",
-      "locality": "Magarpatta — Cybercity area",
+      "locality": "Magarpatta",
       "city": null,
       "carpet_area_sqft": 900,
       "scope_type": "full_home",
@@ -75,16 +75,22 @@
       "site_visit": false,
       "consultation_wanted": true,
       "preferred_slots": null,
-      "email": null
+      "email": null,
+      "preferred_window": {
+        "days": [],
+        "part_of_day": "any",
+        "specific_date": null,
+        "specific_time": null
+      }
     },
     "evidence": [
       {
         "criterion": "c1",
-        "quote": "properly design the interiors for a while... a January start for execution would be ideal."
+        "quote": "properly design the interiors... a January start for execution"
       },
       {
         "criterion": "c2",
-        "quote": "I have a 2BHK in Magarpatta — Cybercity area."
+        "quote": "Magarpatta — Cybercity area"
       },
       {
         "criterion": "c3",
@@ -96,7 +102,8 @@
       }
     ],
     "open_questions": [
-      "What is the budget for the project?"
+      "What is the budget for the project?",
+      "What is the current state of the property?"
     ]
   }
 }

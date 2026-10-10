@@ -1,17 +1,17 @@
 {
-  "key": "0ba4dcf6-2cf185b8",
+  "key": "0ba4dcf6-bcf9d5b7",
   "call_date": "2026-09-04",
-  "latency_ms": 14015,
+  "latency_ms": 13657,
   "usage": {
     "model": "gemini-3.1-pro-preview",
     "input_tokens": 954,
-    "output_tokens": 1698
+    "output_tokens": 1829
   },
   "extraction": {
     "call_type": "new_enquiry",
     "caller_name": null,
     "language": "English",
-    "summary": "The caller wanted a site visit for design ideas and suggestions for their living room. They declined to proceed after learning the studio only handles full design and execution projects.",
+    "summary": "The caller requested a site visit to get ideas and suggestions for their living room. They are only looking for advisory services on colors and furniture arrangement, not execution.",
     "referral": {
       "how_found": null,
       "referrer_name": null,
@@ -51,7 +51,7 @@
     },
     "decision_maker": {
       "status": "self",
-      "detail": "Caller used 'we' indicating they are part of the decision making."
+      "detail": "Referred to 'our living room' and 'we're just exploring'"
     },
     "pricing": {
       "asked": false,
@@ -72,7 +72,13 @@
       "site_visit": true,
       "consultation_wanted": true,
       "preferred_slots": null,
-      "email": null
+      "email": null,
+      "preferred_window": {
+        "days": [],
+        "part_of_day": "any",
+        "specific_date": null,
+        "specific_time": null
+      }
     },
     "evidence": [
       {
@@ -81,7 +87,7 @@
       }
     ],
     "open_questions": [
-      "What is the location of the property?"
+      "What is the property location?"
     ]
   }
 }

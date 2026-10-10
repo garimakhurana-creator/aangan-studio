@@ -21,6 +21,9 @@ delete process.env.VAANI_API_KEY;
 // ---- fake services
 let calls = [];
 let failing = new Set();
+// Free Calendly slots: next Saturday 10:00 IST and the Monday after at 18:30 IST.
+const nextDow = (dow, h, m) => { const d = new Date(Date.now() + 864e5); while (new Date(d.getTime() + 19800e3).getUTCDay() !== dow) d.setTime(d.getTime() + 864e5); const ist = new Date(d.getTime() + 19800e3); return new Date(Date.UTC(ist.getUTCFullYear(), ist.getUTCMonth(), ist.getUTCDate(), h, m) - 19800e3).toISOString(); };
+const calSlots = [nextDow(6, 10, 0), nextDow(1, 18, 30)];
 global.fetch = async (url, opts = {}) => {
   const u = String(url);
   const host = u.includes('hubapi') ? 'hubspot' : u.includes('calendly') ? 'calendly' : u.includes('resend') ? 'resend' : u.includes('telegram') ? 'telegram' : 'other';
@@ -31,7 +34,12 @@ global.fetch = async (url, opts = {}) => {
     if (u.endsWith('/contacts/search')) return reply(200, { results: [] });
     return reply(201, { id: String(calls.length) });
   }
-  if (host === 'calendly') return reply(201, { resource: { booking_url: 'https://calendly.com/d/abc-123' } });
+  if (host === 'calendly') {
+    if (u.includes('/event_type_available_times')) return reply(200, { collection: calSlots.map(start_time => ({ status: 'available', start_time })) });
+    if (u.endsWith('/invitees')) return reply(201, { resource: { event: 'https://api.calendly.com/scheduled_events/E1', cancel_url: 'https://calendly.com/cancellations/I1', reschedule_url: 'https://calendly.com/reschedulings/I1' } });
+    if (!opts.method || opts.method === 'GET') return reply(200, { resource: { locations: [{ kind: 'physical', location: 'Aangan Studio, Baner' }] } });
+    return reply(201, { resource: { booking_url: 'https://calendly.com/d/abc-123' } });
+  }
   if (host === 'resend') return reply(200, { id: `email_${calls.length}` });
   if (host === 'telegram') return reply(200, { ok: true, result: { message_id: 1 } });
   if (u.includes('vaanivoice')) return reply(200, { data: [{ call_id: 'other-1', agent_id: 'someone-elses-agent', direction: 'Inbound', from_number: '+919811111111', call_cost: 2 }, { call_id: 'ours-1', agent_id: 'a03b2f1d-72d5-4473-9657-01489185d525', direction: 'Inbound', from_number: '+919822222222', call_cost: 3 }] });
@@ -74,7 +82,8 @@ test.beforeEach(() => { useMemoryStore(); calls = []; failing = new Set(); nextF
 test('qualified call: CRM, booking link, caller email, designer handoff', async () => {
   const lead = await processPostCall(call('c1'));
   assert.equal(lead.decision.route, 'qualified');
-  assert.deepEqual(lead.action_status, { hubspot: 'ok', booking_link: 'ok', caller_email: 'ok', designer_email: 'ok' });
+  assert.deepEqual(lead.action_status, { booking_link: 'ok', caller_email: 'ok', hubspot: 'ok', designer_email: 'ok', telegram_lead: 'ok' });
+  assert.ok(!calls.some(c => c.url.endsWith('/invitees')), 'no preferred time given, so nothing is booked');
   assert.equal(lead.booking.status, 'link_sent');
   assert.equal(lead.handoff.status, 'sent');
   const emails = calls.filter(c => c.host === 'resend').map(c => c.body);
@@ -83,6 +92,32 @@ test('qualified call: CRM, booking link, caller email, designer handoff', async 
   assert.ok(emails[1].text.includes("DON'T RE-ASK"), 'designer gets the brief');
   assert.ok(emails[1].text.includes('Asked about price (deflected, not quoted)'));
   assert.equal(lead.factcheck.ok, true);
+  assert.match(calls.find(c => c.host === 'telegram').body.text, /New enquiry: Priya Kulkarni[\s\S]*Booking link emailed/);
+});
+
+test('caller asked for Saturday morning: the slot is booked and confirmed, everyone is told', async () => {
+  nextFacts = facts({ requests: { ...facts().requests, preferred_window: { days: ['saturday'], part_of_day: 'morning', specific_date: null, specific_time: null } } });
+  const lead = await processPostCall(call('b1'));
+  const booking = calls.find(c => c.url.endsWith('/invitees'));
+  assert.equal(booking.body.start_time, calSlots[0]);
+  assert.equal(booking.body.invitee.email, 'priya@example.com');
+  assert.deepEqual(booking.body.location, { kind: 'physical', location: 'Aangan Studio, Baner' });
+  assert.equal(lead.booking.status, 'booked');
+  assert.equal(lead.booking.booked_via, 'auto');
+  const [toCaller, toDesigner] = calls.filter(c => c.host === 'resend').map(c => c.body);
+  assert.match(toCaller.subject, /Your Aangan Studio consultation: Saturday/);
+  assert.ok(toCaller.text.includes('reschedulings/I1'));
+  assert.match(toDesigner.text, /BOOKING: Booked: Saturday/);
+  assert.equal(calls.find(c => c.host === 'hubspot' && c.body?.properties?.dealstage)?.body.properties.dealstage, 'appointmentscheduled');
+  assert.match(calls.find(c => c.host === 'telegram').body.text, /📅 Booked: Saturday/);
+});
+
+test('caller asked for a time nobody is free: falls back to the link and says why', async () => {
+  nextFacts = facts({ requests: { ...facts().requests, preferred_window: { days: ['sunday'], part_of_day: 'evening', specific_date: null, specific_time: null } } });
+  const lead = await processPostCall(call('b2'));
+  assert.ok(!calls.some(c => c.url.endsWith('/invitees')));
+  assert.equal(lead.booking.status, 'link_sent');
+  assert.match(calls.filter(c => c.host === 'resend')[1].body.text, /No free slot matched/);
 });
 
 test('replayed webhook does nothing the second time', async () => {
@@ -163,7 +198,7 @@ test('agent that quotes a price is caught and Nikhil is alerted', async () => {
   const lead = await processPostCall(call('p1', { transcript: TRANSCRIPT + '\n[10:01:00] AGENT: Roughly it would be around 12 lakh.' }));
   assert.equal(lead.factcheck.ok, false);
   assert.equal(lead.action_status.telegram_factcheck, 'ok');
-  assert.match(calls.find(c => c.host === 'telegram').body.text, /said something it shouldn't/);
+  assert.ok(calls.filter(c => c.host === 'telegram').some(c => /said something it shouldn't/.test(c.body.text)));
 });
 
 test('accept link works once, with the right token only', async () => {

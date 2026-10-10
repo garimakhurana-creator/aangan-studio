@@ -1,17 +1,17 @@
 {
-  "key": "5e7ff158-2cf185b8",
+  "key": "5e7ff158-bcf9d5b7",
   "call_date": "2026-09-08",
-  "latency_ms": 6406,
+  "latency_ms": 14195,
   "usage": {
     "model": "gemini-3.1-pro-preview",
     "input_tokens": 957,
-    "output_tokens": 661
+    "output_tokens": 1728
   },
   "extraction": {
     "call_type": "new_enquiry",
     "caller_name": null,
     "language": "English",
-    "summary": "The caller wants to redesign their living room and kitchen before Diwali. After being informed that the timeline is too short, they asked about starting after Diwali but decided to think about it and call back.",
+    "summary": "The caller inquired about redesigning their living room and kitchen before Diwali. After being told the timeline was too short, they asked about starting after Diwali and decided to think about it before calling back.",
     "referral": {
       "how_found": null,
       "referrer_name": null,
@@ -34,14 +34,14 @@
       "structural_changes": false
     },
     "engagement": {
-      "wants_design_and_execution": "unknown",
-      "signal": null
+      "wants_design_and_execution": "yes",
+      "signal": "I want to redo my living room and kitchen before Diwali. Can you take it up?"
     },
     "timeline": {
       "needed_by_text": "before Diwali",
       "weeks_until_needed": 3,
       "site_available_text": null,
-      "weeks_until_site_available": null,
+      "weeks_until_site_available": 0,
       "preferred_start_text": "after Diwali",
       "flexible": false
     },
@@ -51,8 +51,8 @@
       "text": null
     },
     "decision_maker": {
-      "status": "unknown",
-      "detail": null
+      "status": "self",
+      "detail": "Referred to 'my living room'"
     },
     "pricing": {
       "asked": false,
@@ -73,12 +73,18 @@
       "site_visit": false,
       "consultation_wanted": false,
       "preferred_slots": null,
-      "email": null
+      "email": null,
+      "preferred_window": {
+        "days": [],
+        "part_of_day": "any",
+        "specific_date": null,
+        "specific_time": null
+      }
     },
     "evidence": [
       {
         "criterion": "c1",
-        "quote": "I want to redo my living room and kitchen"
+        "quote": "I want to redo my living room and kitchen before Diwali. Can you take it up?"
       },
       {
         "criterion": "c3",
@@ -86,10 +92,11 @@
       }
     ],
     "open_questions": [
-      "What is the property type and location?",
-      "Do they want design and execution?",
-      "What is the budget?",
-      "Who is the decision maker?"
+      "Caller's name",
+      "Location/locality",
+      "Budget",
+      "Property type",
+      "Occupancy status"
     ]
   }
 }

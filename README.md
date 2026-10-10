@@ -21,8 +21,8 @@ Designers also got leads as bare forwards and re-asked everything on the first c
 1. **Answers every call** (Vaani agent "Shruti", Gemini at temperature 0.2, English / Hindi / Marathi). It discloses it is the studio's virtual assistant.
 2. **Qualifies with Nikhil's five criteria** (`kb/qualified.md`): real project, Pune/PCMC, realistic timeline, budget broadly right, decision-maker. Gemini only *extracts facts*; a deterministic rules engine (`lib/qualify.js`) decides, with a reason code and evidence for every criterion.
 3. **Never quotes a price.** Nikhil asked for live per-sq-ft quotes; his own `pricing.md` forbids any number. That is **the cut**: the agent uses his approved line and offers the free consultation. The dashboard tracks whether price-askers still book.
-4. **Hands off by email** with a "don't re-ask" brief, five-criteria evidence, flags (VIP, repeat caller, proxy caller, rented, large project) and an **I've got this** link. Telegram is used only for Nikhil's urgent alerts (existing-client complaints, failures, handoffs not picked up).
-5. **Books via Calendly**: a single-use booking link is emailed after the call. The agent never says "you're booked".
+4. **Hands off by email** with a "don't re-ask" brief, five-criteria evidence, flags (VIP, repeat caller, proxy caller, rented, large project) and an **I've got this** link. Telegram posts a short heads-up for every new qualified enquiry (who, what, where, booked slot, dashboard link) plus Nikhil's urgent alerts (existing-client complaints, failures, handoffs not picked up).
+5. **Pre-books via Calendly**: Shruti asks which day and time suit the caller ("Saturday morning", "Monday at 11"). After the call the server finds the earliest free Calendly slot that matches and books it; Calendly sends the invite and we email a confirmation with a reschedule link. If no slot matches or no time was given, a single-use booking link is emailed instead, and the designer brief says why. The agent never says "you're booked" during the call, because it can't see the calendar.
 6. **Shows the founder everything**: a *Today* view (what needs you, split qualified / not qualified), a *Leads* board for designers (urgent / new / picked up, and not-qualified with reasons; search, area, type, quick filters, sort) and *Reports* (funnel, outcomes, price questions, cost per call / lead / booking, AI health).
 
 ## Guardrails against made-up answers
@@ -56,8 +56,8 @@ Caller → Vaani agent (generated prompt + FAQ + guardrails)
        → call_postprocessing webhook → /api/vaani/webhook
        → Gemini extraction → grounding check → rules engine → fact-check
        → merge dropped call / mark repeat caller
-       → HubSpot (contact, deal, note, task) · Calendly link → email to caller
-         · designer email with accept link · Telegram alerts to Nikhil
+       → HubSpot (contact, deal, note, task) · Calendly: book the slot they asked for (or a link) → email to caller
+         · designer email with accept link · Telegram: new-lead heads-up + alerts to Nikhil
        → Neon Postgres (calls, leads, events) → dashboard
 ```
 

@@ -1,11 +1,11 @@
 {
-  "key": "09d42a24-2cf185b8",
+  "key": "09d42a24-bcf9d5b7",
   "call_date": "2026-09-10",
-  "latency_ms": 6506,
+  "latency_ms": 7203,
   "usage": {
     "model": "gemini-3.1-pro-preview",
     "input_tokens": 984,
-    "output_tokens": 639
+    "output_tokens": 693
   },
   "extraction": {
     "call_type": "existing_client_issue",
@@ -23,7 +23,7 @@
       "locality": "Viman Nagar",
       "city": "Pune",
       "carpet_area_sqft": null,
-      "scope_type": "unknown",
+      "scope_type": "full_home",
       "rooms": [],
       "room_count": null,
       "current_state": "under execution",
@@ -31,8 +31,8 @@
       "structural_changes": false
     },
     "engagement": {
-      "wants_design_and_execution": "unknown",
-      "signal": null
+      "wants_design_and_execution": "yes",
+      "signal": "My project has been going for three months"
     },
     "timeline": {
       "needed_by_text": null,
@@ -49,7 +49,7 @@
     },
     "decision_maker": {
       "status": "self",
-      "detail": "My project has been going for three months"
+      "detail": "Caller is the client."
     },
     "pricing": {
       "asked": false,
@@ -70,16 +70,22 @@
       "site_visit": false,
       "consultation_wanted": false,
       "preferred_slots": null,
-      "email": null
+      "email": null,
+      "preferred_window": {
+        "days": [],
+        "part_of_day": "any",
+        "specific_date": null,
+        "specific_time": null
+      }
     },
     "evidence": [
       {
-        "criterion": "c2",
-        "quote": "Flat in Viman Nagar — 2BHK."
+        "criterion": "c1",
+        "quote": "My project has been going for three months"
       },
       {
-        "criterion": "c5",
-        "quote": "My project has been going for three months"
+        "criterion": "c2",
+        "quote": "Flat in Viman Nagar — 2BHK."
       }
     ],
     "open_questions": []

@@ -1,11 +1,11 @@
 {
-  "key": "de8353e7-2cf185b8",
+  "key": "de8353e7-bcf9d5b7",
   "call_date": "2026-09-05",
-  "latency_ms": 7420,
+  "latency_ms": 8866,
   "usage": {
     "model": "gemini-3.1-pro-preview",
     "input_tokens": 992,
-    "output_tokens": 803
+    "output_tokens": 844
   },
   "extraction": {
     "call_type": "new_enquiry",
@@ -37,15 +37,15 @@
     },
     "engagement": {
       "wants_design_and_execution": "yes",
-      "signal": "We need workstations for 20 people, a small cabin, a meeting room, and a break area."
+      "signal": "Full fitout from scratch"
     },
     "timeline": {
-      "needed_by_text": "We want to be operational by December.",
+      "needed_by_text": "operational by December",
       "weeks_until_needed": 12,
       "site_available_text": "just got our first proper office space",
       "weeks_until_site_available": 0,
       "preferred_start_text": null,
-      "flexible": null
+      "flexible": false
     },
     "budget": {
       "volunteered": false,
@@ -54,7 +54,7 @@
     },
     "decision_maker": {
       "status": "self",
-      "detail": "I’m the founder."
+      "detail": "I'm the founder"
     },
     "pricing": {
       "asked": false,
@@ -75,7 +75,13 @@
       "site_visit": false,
       "consultation_wanted": true,
       "preferred_slots": null,
-      "email": null
+      "email": null,
+      "preferred_window": {
+        "days": [],
+        "part_of_day": "any",
+        "specific_date": null,
+        "specific_time": null
+      }
     },
     "evidence": [
       {
@@ -97,7 +103,8 @@
     ],
     "open_questions": [
       "What is the budget for the fitout?",
-      "Is the space owned or leased?"
+      "Are they renting or do they own the space?",
+      "When are they available for a consultation?"
     ]
   }
 }

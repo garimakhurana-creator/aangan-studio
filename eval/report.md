@@ -1,9 +1,9 @@
 # Eval report
 
-Run 2026-10-10T11:17:52.271Z · policy `2026-10-09.1` · model `gemini-3.1-pro-preview`
+Run 2026-10-10T11:56:14.002Z · policy `2026-10-09.1` · model `gemini-3.1-pro-preview`
 
 **20/20** phone transcripts routed as expected. Grounding check removed 0 unsupported extracted facts.
-Tokens (all extractions): 19546 in / 25728 out.
+Tokens (all extractions): 19546 in / 25353 out.
 
 | Call | Expected | Got | Result | Flags |
 |---|---|---|---|---|
@@ -21,9 +21,9 @@ Tokens (all extractions): 19546 in / 25728 out.
 | T12 | qualified | qualified | ✅ | site_visit_requested, large_project |
 | T13 | qualified | qualified | ✅ | pricing_asked |
 | T14 | qualified | qualified | ✅ | proxy_caller |
-| T15 | qualified | qualified | ✅ |  |
+| T15 | qualified | qualified | ✅ | site_visit_requested |
 | T16 | qualified | qualified | ✅ | repeat_caller |
 | T17 | qualified | qualified | ✅ | dropped_call |
-| T18 | declined | declined | ✅ | pricing_asked |
+| T18 | declined | declined | ✅ |  |
 | T19 | declined | declined | ✅ |  |
 | T20 | qualified | qualified | ✅ |  |

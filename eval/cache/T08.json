@@ -1,11 +1,11 @@
 {
-  "key": "4d77a014-2cf185b8",
+  "key": "4d77a014-bcf9d5b7",
   "call_date": "2026-09-09",
-  "latency_ms": 8875,
+  "latency_ms": 10235,
   "usage": {
     "model": "gemini-3.1-pro-preview",
     "input_tokens": 831,
-    "output_tokens": 988
+    "output_tokens": 1259
   },
   "extraction": {
     "call_type": "no_conversation",
@@ -70,12 +70,17 @@
       "site_visit": false,
       "consultation_wanted": false,
       "preferred_slots": null,
-      "email": null
+      "email": null,
+      "preferred_window": {
+        "days": [],
+        "part_of_day": "any",
+        "specific_date": null,
+        "specific_time": null
+      }
     },
     "evidence": [],
     "open_questions": [
-      "What is the caller's name?",
-      "What is the nature of the enquiry?"
+      "What was the purpose of the call?"
     ]
   }
 }

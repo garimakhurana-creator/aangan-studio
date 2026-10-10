@@ -1,17 +1,17 @@
 {
-  "key": "550b2b43-2cf185b8",
+  "key": "550b2b43-bcf9d5b7",
   "call_date": "2026-09-17",
-  "latency_ms": 13275,
+  "latency_ms": 7323,
   "usage": {
     "model": "gemini-3.1-pro-preview",
     "input_tokens": 999,
-    "output_tokens": 1610
+    "output_tokens": 758
   },
   "extraction": {
     "call_type": "new_enquiry",
     "caller_name": null,
     "language": "English",
-    "summary": "The caller is inquiring about interior design for their parents' new 3BHK in Hadapsar. The parents will attend the consultation and make the final decisions.",
+    "summary": "The caller is inquiring about interior design for their parents' new 3BHK in Hadapsar. The caller is doing initial research, but the parents will attend the consultation and make the final decisions.",
     "referral": {
       "how_found": null,
       "referrer_name": null,
@@ -21,9 +21,9 @@
       "segment": "residential",
       "property_type": "3BHK",
       "locality": "Hadapsar",
-      "city": null,
+      "city": "Pune",
       "carpet_area_sqft": null,
-      "scope_type": "unknown",
+      "scope_type": "full_home",
       "rooms": [],
       "room_count": null,
       "current_state": "new possession",
@@ -31,7 +31,7 @@
       "structural_changes": false
     },
     "engagement": {
-      "wants_design_and_execution": "unknown",
+      "wants_design_and_execution": "yes",
       "signal": "They want a proper design."
     },
     "timeline": {
@@ -49,7 +49,7 @@
     },
     "decision_maker": {
       "status": "proxy_decider_will_attend",
-      "detail": "Caller is doing initial checking; parents will attend consultation and decide."
+      "detail": "Caller is doing initial checking for parents who will attend consultation and decide."
     },
     "pricing": {
       "asked": false,
@@ -70,7 +70,13 @@
       "site_visit": false,
       "consultation_wanted": true,
       "preferred_slots": null,
-      "email": null
+      "email": null,
+      "preferred_window": {
+        "days": [],
+        "part_of_day": "any",
+        "specific_date": null,
+        "specific_time": null
+      }
     },
     "evidence": [
       {
@@ -87,9 +93,9 @@
       }
     ],
     "open_questions": [
-      "Does the project include execution?",
       "What is the budget?",
-      "What is the expected timeline?"
+      "What is the timeline for completion?",
+      "What is the caller's name?"
     ]
   }
 }

@@ -1,17 +1,17 @@
 {
-  "key": "5ed39b44-2cf185b8",
+  "key": "5ed39b44-bcf9d5b7",
   "call_date": "2026-09-19",
-  "latency_ms": 15498,
+  "latency_ms": 13679,
   "usage": {
     "model": "gemini-3.1-pro-preview",
     "input_tokens": 972,
-    "output_tokens": 1858
+    "output_tokens": 1663
   },
   "extraction": {
     "call_type": "new_enquiry",
     "caller_name": "Girish Nair",
     "language": "English",
-    "summary": "Caller is following up on an unreturned enquiry from Monday. He is looking to discuss a project for his 3BHK in Viman Nagar.",
+    "summary": "The caller is following up on an enquiry he made earlier in the week that was not answered. He is looking to discuss a project for his 3BHK in Viman Nagar.",
     "referral": {
       "how_found": null,
       "referrer_name": null,
@@ -49,7 +49,7 @@
     },
     "decision_maker": {
       "status": "self",
-      "detail": "Referred to it as 'my 3BHK'"
+      "detail": null
     },
     "pricing": {
       "asked": false,
@@ -63,14 +63,20 @@
     },
     "repeat": {
       "claims_prior_contact": true,
-      "detail": "Called on Monday about a project and gave his number, but no one got back to him."
+      "detail": "Called on Monday afternoon and left details, but no one got back to him."
     },
     "dropped_call": false,
     "requests": {
       "site_visit": false,
-      "consultation_wanted": true,
+      "consultation_wanted": false,
       "preferred_slots": null,
-      "email": null
+      "email": null,
+      "preferred_window": {
+        "days": [],
+        "part_of_day": "any",
+        "specific_date": null,
+        "specific_time": null
+      }
     },
     "evidence": [
       {

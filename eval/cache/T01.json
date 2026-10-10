@@ -1,17 +1,17 @@
 {
-  "key": "ebec28f5-2cf185b8",
+  "key": "ebec28f5-bcf9d5b7",
   "call_date": "2026-09-02",
-  "latency_ms": 15087,
+  "latency_ms": 7646,
   "usage": {
     "model": "gemini-3.1-pro-preview",
     "input_tokens": 1033,
-    "output_tokens": 1807
+    "output_tokens": 856
   },
   "extraction": {
     "call_type": "new_enquiry",
     "caller_name": "Priya",
     "language": "English",
-    "summary": "Priya is looking to completely redesign her 1,400 sq ft 3BHK in Kothrud. She and her husband own the flat and have a flexible timeline aiming for March completion.",
+    "summary": "Priya is looking for a complete redesign of her 3BHK flat in Kothrud, Dahanukar Colony. She and her husband are the owners and want the project completed by March.",
     "referral": {
       "how_found": "friend referral",
       "referrer_name": "Shruti Joshi",
@@ -27,8 +27,7 @@
       "rooms": [
         "kitchen",
         "living room",
-        "bedroom 1",
-        "bedroom 2"
+        "bedrooms"
       ],
       "room_count": 4,
       "current_state": "builder flat",
@@ -40,8 +39,8 @@
       "signal": "redo the whole thing"
     },
     "timeline": {
-      "needed_by_text": "done by March",
-      "weeks_until_needed": 26,
+      "needed_by_text": "by March",
+      "weeks_until_needed": 25,
       "site_available_text": "bought it two years ago",
       "weeks_until_site_available": 0,
       "preferred_start_text": null,
@@ -54,7 +53,7 @@
     },
     "decision_maker": {
       "status": "self",
-      "detail": "myself and my husband. He knows we're calling and is happy to go ahead."
+      "detail": "myself and my husband. He knows we’re calling and is happy to go ahead."
     },
     "pricing": {
       "asked": false,
@@ -75,16 +74,22 @@
       "site_visit": false,
       "consultation_wanted": true,
       "preferred_slots": null,
-      "email": null
+      "email": null,
+      "preferred_window": {
+        "days": [],
+        "part_of_day": "any",
+        "specific_date": null,
+        "specific_time": null
+      }
     },
     "evidence": [
       {
         "criterion": "c1",
-        "quote": "redo the whole thing — kitchen, living room, both bedrooms."
+        "quote": "We want to redo the whole thing — kitchen, living room, both bedrooms."
       },
       {
         "criterion": "c2",
-        "quote": "Kothrud — Dahanukar Colony"
+        "quote": "We have a 3BHK in Kothrud — Dahanukar Colony."
       },
       {
         "criterion": "c3",
@@ -96,7 +101,8 @@
       }
     ],
     "open_questions": [
-      "What is the budget for the project?"
+      "What is the budget for the project?",
+      "When would they like to schedule the consultation?"
     ]
   }
 }
