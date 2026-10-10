@@ -1,6 +1,6 @@
 # Eval report
 
-Run 2026-10-09T11:25:08.724Z · policy `2026-10-09.1` · model `gemini-3.1-pro-preview`
+Run 2026-10-10T11:17:52.271Z · policy `2026-10-09.1` · model `gemini-3.1-pro-preview`
 
 **20/20** phone transcripts routed as expected. Grounding check removed 0 unsupported extracted facts.
 Tokens (all extractions): 19546 in / 25728 out.

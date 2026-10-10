@@ -4,7 +4,7 @@
   "agent": {
     "name": "Shruti",
     "discloses_ai": true,
-    "greeting": "Hello, thank you for calling Aangan Studio. I'm Shruti, the studio's virtual assistant. How can I help you today?"
+    "greeting": "Hello, and a very warm welcome to Aangan Studio. I'm Shruti, the studio's virtual assistant. How may I help you today?"
   },
   "notes": "Every value the source documents disagree on carries confirmed:false and the evidence behind the default. Decisions that rest on an unconfirmed value are routed to review instead of being rejected.",
   "service_area": {

@@ -207,3 +207,10 @@ test('cost floor uses the low end of pricing.md', () => {
   assert.equal(costFloor({ segment: 'commercial', carpet_area_sqft: 1000 }), 1200000);
   assert.equal(costFloor({ scope_type: 'partial', room_count: 2 }), 700000);
 });
+
+test('a call that ends with only "Pune" goes to review, not to a designer', () => {
+  const d = qualify(call({ project: { locality: null, city: 'Pune', segment: 'residential', scope_type: 'unknown', carpet_area_sqft: null }, engagement: { wants_design_and_execution: 'unknown' }, timeline: { weeks_until_needed: null, weeks_until_site_available: null, flexible: null, needed_by_text: null } }));
+  assert.equal(d.route, 'review');
+  assert.match(d.review_reasons[0], /which area the site is in/);
+  assert.equal(classifyLocality(null, 'Pune').status, 'city_only');
+});

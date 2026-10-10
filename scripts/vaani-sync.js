@@ -55,6 +55,15 @@ function faq(policy) {
   };
 }
 
+// Words speech-to-text should expect from Pune callers.
+function sttKeywords(policy) {
+  const places = [...policy.service_area.pune, ...policy.service_area.pcmc, ...policy.service_area.adjoining_assumed.localities]
+    .map(p => p.replace(/w/g, ch => ch.toUpperCase()));
+  const trade = ['Aangan', 'Aangan Studio', 'Shruti', 'Pune', 'PCMC', 'BHK', '1BHK', '2BHK', '3BHK', '4BHK', 'villa', 'carpet area', 'square feet', 'sq ft',
+    'modular kitchen', 'wardrobe', 'wardrobes', 'false ceiling', 'interiors', 'renovation', 'site visit', 'consultation', 'possession', 'builder flat', 'Vastu', 'lakh'];
+  return [...new Set([...trade, ...places])].slice(0, 100);
+}
+
 function applyConfig(agent, policy) {
   const prompt = buildPrompt(policy);
   const p = agent.persona || {};
@@ -74,7 +83,10 @@ function applyConfig(agent, policy) {
 
   // Low temperature: this agent should follow its script, not improvise.
   const sc = p.senses_capabilities = p.senses_capabilities || {};
-  sc.auto_detect = true; // English / Hindi / Marathi callers
+  // Keep one language pipeline: switching voices mid-call sounded broken in testing.
+  // Hindi callers get Hinglish in Roman letters (see the prompt's Language section).
+  sc.auto_detect = false;
+  sc.language = 'English';
   sc.brain = sc.brain || {};
   sc.brain.llm = {
     ...(sc.brain.llm || {}),
@@ -82,6 +94,18 @@ function applyConfig(agent, policy) {
     auto_detect: false,
   };
   if (sc.brain.llm.fallback?.parameters) sc.brain.llm.fallback.parameters.temperature = 0.2;
+
+  // Speech-to-text: teach it the words Pune callers use, and use Indian English
+  // for the backup engine (it was Australian).
+  const stt = sc.ears = sc.ears || {};
+  stt.stt = stt.stt || {};
+  stt.stt.primary = { ...(stt.stt.primary || {}), keywords: sttKeywords(policy) };
+  if (stt.stt.fallback) stt.stt.fallback.language = 'en-IN';
+
+  // Voice: calm, not over-excited, and say the trade words properly.
+  const tts = sc.mouth?.tts;
+  if (tts?.primary?.config) { tts.primary.config.emotion = []; tts.primary.config.emotions = []; tts.primary.config.speed = 0.97; }
+  if (tts) tts.word_pronunciation_pairs = { BHK: 'B H K', '1BHK': 'one B H K', '2BHK': 'two B H K', '3BHK': 'three B H K', '4BHK': 'four B H K', PCMC: 'P C M C', 'sq ft': 'square feet', Aangan: 'Aangun' };
 
   // Lets the agent see earlier calls from the same number (repeat callers, T16).
   p.memories = { ...(p.memories || {}), use_previous_call_contexts: true, max_history_calls: 5 };
@@ -96,6 +120,13 @@ function applyConfig(agent, policy) {
 
   const e = agent.experience = agent.experience || {};
   e.settings = e.settings || {};
+  // No filler words ("wow", "so great"), and let the caller finish before replying.
+  e.conversational_experience = {
+    ...(e.conversational_experience || {}),
+    filler_words: { filler_words: false, filler_words_frequency: 0, filler_words_list: [] },
+    filler_words_frequency: 0,
+    eagerness_to_speak: 'balanced',
+  };
   e.settings.idle_conversation_settings = {
     ...(e.settings.idle_conversation_settings || {}),
     idle_call_warning_message: 'Are you still there? Take your time.',

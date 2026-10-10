@@ -1,6 +1,6 @@
 {
   "summary": {
-    "run_at": "2026-10-09T11:25:08.724Z",
+    "run_at": "2026-10-10T11:17:52.271Z",
     "policy_version": "2026-10-09.1",
     "model": "gemini-3.1-pro-preview",
     "passed": 20,
@@ -179,7 +179,7 @@
         "output_tokens": 1807
       },
       "latency_ms": 15087,
-      "from_cache": false
+      "from_cache": true
     },
     {
       "id": "T02",
@@ -349,7 +349,7 @@
         "output_tokens": 1922
       },
       "latency_ms": 15983,
-      "from_cache": false
+      "from_cache": true
     },
     {
       "id": "T03",
@@ -515,7 +515,7 @@
         "output_tokens": 698
       },
       "latency_ms": 6546,
-      "from_cache": false
+      "from_cache": true
     },
     {
       "id": "T04",
@@ -664,7 +664,7 @@
         "output_tokens": 1698
       },
       "latency_ms": 14015,
-      "from_cache": false
+      "from_cache": true
     },
     {
       "id": "T05",
@@ -837,7 +837,7 @@
         "output_tokens": 785
       },
       "latency_ms": 7231,
-      "from_cache": false
+      "from_cache": true
     },
     {
       "id": "T06",
@@ -1003,7 +1003,7 @@
         "output_tokens": 803
       },
       "latency_ms": 7420,
-      "from_cache": false
+      "from_cache": true
     },
     {
       "id": "T07",
@@ -1164,7 +1164,7 @@
         "output_tokens": 661
       },
       "latency_ms": 6406,
-      "from_cache": false
+      "from_cache": true
     },
     {
       "id": "T08",
@@ -1269,7 +1269,7 @@
         "output_tokens": 988
       },
       "latency_ms": 8875,
-      "from_cache": false
+      "from_cache": true
     },
     {
       "id": "T09",
@@ -1378,7 +1378,7 @@
         "output_tokens": 639
       },
       "latency_ms": 6506,
-      "from_cache": false
+      "from_cache": true
     },
     {
       "id": "T10",
@@ -1552,7 +1552,7 @@
         "output_tokens": 716
       },
       "latency_ms": 6960,
-      "from_cache": false
+      "from_cache": true
     },
     {
       "id": "T11",
@@ -1718,7 +1718,7 @@
         "output_tokens": 1470
       },
       "latency_ms": 12514,
-      "from_cache": false
+      "from_cache": true
     },
     {
       "id": "T12",
@@ -1881,7 +1881,7 @@
         "output_tokens": 1665
       },
       "latency_ms": 13612,
-      "from_cache": false
+      "from_cache": true
     },
     {
       "id": "T13",
@@ -2046,7 +2046,7 @@
         "output_tokens": 693
       },
       "latency_ms": 6731,
-      "from_cache": false
+      "from_cache": true
     },
     {
       "id": "T14",
@@ -2210,7 +2210,7 @@
         "output_tokens": 1610
       },
       "latency_ms": 13275,
-      "from_cache": false
+      "from_cache": true
     },
     {
       "id": "T15",
@@ -2373,7 +2373,7 @@
         "output_tokens": 771
       },
       "latency_ms": 7055,
-      "from_cache": false
+      "from_cache": true
     },
     {
       "id": "T16",
@@ -2532,7 +2532,7 @@
         "output_tokens": 1858
       },
       "latency_ms": 15498,
-      "from_cache": false
+      "from_cache": true
     },
     {
       "id": "T17",
@@ -2699,7 +2699,7 @@
         "output_tokens": 1812
       },
       "latency_ms": 15267,
-      "from_cache": false
+      "from_cache": true
     },
     {
       "id": "T18",
@@ -2858,7 +2858,7 @@
         "output_tokens": 1723
       },
       "latency_ms": 14791,
-      "from_cache": false
+      "from_cache": true
     },
     {
       "id": "T19",
@@ -3015,7 +3015,7 @@
         "output_tokens": 1591
       },
       "latency_ms": 13668,
-      "from_cache": false
+      "from_cache": true
     },
     {
       "id": "T20",
@@ -3179,7 +3179,7 @@
         "output_tokens": 1818
       },
       "latency_ms": 14221,
-      "from_cache": false
+      "from_cache": true
     }
   ]
 }
