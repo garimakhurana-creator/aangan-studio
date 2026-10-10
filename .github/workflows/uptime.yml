@@ -1,0 +1,67 @@
+# Uptime monitor. Runs on GitHub, outside Vercel, so it still alerts if the
+# site itself is down. Every 15 minutes it loads the dashboard and runs the
+# live service checks (/api/health/deep); on failure it sends a Telegram
+# alert. Once a day (9:00 am IST) it sends an "all good" message so you know
+# the monitor itself is alive.
+#
+# Repo secrets needed: TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, CRON_SECRET
+# (set them with: node scripts/push-gh-secrets.js)
+
+name: uptime
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+    - cron: '30 3 * * *'   # daily "all good" at 9:00 am IST
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      SITE: https://aangan-studio-tau.vercel.app
+      TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+      CRON_SECRET: ${{ secrets.CRON_SECRET }}
+      DAILY: ${{ github.event.schedule == '30 3 * * *' || github.event_name == 'workflow_dispatch' }}
+    steps:
+      - name: Check the site and every service
+        run: |
+          tg() {
+            curl -s -X POST "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" \
+              --data-urlencode "chat_id=${TG_CHAT}" --data-urlencode "parse_mode=HTML" \
+              --data-urlencode "disable_web_page_preview=true" --data-urlencode "text=$1" > /dev/null
+          }
+
+          check() {
+            PAGE=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 "$SITE/")
+            DEEP=$(curl -s --max-time 60 -H "Authorization: Bearer ${CRON_SECRET}" "$SITE/api/health/deep" || echo '{}')
+            [ "$PAGE" = "200" ] && [ "$(echo "$DEEP" | jq -r '.ok // false')" = "true" ]
+          }
+
+          # Two tries, a minute apart, so a one-off blip doesn't page anyone.
+          if check || { sleep 60; check; }; then
+            echo "All good: $DEEP"
+            if [ "$DAILY" = "true" ]; then
+              tg "✅ <b>Aangan front desk: all systems OK</b>
+          Dashboard, database, Vaani, Gemini, Calendly, HubSpot and Telegram all checked."
+            fi
+            exit 0
+          fi
+
+          if [ "$PAGE" != "200" ]; then
+            WHAT="The dashboard returned HTTP ${PAGE} (site down or failing to load)."
+          else
+            WHAT=$(echo "$DEEP" | jq -r '(.checks // {}) | to_entries | map(select(.value.ok | not) | "• \(.key): \(.value.error)") | join("\n")')
+            [ -z "$WHAT" ] && WHAT="Health check returned: $(echo "$DEEP" | head -c 300)"
+          fi
+          echo "$WHAT"
+          WHAT=$(printf '%s' "$WHAT" | sed -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g')
+          tg "🚨 <b>Aangan front desk needs attention</b>
+          ${WHAT}
+
+          <a href=\"$SITE\">Open the dashboard</a> · checks repeat every 15 minutes."
+          exit 1

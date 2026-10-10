@@ -95,6 +95,15 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Live check of every service, for the uptime monitor. Needs CRON_SECRET so
+// strangers can't spend the API quotas.
+app.get('/api/health/deep', async (req, res) => {
+  const key = req.query.key || (req.get('authorization') || '').replace(/^Bearer /, '');
+  if (!process.env.CRON_SECRET || key !== process.env.CRON_SECRET) return res.status(401).json({ error: 'unauthorized' });
+  const report = await require('./lib/health').deepHealth();
+  res.status(report.ok ? 200 : 503).json(report);
+});
+
 const isSim = req => req.query.simulated === '1';
 const PERIODS = new Set(['7d', '30d', 'month', 'all']);
 const period = req => (PERIODS.has(req.query.period) ? req.query.period : 'all');
