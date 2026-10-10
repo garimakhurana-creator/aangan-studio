@@ -121,6 +121,7 @@ app.get('/api/leads', async (req, res) => {
       site_visit: !!extraction?.requests?.site_visit,
       preferred_slots: extraction?.requests?.preferred_slots || null,
       reason: Object.values(l.decision?.criteria || {}).find(c => c.status === 'fail')?.reason || null,
+      has_recording: !l.simulated,
       work: l.work || null,
       notes_count: (l.notes || []).length,
       last_note: (l.notes || []).at(-1) || null,
@@ -163,6 +164,32 @@ app.post('/api/leads/:id/handled', async (req, res) => {
 });
 
 // The designer email exactly as sent (accept link disabled in the preview).
+// Streams a call recording from Vaani. Vaani needs the API key, so the browser
+// can't fetch it directly; the key stays on the server. Range requests are
+// passed through so the player can seek.
+app.get('/api/leads/:id/recording', async (req, res) => {
+  const lead = await store().get('leads', req.params.id);
+  if (!lead) return res.status(404).json({ error: 'not found' });
+  if (lead.simulated) return res.status(404).json({ error: 'Demo calls are typed transcripts, so there is no audio.' });
+  const callId = req.query.call || lead.call_ids.at(-1);
+  if (!lead.call_ids.includes(callId)) return res.status(400).json({ error: 'unknown call' });
+  if (!process.env.VAANI_API_KEY) return res.status(503).json({ error: 'Vaani is not connected' });
+  const headers = { 'X-API-Key': process.env.VAANI_API_KEY };
+  if (req.headers.range) headers.Range = req.headers.range;
+  try {
+    const r = await fetch(`https://api.vaanivoice.ai/api/stream/${encodeURIComponent(callId)}`, { headers });
+    if (!r.ok || !r.body) return res.status(r.status === 404 ? 404 : 502).json({ error: 'Recording not available yet' });
+    for (const h of ['content-type', 'content-length', 'content-range', 'accept-ranges']) {
+      const v = r.headers.get(h); if (v) res.setHeader(h, v);
+    }
+    res.setHeader('Cache-Control', 'private, max-age=3600');
+    res.status(r.status);
+    require('stream').Readable.fromWeb(r.body).pipe(res);
+  } catch (err) {
+    res.status(502).json({ error: 'Could not reach Vaani for the recording' });
+  }
+});
+
 app.get('/api/leads/:id/brief', async (req, res) => {
   const lead = await store().get('leads', req.params.id);
   if (!lead || lead.decision.route !== 'qualified') return res.status(404).type('text').send('No designer brief for this enquiry.');
@@ -207,6 +234,8 @@ app.post('/api/simulate', async (req, res) => {
     }
   }
   if (!text) return res.status(400).json({ error: 'sample or transcript required' });
+  // Replaying a sample replaces its earlier demo copy, so the demo never duplicates.
+  if (id) await removeDemoCopies(id);
   const call_id = `sim-${id || 'custom'}-${Date.now()}`;
   try {
     const lead = await processPostCall({
@@ -245,6 +274,17 @@ function sampleTime(header) {
 function sampleDuration(header) {
   const m = header.match(/(\d+) min (\d+) sec/);
   return m ? Number(m[1]) * 60 + Number(m[2]) : null;
+}
+
+async function removeDemoCopies(sampleId) {
+  const db = store();
+  const prefix = `sim-${sampleId}-`;
+  const leads = (await db.all('leads')).filter(l => l.simulated && (l.call_ids || []).some(c => c.startsWith(prefix)));
+  const ids = new Set(leads.map(l => l.id));
+  for (const l of leads) await db.remove('leads', l.id);
+  for (const c of await db.all('calls')) if (c.simulated && String(c.id).startsWith(prefix)) await db.remove('calls', c.id);
+  for (const e of await db.all('events')) if (e.lead_id && ids.has(e.lead_id)) await db.remove('events', e.id);
+  for (const e of await db.all('events')) if (String(e.id).startsWith(`postcall:${prefix}`)) await db.remove('events', e.id);
 }
 
 function escapeHtml(s) {

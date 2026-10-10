@@ -59,12 +59,17 @@
         <div class="chips" id="chips" role="tablist" aria-label="Lead status"></div>
         <div class="tools-right">
           <label class="search"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg><input id="q" type="search" placeholder="Search" aria-label="Search leads"></label>
+          <div class="layout-seg" role="radiogroup" aria-label="Layout">
+            <button type="button" role="radio" data-layout="cards" aria-label="Cards"><svg class="i"><use href="#i-grid"/></svg></button>
+            <button type="button" role="radio" data-layout="table" aria-label="Table"><svg class="i"><use href="#i-rows"/></svg></button>
+          </div>
           <button type="button" class="btn ghost sm" id="more-filters" aria-expanded="false" aria-controls="filters-panel"><svg class="i"><use href="#i-sliders"/></svg>Filters<span class="fcount" id="fcount" hidden></span></button>
         </div>
       </div>
       <div class="filters-panel" id="filters-panel" hidden></div>
 
       <div class="grid-cards" id="cards" aria-live="polite"></div>
+      <div class="table-wrap" id="table-wrap" hidden><table class="leads-table" id="leads-table"></table></div>
       <div class="empty" id="empty" hidden></div>
     </section>
 
@@ -139,6 +144,8 @@
     <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0113 0c0 4.8-6.5 11-6.5 11z" stroke="currentColor" stroke-width="1.6" fill="none"/><circle cx="12" cy="10" r="2.3" stroke="currentColor" stroke-width="1.6" fill="none"/></symbol>
     <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="2" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="1.6" fill="none"/></symbol>
     <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M16 8V5.5A1.5 1.5 0 0014.5 4h-9A1.5 1.5 0 004 5.5v9A1.5 1.5 0 005.5 16H8" stroke="currentColor" stroke-width="1.6" fill="none"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.7" fill="none"/><rect x="13" y="4" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.7" fill="none"/><rect x="4" y="13" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.7" fill="none"/><rect x="13" y="13" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.7" fill="none"/></symbol>
+    <symbol id="i-rows" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
     <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M12 7.5v5.5m0 3.2h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
   </svg>

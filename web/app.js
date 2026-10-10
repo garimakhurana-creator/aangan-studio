@@ -51,7 +51,7 @@ const OUTCOMES = [['booked', 'Booked a consultation'], ['no_answer', 'No answer'
 const OUTCOME_LABEL = Object.fromEntries([...OUTCOMES, ['note', 'Note']]);
 
 // ---------------------------------------------------------------- state
-const state = { view: 'leads', period: 'all', sim: false, simAuto: false, filter: null, q: '', area: '', type: '', flags: [], sort: 'urgent', leads: [], metrics: null, health: null, filtersOpen: false };
+const state = { layout: 'cards', tsort: { key: 'date', dir: -1 }, view: 'leads', period: 'all', sim: false, simAuto: false, filter: null, q: '', area: '', type: '', flags: [], sort: 'urgent', leads: [], metrics: null, health: null, filtersOpen: false };
 try {
   state.period = localStorage.getItem('aangan.period') || 'all';
   const s = localStorage.getItem('aangan.sim');
@@ -62,6 +62,8 @@ const qs = new URLSearchParams(location.search);
 if (qs.has('sim')) { state.sim = qs.get('sim') === '1'; state.simAuto = false; }
 if (['7d', '30d', 'month', 'all'].includes(qs.get('period'))) state.period = qs.get('period');
 if (qs.get('filter')) state.filter = qs.get('filter');
+try { state.layout = localStorage.getItem('aangan.layout') || 'cards'; } catch { /* ignore */ }
+if (['cards', 'table'].includes(new URLSearchParams(location.search).get('layout'))) state.layout = new URLSearchParams(location.search).get('layout');
 const save = () => { try { localStorage.setItem('aangan.period', state.period); localStorage.setItem('aangan.sim', state.sim ? '1' : '0'); } catch { /* ignore */ } };
 
 async function api(url, opts) {
@@ -184,7 +186,11 @@ function renderLeads() {
     ? (a, b) => String(a.booking?.start_time).localeCompare(String(b.booking?.start_time))
     : sorters[state.sort] || sorters.urgent);
 
-  $('#cards').innerHTML = list.map(card).join('');
+  $('#cards').innerHTML = state.layout === 'cards' ? list.map(card).join('') : '';
+  $('#cards').hidden = state.layout !== 'cards';
+  $('#table-wrap').hidden = state.layout !== 'table' || !list.length;
+  $$('[data-layout]').forEach(b => b.setAttribute('aria-checked', String(b.dataset.layout === state.layout)));
+  if (state.layout === 'table') renderTable(list);
   const empty = $('#empty');
   empty.hidden = list.length > 0;
   if (!list.length) {
@@ -225,6 +231,72 @@ function renderFiltersPanel() {
 }
 
 // ---------------------------------------------------------------- lead detail
+// ---------------------------------------------------------------- conversation
+function parseConvo(text) {
+  const out = [];
+  for (const raw of String(text || '').split(/\n+/)) {
+    const line = raw.trim();
+    if (!line) continue;
+    if (/^-{3}.*-{3}$/.test(line)) { out.push({ kind: 'divider', text: line.replace(/-{3}/g, '').trim() }); continue; }
+    if (/^(first|second|third) call\b/i.test(line)) { out.push({ kind: 'divider', text: line }); continue; }
+    const m = line.match(/^(?:\[([\d:]+)\]\s*)?(AGENT|USER|ASSISTANT|BOT|Agent|User|Front Desk|Caller|Shruti)\s*:\s*(.*)$/i);
+    if (m) {
+      const who = m[2].toLowerCase();
+      const caller = who === 'user' || who === 'caller';
+      out.push({ kind: 'msg', side: caller ? 'caller' : 'agent', label: caller ? 'Caller' : who === 'front desk' ? 'Front desk' : 'Shruti', t: m[1] || '', text: m[3] });
+    } else if (out.length && out.at(-1).kind === 'msg') {
+      out.at(-1).text += ` ${line}`;
+    } else {
+      out.push({ kind: 'meta', text: line });
+    }
+  }
+  return out;
+}
+function chatHtml(text) {
+  const items = parseConvo(text);
+  if (!items.length) return '<p class="sub">No transcript.</p>';
+  let last = '';
+  return items.map(it => {
+    if (it.kind === 'divider') return `<div class="chat-div"><span>${esc(it.text)}</span></div>`;
+    if (it.kind === 'meta') return `<div class="chat-meta">${esc(it.text)}</div>`;
+    const showName = it.label !== last; last = it.label;
+    return `<div class="bubble ${it.side}">${showName ? `<span class="who">${esc(it.label)}${it.t ? ` · ${esc(it.t)}` : ''}</span>` : ''}<p>${esc(it.text)}</p></div>`;
+  }).join('');
+}
+
+// ---------------------------------------------------------------- table view
+const TCOLS = [
+  ['date', 'Date', l => l.last_call_at],
+  ['name', 'Name', l => nameOf(l).toLowerCase()],
+  ['status', 'Status', l => ['needs', 'new', 'progress', 'booked', 'notq'].indexOf(l._s.bucket)],
+  ['type', 'Home / Office', l => typeOf(l)],
+  ['project', 'Project', l => String(l.project?.property_type || '')],
+  ['size', 'Size', l => l.project?.carpet_area_sqft || 0],
+  ['area', 'Area', l => areaOf(l)],
+  ['timeline', 'Timeline', l => String(l.timeline?.needed_by || l.timeline?.preferred_start || '')],
+  ['summary', 'Summary', l => String(l.summary || '')],
+  ['phone', 'Phone', l => String(l.phone || '')],
+];
+function renderTable(list) {
+  const { key, dir } = state.tsort;
+  const col = TCOLS.find(c => c[0] === key) || TCOLS[0];
+  const rows = [...list].sort((a, b) => { const x = col[2](a), y = col[2](b); return (x > y ? 1 : x < y ? -1 : 0) * dir; });
+  const typeLabel = { home: 'Home', office: 'Office', other: '—' };
+  $('#leads-table').innerHTML = `<thead><tr>${TCOLS.map(([k, label]) => `<th scope="col" aria-sort="${k === key ? (dir > 0 ? 'ascending' : 'descending') : 'none'}"><button type="button" data-tsort="${k}">${label}${k === key ? ` <span>${dir > 0 ? '↑' : '↓'}</span>` : ''}</button></th>`).join('')}</tr></thead>
+  <tbody>${rows.map(l => { const s = l._s; const p = l.project || {}; return `<tr tabindex="0" data-open="${esc(l.id)}">
+    <td class="nowrap">${esc(dayMonth(l.last_call_at))}<span class="sub2">${esc(timeOf(l.last_call_at))}</span></td>
+    <td class="tname">${esc(nameOf(l))}${l.simulated ? '<span class="sub2">Demo</span>' : ''}</td>
+    <td><span class="badge"><span class="sdot k-${s.dot}"></span>${esc(s.label)}</span></td>
+    <td>${typeLabel[typeOf(l)]}</td>
+    <td><span class="clamp2">${esc([p.property_type, SCOPE[p.scope_type]].filter(Boolean).join(' · ') || '—')}</span></td>
+    <td class="nowrap">${p.carpet_area_sqft ? `${num(p.carpet_area_sqft)} sq ft` : '—'}</td>
+    <td>${esc(areaOf(l) || '—')}</td>
+    <td><span class="clamp2">${esc(l.timeline?.needed_by || l.timeline?.preferred_start || '—')}</span></td>
+    <td class="tsum"><span class="clamp3">${esc(l.summary || '')}</span></td>
+    <td class="nowrap">${esc(l.phone || '—')}</td>
+  </tr>`; }).join('')}</tbody>`;
+}
+
 // Only the most recently requested lead may render, so a slow response can
 // never swap the panel to another lead (and a call can't be logged on the wrong person).
 let openSeq = 0;
@@ -306,6 +378,13 @@ async function openLead(id) {
         ${(l.notes || []).length ? `<ul class="history" style="margin-top:16px">${l.notes.slice().reverse().map(n => `<li><span class="t">${esc(ago(n.at))}${n.by && n.by !== 'A designer' ? ` · ${esc(n.by)}` : ''}</span><b>${esc(OUTCOME_LABEL[n.outcome] || n.outcome)}</b>${n.when ? ` — ${esc(weekday(n.when))} ${esc(dayMonth(n.when))}, ${esc(timeOf(n.when))}` : ''}${n.text ? `<br>${esc(n.text)}` : ''}</li>`).join('')}</ul>` : ''}
       </section>` : ''}
 
+      <section class="d-sec"><h3>The call</h3>
+        ${l.simulated
+          ? '<p class="sub">Demo calls are replays of written September transcripts, so there is no audio.</p>'
+          : l.call_ids.map((cid, i) => `<div class="rec">${l.call_ids.length > 1 ? `<span class="sub">Call ${i + 1}${i ? ' (rang back)' : ''}</span>` : ''}<audio controls preload="none" src="/api/leads/${esc(id)}/recording?call=${encodeURIComponent(cid)}"></audio></div>`).join('')}
+        <div class="chat" role="log" aria-label="Conversation">${chatHtml(l.transcript, d.flags?.includes('pricing_asked'))}</div>
+      </section>
+
       <details class="more"><summary>How the assistant decided</summary><div>
         ${Object.values(d.criteria || {}).map(c => `<div class="crit"><span class="mk ${c.status}">${c.status === 'pass' ? '✓' : c.status === 'fail' ? '✕' : '?'}</span><div>${esc(c.name)}<br><span>${esc(c.reason)}</span></div></div>`).join('') || '<p class="sub">Not assessed: this wasn\'t a new enquiry.</p>'}
         <div class="checks" style="margin-top:14px">
@@ -314,7 +393,7 @@ async function openLead(id) {
         </div>
       </div></details>
       <details class="more"><summary>Activity</summary><div><ul class="timeline">${(l.events || []).map(e => `<li><span class="t">${esc(timeOf(e.at))}</span>${esc(eventLabel(e))}${e.status !== 'ok' ? ` — ${esc(e.status === 'skipped' ? 'not connected yet' : e.error || e.status)}` : ''}</li>`).join('')}</ul></div></details>
-      <details class="more"><summary>Transcript</summary><div><pre class="transcript">${esc(l.transcript)}</pre>${l.recording_url ? `<p style="margin-top:10px"><a href="${esc(l.recording_url)}" target="_blank" rel="noopener">Listen to the recording</a></p>` : ''}</div></details>
+
     </div>`;
   const dlg = $('#drawer');
   if (!dlg.open) dlg.showModal();
@@ -481,6 +560,10 @@ document.addEventListener('click', e => {
   if (open) { e.preventDefault(); return openLead(open.dataset.open); }
   const a = e.target.closest('[data-act]');
   if (a) return act(a.dataset.act, a.dataset.id, a);
+  const lay = e.target.closest('[data-layout]');
+  if (lay) { state.layout = lay.dataset.layout; try { localStorage.setItem('aangan.layout', state.layout); } catch { /* ignore */ } return renderLeads(); }
+  const ts = e.target.closest('[data-tsort]');
+  if (ts) { const k = ts.dataset.tsort; state.tsort = { key: k, dir: state.tsort.key === k ? -state.tsort.dir : (k === 'date' || k === 'size' ? -1 : 1) }; return renderLeads(); }
   const chip = e.target.closest('[data-chip]');
   if (chip) { state.filter = chip.dataset.chip; return renderLeads(); }
   const flag = e.target.closest('[data-flag]');
@@ -505,6 +588,7 @@ document.addEventListener('change', e => {
     when.querySelector('input').required = !when.hidden;
   }
 });
+$('#leads-table').addEventListener('keydown', e => { const tr = e.target.closest('tr[data-open]'); if (tr && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openLead(tr.dataset.open); } });
 $('#q').addEventListener('input', e => { state.q = e.target.value.trim(); renderLeads(); });
 document.addEventListener('submit', async e => {
   const form = e.target.closest('[data-outcome]');
